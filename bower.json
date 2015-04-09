@@ -1,0 +1,25 @@
+{
+  "name": "purescript-css",
+  "version": "0.0.0",
+  "authors": [
+    "Brian McKenna <brian@brianmckenna.org>"
+  ],
+  "description": "PureScript CSS preprocessor",
+  "keywords": [
+    "purescript",
+    "css"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "purescript-nonempty-arrays": "~0.2.0",
+    "purescript-these": "~0.1.0",
+    "purescript-transformers": "~0.5.4"
+  }
+}
