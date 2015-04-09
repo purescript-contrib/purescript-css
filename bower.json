@@ -21,5 +21,8 @@
     "purescript-nonempty-arrays": "~0.2.0",
     "purescript-these": "~0.1.0",
     "purescript-transformers": "~0.5.4"
+  },
+  "devDependencies": {
+    "purescript-exceptions": "~0.2.3"
   }
 }
