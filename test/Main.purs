@@ -3,9 +3,11 @@ module Main where
 import Control.Monad
 import Control.Monad.Eff
 import Control.Monad.Eff.Exception
+import Css.Border
 import Css.Display
 import Css.Font
 import Css.Render
+import Css.Size
 import Css.String
 import Data.These
 import Data.Maybe
@@ -20,6 +22,10 @@ example2 :: Rendered
 example2 = render do
   display inlineBlock
 
+example3 :: Rendered
+example3 = render do
+  border dashed (px 2) (fromString "green")
+
 inlineResult :: Rendered -> Maybe String
 inlineResult (This (Inline a)) = Just a
 inlineResult _ = Nothing
@@ -31,3 +37,4 @@ main :: Eff (err :: Exception) Unit
 main = do
   inlineResult example1 `assertEqual` Just "color: red; display: block"
   inlineResult example2 `assertEqual` Just "display: inline-block"
+  inlineResult example3 `assertEqual` Just "border: dashed 2px green"

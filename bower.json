@@ -19,6 +19,7 @@
   ],
   "dependencies": {
     "purescript-nonempty-arrays": "~0.2.0",
+    "purescript-profunctor": "~0.2.1",
     "purescript-these": "~0.1.0",
     "purescript-transformers": "~0.5.4"
   },

@@ -1,6 +1,8 @@
 module Css.Property where
 
 import Css.String
+import Data.Monoid
+import Data.Profunctor.Strong
 import Data.Tuple
 
 data Prefixed = Prefixed [Tuple String String]
@@ -8,6 +10,15 @@ data Prefixed = Prefixed [Tuple String String]
 
 instance isStringPrefixed :: IsString Prefixed where
   fromString = Plain
+
+instance semigroupPrefixed :: Semigroup Prefixed where
+  (<>) (Plain x) (Plain y) = Plain $ x <> y
+  (<>) (Plain x) (Prefixed ys) = Prefixed $ second (x <>) <$> ys
+  (<>) (Prefixed xs) (Plain y) = Prefixed $ second (y <>) <$> xs
+  -- (<>) (Prefixed xs) (Prefixed ys)
+
+instance monoidPrefixed :: Monoid Prefixed where
+  mempty = Plain mempty
 
 newtype Key a = Key Prefixed
 
@@ -22,5 +33,17 @@ newtype Value = Value Prefixed
 instance isStringValue :: IsString Value where
   fromString = Value <<< fromString
 
+instance semigroupValue :: Semigroup Value where
+  (<>) (Value a) (Value b) = Value $ a <> b
+
+instance monoidValue :: Monoid Value where
+  mempty = Value mempty
+
 class Val a where
   value :: a -> Value
+
+instance valTuple :: (Val a, Val b) => Val (Tuple a b) where
+  value (Tuple a b) = value a <> fromString " " <> value b
+
+instance valNumber :: Val Number where
+  value = fromString <<< show
