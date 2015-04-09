@@ -34,16 +34,23 @@ render :: forall a. StyleM a -> Rendered
 render = rules [] <<< runS
 
 rules :: [App] -> [Rule] -> Rendered
-rules sel rs = rule' sel $ mapMaybe property rs
+rules sel rs = NEL.sconcat $ rule' sel (mapMaybe property rs) NEL.:| ((\(Tuple a b) -> rules (a : sel) b) <$> mapMaybe nested rs)
   where property (Property k v) = Just (Tuple k v)
-        property _ = Nothing
+        property _              = Nothing
+        nested   (Nested a ns)  = Just (Tuple a ns)
+        nested   _              = Nothing
 
 rule' :: forall a. [App] -> [Tuple (Key a) Value] -> Rendered
-rule' sel props = maybe (This $ Inline p) (\sel' -> That <<< Sheet $ mconcat [selector (merger sel'), "{", p, "}"]) $ nel sel
+rule' sel props = maybe (This $ Inline p) (\sel' -> That <<< Sheet $ intercalate " " [selector (merger sel'), "{", p, "}"]) $ nel sel
   where p = properties $ props >>= collect
 
 selector :: Selector -> String
-selector _ = "TODO"
+selector = intercalate ", " <<< selector'
+
+selector' :: Selector -> [String]
+selector' (Selector (Refinement []) Star) = []
+selector' (Selector (Refinement (_:_)) Star) = ["*"]
+selector' (Selector _ (Elem t)) = [t]
 
 collect :: forall a. Tuple (Key a) Value -> [Either String (Tuple String String)]
 collect (Tuple (Key ky) (Value v1)) =

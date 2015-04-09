@@ -9,9 +9,13 @@ import Css.Font
 import Css.Render
 import Css.Size
 import Css.String
+import Css.Stylesheet
+import Css.Elements
 import Data.These
 import Data.Maybe
 import Debug.Trace
+
+import Data.Tuple
 
 example1 :: Rendered
 example1 = render do
@@ -25,6 +29,11 @@ example2 = render do
 example3 :: Rendered
 example3 = render do
   border dashed (px 2) (fromString "green")
+
+example4 :: Rendered
+example4 = render do
+  body ? do
+    color $ fromString "green"
 
 inlineResult :: Rendered -> Maybe String
 inlineResult (This (Inline a)) = Just a

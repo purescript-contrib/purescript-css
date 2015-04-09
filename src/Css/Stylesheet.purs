@@ -24,7 +24,7 @@ data App = Self   Refinement
 data Keyframes = Keyframes String [Tuple Number [Rule]]
 
 data Rule = Property (Key Unit) Value
-          | Nested   App Rule
+          | Nested   App [Rule]
           | Query    MediaQuery [Rule]
           | Face     [Rule]
           | Keyframe Keyframes
@@ -56,3 +56,7 @@ type Css = StyleM Unit
 
 key :: forall a. (Val a) => Key a -> a -> Css
 key k v = rule $ Property (cast k) (value v)
+
+infixr 5 ?
+(?) :: Selector -> Css -> Css
+(?) sel rs = rule $ Nested (Sub sel) (runS rs)

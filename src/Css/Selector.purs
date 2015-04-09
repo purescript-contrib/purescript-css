@@ -1,7 +1,8 @@
 module Css.Selector where
 
--- Gross, forall a. [a] has an orphan I guess.
-import Data.Monoid ()
+import Css.String
+import Data.Monoid () -- Gross, forall a. [a] has an orphan I guess.
+import qualified Data.String as S
 
 data Predicate = Id String
                | Class String
@@ -25,6 +26,12 @@ data Path f = Star
             | Combined  f f
 
 data Selector = Selector Refinement (Path Selector)
+
+instance isStringSelector :: IsString Selector where
+  fromString s = case S.take 1 s of
+                   "#" -> Selector (Refinement [Id $ S.drop 1 s]) Star
+                   "." -> Selector (Refinement [Class $ S.drop 1 s]) Star
+                   _   -> Selector (Refinement []) (Elem s)
 
 star :: Selector
 star = Selector (Refinement []) Star
