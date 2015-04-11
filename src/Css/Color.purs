@@ -3,6 +3,7 @@ module Css.Color where
 import Css.Property
 import Css.String
 import Data.Foldable
+import Math hiding (tan)
 
 data Color = Rgba Number Number Number Number
            | Hsla Number Number Number Number
@@ -13,10 +14,17 @@ instance isStringColor :: IsString Color where
 
 instance valColor :: Val Color where
   value (Rgba r g b 255) = Value <<< fromString $ "rgb(" <> intercalate ", " [show r, show g, show b] <> ")"
+  value (Rgba r g b a) = Value <<< fromString $ "rgba(" <> intercalate ", " [show r, show g, show b, show a] <> ")"
   value (Other v) = v
+
+rgba :: Number -> Number -> Number -> Number -> Color
+rgba = Rgba
 
 rgb :: Number -> Number -> Number -> Color
 rgb r g b = Rgba r g b 255
+
+clamp :: Number -> Number
+clamp = max 0 <<< min 255
 
 aliceblue            = rgb 240 248 255
 antiquewhite         = rgb 250 235 215

@@ -18,6 +18,7 @@
     "tests"
   ],
   "dependencies": {
+    "purescript-math": "~0.1.1",
     "purescript-nonempty-arrays": "~0.2.0",
     "purescript-profunctor": "~0.2.1",
     "purescript-strings": "~0.4.5",
