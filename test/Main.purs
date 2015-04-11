@@ -4,22 +4,21 @@ import Control.Monad
 import Control.Monad.Eff
 import Control.Monad.Eff.Exception
 import Css.Border
+import Css.Color
 import Css.Display
+import Css.Elements
 import Css.Font
 import Css.Render
 import Css.Size
 import Css.String
 import Css.Stylesheet
-import Css.Elements
-import Data.These
 import Data.Maybe
+import Data.These
 import Debug.Trace
-
-import Data.Tuple
 
 example1 :: Rendered
 example1 = render do
-  color $ fromString "red"
+  color red
   display block
 
 example2 :: Rendered
@@ -28,12 +27,14 @@ example2 = render do
 
 example3 :: Rendered
 example3 = render do
-  border dashed (px 2) (fromString "green")
+  border dashed (px 2) green
 
 example4 :: Rendered
 example4 = render do
   body ? do
-    color $ fromString "green"
+    color green
+  fromString "#world" ? do
+    display block
 
 inlineResult :: Rendered -> Maybe String
 inlineResult (This (Inline a)) = Just a
@@ -44,6 +45,6 @@ assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion fail
 
 main :: Eff (err :: Exception) Unit
 main = do
-  inlineResult example1 `assertEqual` Just "color: red; display: block"
+  inlineResult example1 `assertEqual` Just "color: rgb(255, 0, 0); display: block"
   inlineResult example2 `assertEqual` Just "display: inline-block"
-  inlineResult example3 `assertEqual` Just "border: dashed 2px green"
+  inlineResult example3 `assertEqual` Just "border: dashed 2px rgb(0, 128, 0)"
