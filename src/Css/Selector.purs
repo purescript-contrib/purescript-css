@@ -16,6 +16,13 @@ data Predicate = Id String
                | Pseudo String
                | PseudoFunc String [String]
 
+instance eqPredicate :: Eq Predicate where
+  (==) (Id a) (Id b) = a == b
+  (/=) a b = not (a == b)
+
+instance ordPredicate :: Ord Predicate where
+  compare (Id a) (Id b) = compare a b
+
 newtype Refinement = Refinement [Predicate]
 
 data Path f = Star

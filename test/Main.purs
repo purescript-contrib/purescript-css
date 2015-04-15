@@ -1,4 +1,4 @@
-module Main where
+module Test.Main where
 
 import Control.Monad
 import Control.Monad.Eff
@@ -9,6 +9,7 @@ import Css.Display
 import Css.Elements
 import Css.Font
 import Css.Render
+import Css.Selector
 import Css.Size
 import Css.String
 import Css.Stylesheet
@@ -36,15 +37,17 @@ example4 = render do
   fromString "#world" ? do
     display block
 
-inlineResult :: Rendered -> Maybe String
-inlineResult (This (Inline a)) = Just a
-inlineResult _ = Nothing
-
 assertEqual :: forall a. (Eq a, Show a) => a -> a -> Eff (err :: Exception) Unit
 assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
 
 main :: Eff (err :: Exception) Unit
 main = do
-  inlineResult example1 `assertEqual` Just "color: rgb(255, 0, 0); display: block"
-  inlineResult example2 `assertEqual` Just "display: inline-block"
-  inlineResult example3 `assertEqual` Just "border: dashed 2px rgb(0, 128, 0)"
+  renderedInline example1 `assertEqual` Just "color: rgb(255, 0, 0); display: block"
+  renderedInline example2 `assertEqual` Just "display: inline-block"
+  renderedInline example3 `assertEqual` Just "border: dashed 2px rgb(0, 128, 0)"
+
+  selector (Selector (Refinement [Id "test"]) Star) `assertEqual` "#test"
+
+  selector (fromString "#test") `assertEqual` "#test"
+
+  renderedSheet example4 `assertEqual` Just "body { color: rgb(0, 128, 0) } #world { display: block }"

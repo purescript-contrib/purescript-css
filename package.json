@@ -1,6 +1,6 @@
 {
   "dependencies": {
     "gulp": "^3.8.11",
-    "mandragora-bucket": "^0.1.12"
+    "mandragora-bucket": "^0.2.3"
   }
 }
