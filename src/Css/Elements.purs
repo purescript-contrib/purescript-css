@@ -6,6 +6,9 @@ import Css.String
 body :: Selector
 body = fromString "body"
 
+a :: Selector
+a = fromString "a"
+
 h1 :: Selector
 h1 = fromString "h1"
 

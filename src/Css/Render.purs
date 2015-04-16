@@ -2,6 +2,7 @@ module Css.Render where
 
 import Css.Property
 import Css.Selector
+import Css.String
 import Css.Stylesheet
 import Data.Array
 import Data.Either
@@ -72,12 +73,22 @@ rule' sel props = maybe q o $ nel sel
         o sel' = Just <<< That <<< Sheet $ intercalate " " [selector (merger sel'), "{", properties p, "}"]
 
 selector :: Selector -> String
-selector (Selector (Refinement ft) p) = intercalate ", " $ (<> (foldMap predicate (sort ft))) <$> selector' ft p
+selector = intercalate ", " <<< selector'
 
-selector' :: [Predicate] -> Path Selector -> [String]
-selector' [] Star = ["*"]
-selector' (_:_) Star = [""]
-selector' _ (Elem t) = [t]
+selector' :: Selector -> [String]
+selector' (Selector (Refinement ft) p) = (<> (foldMap predicate (sort ft))) <$> selector'' ft p
+
+selector'' :: [Predicate] -> Path Selector -> [String]
+selector'' [] Star = ["*"]
+selector'' (_:_) Star = [""]
+selector'' _ (Elem t) = [t]
+selector'' _ (PathChild a b) = sepWith " > " <$> selector' a <*> selector' b
+selector'' _ (Deep a b) = sepWith " " <$> selector' a <*> selector' b
+selector'' _ (Adjacent a b) = sepWith " + " <$> selector' a <*> selector' b
+selector'' _ (Combined a b) = selector' a <> selector' b
+
+sepWith :: String -> String -> String -> String
+sepWith s a b = a <> s <> b
 
 collect :: forall a. Tuple (Key a) Value -> [Either String (Tuple String String)]
 collect (Tuple (Key ky) (Value v1)) =

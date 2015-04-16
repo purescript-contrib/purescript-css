@@ -27,14 +27,13 @@ style :: Css
 style = do
   body ? do
     fontFamily [] (NEL.singleton sansSerif)
-    color green
     padding nil nil nil nil
     margin nil nil nil nil
+  h1 ? a ? color green
   h1 ? do
     position absolute
     left (pct 50)
     top (pct 50)
-    margin nil nil nil nil
 
 main :: Eff (dom :: DOM) Unit
 main = addStyleSheet <<< fromMaybe "" <<< renderedSheet $ render style
