@@ -23,6 +23,26 @@ foreign import addStyleSheet """
   }
   """ :: String -> Eff (dom :: DOM) Unit
 
+foreign import titleWidth """
+  function titleWidth () {
+    return document.getElementById('title').offsetWidth;
+  }
+  """ :: Eff (dom :: DOM) Number
+
+foreign import titleHeight """
+  function titleHeight () {
+    return document.getElementById('title').offsetHeight;
+  }
+  """ :: Eff (dom :: DOM) Number
+
+foreign import titleStyle """
+  function titleStyle (s) {
+    return function () {
+      document.getElementById('title').setAttribute('style', s);
+    };
+  }
+  """ :: String -> Eff (dom :: DOM) Unit
+
 style :: Css
 style = do
   body ? do
@@ -35,5 +55,15 @@ style = do
     left (pct 50)
     top (pct 50)
 
+center :: Number -> Number -> Css
+center width height = do
+  marginLeft (px $ -width / 2)
+  marginTop (px $ -height / 2)
+
 main :: Eff (dom :: DOM) Unit
-main = addStyleSheet <<< fromMaybe "" <<< renderedSheet $ render style
+main = do
+  addStyleSheet <<< fromMaybe "" <<< renderedSheet $ render style
+
+  width <- titleWidth
+  height <- titleHeight
+  titleStyle <<< fromMaybe "" <<< renderedInline <<< render $ center width height
