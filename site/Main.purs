@@ -66,14 +66,15 @@ style = do
     sym margin nil
     backgroundGradient (deg 0)
   h1 ? a ? do
+    display block
     color blue1
     textDecoration noneTextDecoration
     fontWeight $ weight 100
+    sym padding (em 0.5)
   h1 ? do
     position absolute
     left (pct 50)
     top (pct 50)
-    sym padding (em 0.5)
     backgroundGradient (deg 180)
     border solid (px 1) blue1
 
