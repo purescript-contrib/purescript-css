@@ -4,6 +4,8 @@ import Css.String
 import Data.Monoid
 import Data.Profunctor.Strong
 import Data.Tuple
+import Data.Foldable
+import qualified Data.Array.NonEmpty as NEL
 
 data Prefixed = Prefixed [Tuple String String]
               | Plain String
@@ -42,8 +44,17 @@ instance monoidValue :: Monoid Value where
 class Val a where
   value :: a -> Value
 
+instance valValue :: Val Value where
+  value = id
+
 instance valTuple :: (Val a, Val b) => Val (Tuple a b) where
   value (Tuple a b) = value a <> fromString " " <> value b
 
 instance valNumber :: Val Number where
   value = fromString <<< show
+
+instance valList :: (Val a) => Val [a] where
+  value = intercalate (fromString ", ") <<< (value <$>)
+
+instance valNonEmpty :: (Val a) => Val (NEL.NonEmpty a) where
+  value = value <<< NEL.toArray

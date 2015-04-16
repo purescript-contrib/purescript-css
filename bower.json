@@ -26,6 +26,7 @@
     "purescript-transformers": "~0.5.4"
   },
   "devDependencies": {
-    "purescript-exceptions": "~0.2.3"
+    "purescript-exceptions": "~0.2.3",
+    "purescript-dom": "~0.1.2"
   }
 }
