@@ -1,8 +1,0 @@
-bower_components
-coverage
-dist
-node_modules
-public
-.psci
-.psci_modules
-site/psc.js
