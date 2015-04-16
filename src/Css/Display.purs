@@ -4,6 +4,26 @@ import Css.Property
 import Css.String
 import Css.Stylesheet
 
+newtype Position = Position Value
+
+instance valPosition :: Val Position where
+  value (Position v) = v
+
+position :: Position -> Css
+position = key $ fromString "position"
+
+static :: Position
+static = Position $ fromString "static"
+
+absolute :: Position
+absolute = Position $ fromString "absolute"
+
+fixed :: Position
+fixed = Position $ fromString "fixed"
+
+relative :: Position
+relative = Position $ fromString "relative"
+
 newtype Display = Display Value
 
 instance valDisplay :: Val Display where
