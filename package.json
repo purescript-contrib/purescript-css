@@ -5,6 +5,7 @@
   },
   "devDependencies": {
     "gulp-browserify": "^0.5.1",
+    "gulp-gh-pages": "^0.5.0",
     "gulp-purescript": "^0.3.1"
   }
 }
