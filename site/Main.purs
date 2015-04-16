@@ -4,7 +4,9 @@ import Control.Monad.Eff
 import Css.Color
 import Css.Elements
 import Css.Font
+import Css.Geometry
 import Css.Render
+import Css.Size
 import Css.Stylesheet
 import Data.Maybe
 import DOM
@@ -25,6 +27,8 @@ style =
   body ? do
     fontFamily [] (NEL.singleton sansSerif)
     color green
+    padding nil nil nil nil
+    margin nil nil nil nil
 
 main :: Eff (dom :: DOM) Unit
 main = addStyleSheet <<< fromMaybe "" <<< renderedSheet $ render style

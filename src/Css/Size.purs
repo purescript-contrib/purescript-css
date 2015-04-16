@@ -12,3 +12,6 @@ data Abs
 
 px :: Number -> Size Abs
 px i = Size (value i <> fromString "px")
+
+nil :: forall a. Size a
+nil = Size $ fromString "0"
