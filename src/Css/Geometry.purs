@@ -5,6 +5,24 @@ import Css.String
 import Css.Stylesheet
 import Data.Tuple.Nested
 
+width :: forall a. Size a -> Css
+width = key $ fromString "width"
+
+height :: forall a. Size a -> Css
+height = key $ fromString "height"
+
+minWidth :: forall a. Size a -> Css
+minWidth = key $ fromString "min-width"
+
+minHeight :: forall a. Size a -> Css
+minHeight = key $ fromString "min-height"
+
+maxWidth :: forall a. Size a -> Css
+maxWidth = key $ fromString "max-width"
+
+maxHeight :: forall a. Size a -> Css
+maxHeight = key $ fromString "max-height"
+
 top :: forall a. Size a -> Css
 top = key $ fromString "top"
 

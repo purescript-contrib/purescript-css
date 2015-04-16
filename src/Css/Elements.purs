@@ -26,3 +26,6 @@ h5 = fromString "h5"
 
 h6 :: Selector
 h6 = fromString "h6"
+
+html :: Selector
+html = fromString "html"

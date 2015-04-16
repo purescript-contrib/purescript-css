@@ -54,12 +54,17 @@ blue1 = rgb 51 136 204
 blue2 :: Color
 blue2 = rgb 238 238 255
 
+backgroundGradient :: forall a. Angle a -> Css
+backgroundGradient a = backgroundImage $ linearGradient a (ColorPoint white (pct 0)) [] (ColorPoint blue2 (pct 100))
+
 style :: Css
 style = do
+  html ? height (pct 100)
   body ? do
     fontFamily [] (NEL.singleton sansSerif)
     sym padding nil
     sym margin nil
+    backgroundGradient (deg 0)
   h1 ? a ? do
     color blue1
     textDecoration noneTextDecoration
@@ -69,7 +74,7 @@ style = do
     left (pct 50)
     top (pct 50)
     sym padding (em 0.5)
-    backgroundImage $ linearGradient (deg 180) (ColorPoint white (pct 0)) [] (ColorPoint blue2 (pct 100))
+    backgroundGradient (deg 180)
     border solid (px 1) blue1
 
 center :: Number -> Number -> Css
