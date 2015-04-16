@@ -1885,16 +1885,28 @@ PS.Css_Display = (function () {
     var Position = function (x) {
         return x;
     };
+    var Display = function (x) {
+        return x;
+    };
     var valPosition = new Css_Property.Val(function (_509) {
         return _509;
     });
+    var valDisplay = new Css_Property.Val(function (_510) {
+        return _510;
+    });
     var position = Css_Stylesheet.key(valPosition)(Css_String.fromString(Css_Property.isStringKey)("position"));
+    var display = Css_Stylesheet.key(valDisplay)(Css_String.fromString(Css_Property.isStringKey)("display"));
+    var block = Display(Css_String.fromString(Css_Property.isStringValue)("block"));
     var absolute = Position(Css_String.fromString(Css_Property.isStringValue)("absolute"));
     return {
+        Display: Display, 
         Position: Position, 
+        display: display, 
+        block: block, 
         absolute: absolute, 
         position: position, 
-        valPosition: valPosition
+        valPosition: valPosition, 
+        valDisplay: valDisplay
     };
 })();
 var PS = PS || {};
@@ -2165,7 +2177,7 @@ PS.Css_Render = (function () {
                 return [ "*" ];
             };
             if (_533.length >= 1) {
-                var _728 = _533.slice(1);
+                var _729 = _533.slice(1);
                 if (_534 instanceof Css_Selector.Star) {
                     return [ "" ];
                 };
@@ -2199,8 +2211,8 @@ PS.Css_Render = (function () {
             return Data_Maybe.Nothing.value;
         };
         if (_538.length >= 1) {
-            var _743 = _538.slice(1);
-            return Data_Maybe.Just.create(Data_Array_NonEmpty[":|"](_538[0])(_743));
+            var _744 = _538.slice(1);
+            return Data_Maybe.Just.create(Data_Array_NonEmpty[":|"](_538[0])(_744));
         };
         throw new Error("Failed pattern match");
     };
@@ -2267,9 +2279,9 @@ PS.Css_Render = (function () {
         return Prelude[">>="](Data_Maybe.bindMaybe)(_3)(Prelude["<<<"](Prelude.semigroupoidArr)(Prelude["<$>"](Data_Maybe.functorMaybe)(getInline))(maybeThisSide));
     };
     var collect = function (_535) {
-        var _766 = new Data_Tuple.Tuple(_535.value0, _535.value1);
-        if (_766.value0 instanceof Css_Property.Plain && _766.value1 instanceof Css_Property.Plain) {
-            return [ new Data_Either.Right(new Data_Tuple.Tuple(_766.value0.value0, _766.value1.value0)) ];
+        var _767 = new Data_Tuple.Tuple(_535.value0, _535.value1);
+        if (_767.value0 instanceof Css_Property.Plain && _767.value1 instanceof Css_Property.Plain) {
+            return [ new Data_Either.Right(new Data_Tuple.Tuple(_767.value0.value0, _767.value1.value0)) ];
         };
         throw new Error("Failed pattern match");
     };
@@ -2344,8 +2356,8 @@ PS.Site = (function () {
     var Css_Geometry = PS.Css_Geometry;
     var Css_Font = PS.Css_Font;
     var Data_Array_NonEmpty = PS.Data_Array_NonEmpty;
-    var Css_Text = PS.Css_Text;
     var Css_Display = PS.Css_Display;
+    var Css_Text = PS.Css_Text;
     var Css_Border = PS.Css_Border;
     var Data_Maybe = PS.Data_Maybe;
     var Css_Render = PS.Css_Render;
@@ -2398,18 +2410,20 @@ PS.Site = (function () {
                 });
             });
         })))(function () {
-            return Prelude[">>="](Css_Stylesheet.bindStyleM)(Css_Stylesheet["?"](Css_Elements.h1)(Css_Stylesheet["?"](Css_Elements.a)(Prelude[">>="](Css_Stylesheet.bindStyleM)(Css_Font.color(blue1))(function () {
-                return Prelude[">>="](Css_Stylesheet.bindStyleM)(Css_Text.textDecoration(Css_Text.noneTextDecoration))(function () {
-                    return Css_Font.fontWeight(Css_Font.weight(100));
+            return Prelude[">>="](Css_Stylesheet.bindStyleM)(Css_Stylesheet["?"](Css_Elements.h1)(Css_Stylesheet["?"](Css_Elements.a)(Prelude[">>="](Css_Stylesheet.bindStyleM)(Css_Display.display(Css_Display.block))(function () {
+                return Prelude[">>="](Css_Stylesheet.bindStyleM)(Css_Font.color(blue1))(function () {
+                    return Prelude[">>="](Css_Stylesheet.bindStyleM)(Css_Text.textDecoration(Css_Text.noneTextDecoration))(function () {
+                        return Prelude[">>="](Css_Stylesheet.bindStyleM)(Css_Font.fontWeight(Css_Font.weight(100)))(function () {
+                            return Css_Size.sym(Css_Geometry.padding)(Css_Size.em(0.5));
+                        });
+                    });
                 });
             }))))(function () {
                 return Css_Stylesheet["?"](Css_Elements.h1)(Prelude[">>="](Css_Stylesheet.bindStyleM)(Css_Display.position(Css_Display.absolute))(function () {
                     return Prelude[">>="](Css_Stylesheet.bindStyleM)(Css_Geometry.left(Css_Size.pct(50)))(function () {
                         return Prelude[">>="](Css_Stylesheet.bindStyleM)(Css_Geometry.top(Css_Size.pct(50)))(function () {
-                            return Prelude[">>="](Css_Stylesheet.bindStyleM)(Css_Size.sym(Css_Geometry.padding)(Css_Size.em(0.5)))(function () {
-                                return Prelude[">>="](Css_Stylesheet.bindStyleM)(backgroundGradient(Css_Size.deg(180)))(function () {
-                                    return Css_Border.border(Css_Border.solid)(Css_Size.px(1))(blue1);
-                                });
+                            return Prelude[">>="](Css_Stylesheet.bindStyleM)(backgroundGradient(Css_Size.deg(180)))(function () {
+                                return Css_Border.border(Css_Border.solid)(Css_Size.px(1))(blue1);
                             });
                         });
                     });
