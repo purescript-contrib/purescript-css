@@ -91,13 +91,17 @@ sepWith :: String -> String -> String -> String
 sepWith s a b = a <> s <> b
 
 collect :: forall a. Tuple (Key a) Value -> [Either String (Tuple String String)]
-collect (Tuple (Key ky) (Value v1)) =
-  case (Tuple ky v1) of
-    Tuple (Plain k) (Plain v) -> [Right (Tuple k v)]
+collect (Tuple (Key ky) (Value v1)) = collect' ky v1
+
+collect' :: Prefixed -> Prefixed -> [Either String (Tuple String String)]
+collect' (Plain k) (Plain v) = [Right (Tuple k v)]
+collect' (Prefixed ks) (Plain v) = (\(Tuple p k) -> Right $ Tuple (p <> k) v) <$> ks
+collect' (Plain k) (Prefixed vs) = (\(Tuple p v) -> Right $ Tuple k (p <> v)) <$> vs
+collect' (Prefixed ks) (Prefixed vs) = (\(Tuple p k) -> maybe (Left (p <> k)) (Right <<< Tuple (p <> k) <<< (p <>)) $ lookup p vs) <$> ks
 
 properties :: [Either String (Tuple String String)] -> String
 properties xs = intercalate "; " $  sheetRules <$> xs
-  where  sheetRules (Right (Tuple k v)) = mconcat [k, ": ", v]
+  where sheetRules = either (\_ -> mempty) (\(Tuple k v) -> mconcat [k, ": ", v])
 
 merger :: NEL.NonEmpty App -> Selector
 merger (NEL.NonEmpty x xs) =
