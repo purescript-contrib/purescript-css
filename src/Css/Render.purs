@@ -56,15 +56,25 @@ renderedSheet = (>>= ((getSheet <$>) <<< maybeThatSide))
 render :: forall a. StyleM a -> Rendered
 render = rules [] <<< runS
 
+kframe :: Keyframes -> Rendered
+kframe (Keyframes ident xs) = Just <<< That <<< Sheet $ " @-webkit-keyframes " <> ident <> " { " <> intercalate " " (uncurry frame <$> xs) <> " }"
+
+frame :: Number -> [Rule] -> String
+frame p rs = show p <> "% " <> "{ " <> x <> " }"
+  where x = fromMaybe "" <<< renderedInline $ rules [] rs
+
 rules :: [App] -> [Rule] -> Rendered
-rules sel rs = topRules <> nestedSheets
+rules sel rs = topRules <> nestedSheets <> keyframeRules
   where property (Property k v) = Just (Tuple k v)
         property _              = Nothing
-        nested   (Nested a ns)  = Just (Tuple a ns)
+        nested   (Nested a ns ) = Just (Tuple a ns)
         nested   _              = Nothing
+        kframes  (Keyframe fs ) = Just fs
+        kframes  _              = Nothing
         topRules = rule' sel (mapMaybe property rs)
         nestedSheets = intercalate (Just (That (Sheet " "))) $ uncurry nestedRules <$> mapMaybe nested rs
         nestedRules a = rules (a : sel)
+        keyframeRules = foldMap kframe $ mapMaybe kframes rs
 
 rule' :: forall a. [App] -> [Tuple (Key a) Value] -> Rendered
 rule' sel props = maybe q o $ nel sel
@@ -113,12 +123,17 @@ merger (NEL.NonEmpty x xs) =
     Self  sheetRules  -> maybe (star `with`  sheetRules) (\xs' -> merger xs' `with`  sheetRules) $ nel xs
 
 predicate :: Predicate -> String
-predicate (Id a) = "#" <> a
-predicate (Class a) = "." <> a
-predicate (Attr a) = "[" <> a <> "]"
-predicate (AttrVal a v) = "[" <> a <> "='" <> v <> "']"
-predicate (AttrBegins a v) = "[" <> a <> "^='" <> v <> "']"
-predicate (AttrEnds a v) = "[" <> a <> "$='" <> v <> "']"
+predicate (Id           a  ) = "#" <> a
+predicate (Class        a  ) = "." <> a
+predicate (Attr         a  ) = "[" <> a <> "]"
+predicate (AttrVal      a v) = "[" <> a <> "='" <> v <> "']"
+predicate (AttrBegins   a v) = "[" <> a <> "^='" <> v <> "']"
+predicate (AttrEnds     a v) = "[" <> a <> "$='" <> v <> "']"
+predicate (AttrContains a v) = "[" <> a <> "*='" <> v <> "']"
+predicate (AttrSpace    a v) = "[" <> a <> "~='" <> v <> "']"
+predicate (AttrHyph     a v) = "[" <> a <> "|='" <> v <> "']"
+predicate (Pseudo       a  ) = ":" <> a
+predicate (PseudoFunc   a p) = ":" <> a <> "(" <> intercalate "," p <> ")"
 
 nel :: forall a. [a] -> Maybe (NEL.NonEmpty a)
 nel [] = Nothing

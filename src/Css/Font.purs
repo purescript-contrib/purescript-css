@@ -2,6 +2,7 @@ module Css.Font where
 
 import Css.Color
 import Css.Property
+import Css.Size
 import Css.String
 import Css.Stylesheet
 import qualified Data.Array.NonEmpty as NEL
@@ -19,6 +20,9 @@ sansSerif = GenericFontFamily $ fromString "sans-serif"
 
 fontFamily :: [String] -> NEL.NonEmpty GenericFontFamily -> Css
 fontFamily a b = key (fromString "font-family") $ value b
+
+fontSize :: forall a. Size a -> Css
+fontSize = key $ fromString "font-size"
 
 newtype FontWeight = FontWeight Value
 

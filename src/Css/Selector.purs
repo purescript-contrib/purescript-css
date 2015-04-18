@@ -25,6 +25,15 @@ instance ordPredicate :: Ord Predicate where
 
 newtype Refinement = Refinement [Predicate]
 
+instance isStringRefinement :: IsString Refinement where
+  fromString s = Refinement [ case S.take 1 s of
+                                 "#" -> Id $ S.drop 1 s
+                                 "." -> Class $ S.drop 1 s
+                                 ":" -> Pseudo $ S.drop 1 s
+                                 "@" -> Attr $ S.drop 1 s
+                                 _   -> Attr s
+                            ]
+
 data Path f = Star
             | Elem String
             | PathChild f f

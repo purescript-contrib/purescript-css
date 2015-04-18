@@ -1,8 +1,12 @@
 module Css.Background where
 
+import Css.Color
 import Css.Property
 import Css.String
 import Css.Stylesheet
+
+backgroundColor :: Color -> Css
+backgroundColor = key $ fromString "background-color"
 
 newtype BackgroundImage = BackgroundImage Value
 

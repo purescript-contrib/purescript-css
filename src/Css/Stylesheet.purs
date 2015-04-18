@@ -5,7 +5,9 @@ import Control.Monad.Writer.Class
 import Css.Property
 import Css.Selector
 import Data.Maybe
+import Data.Profunctor.Strong
 import Data.Tuple
+import qualified Data.Array.NonEmpty as NEL
 
 newtype MediaType = MediaType Value
 
@@ -21,7 +23,7 @@ data App = Self   Refinement
          | Child  Selector
          | Sub    Selector
 
-data Keyframes = Keyframes String [Tuple Number [Rule]]
+data Keyframes = Keyframes String (NEL.NonEmpty (Tuple Number [Rule]))
 
 data Rule = Property (Key Unit) Value
           | Nested   App [Rule]
@@ -60,3 +62,6 @@ key k v = rule $ Property (cast k) (value v)
 infixr 5 ?
 (?) :: Selector -> Css -> Css
 (?) sel rs = rule $ Nested (Sub sel) (runS rs)
+
+keyframes :: String -> NEL.NonEmpty (Tuple Number Css) -> Css
+keyframes n xs = rule $ Keyframe (Keyframes n (second runS <$> xs))
