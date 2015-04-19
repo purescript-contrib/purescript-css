@@ -8,6 +8,7 @@ import Css.Color
 import Css.Display
 import Css.Elements
 import Css.Font
+import Css.FontFace
 import Css.Geometry
 import Css.Gradient
 import Css.Pseudo
@@ -72,11 +73,19 @@ shakeRight = transforms [translate (px 3) nil, rotate (deg 2)]
 
 style :: Css
 style = do
+  fontFace $ do
+    fontFaceFamily $ fromString "Lato"
+    fontWeight $ weight 300
+    fontFaceSrc $ FontFaceSrcLocal "Lato Light" NEL.:|
+                [ FontFaceSrcLocal "Lato-Light"
+                , FontFaceSrcUrl "http://fonts.gstatic.com/s/lato/v11/EsvMC5un3kjyUhB9ZEPPwg.woff2" (Just WOFF2)
+                ]
+
   keyframes "buzz-button" $ tuple2 50 shakeRight NEL.:| [tuple2 100 shakeLeft]
 
   html ? height (pct 100)
   body ? do
-    fontFamily [] (NEL.singleton sansSerif)
+    fontFamily ["Lato"] (NEL.singleton sansSerif)
     sym padding nil
     sym margin nil
     backgroundGradient (deg 0)
