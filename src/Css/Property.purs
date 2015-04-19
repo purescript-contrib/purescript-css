@@ -22,6 +22,10 @@ instance semigroupPrefixed :: Semigroup Prefixed where
 instance monoidPrefixed :: Monoid Prefixed where
   mempty = Plain mempty
 
+-- TODO: Escape
+quote :: String -> String
+quote s = "\"" <> s <> "\""
+
 newtype Key a = Key Prefixed
 
 instance isStringKey :: IsString (Key a) where
@@ -43,6 +47,14 @@ instance monoidValue :: Monoid Value where
 
 class Val a where
   value :: a -> Value
+
+instance valString :: Val String where
+  value = fromString
+
+newtype Literal = Literal String
+
+instance valLiteral :: Val Literal where
+  value (Literal a) = fromString $ quote a
 
 instance valValue :: Val Value where
   value = id

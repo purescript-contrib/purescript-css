@@ -63,18 +63,24 @@ frame :: Number -> [Rule] -> String
 frame p rs = show p <> "% " <> "{ " <> x <> " }"
   where x = fromMaybe "" <<< renderedInline $ rules [] rs
 
+face :: [Rule] -> Rendered
+face rs = Just <<< That <<< Sheet $ "@font-face { " <> fromMaybe "" (renderedInline $ rules [] rs) <> " }"
+
 rules :: [App] -> [Rule] -> Rendered
-rules sel rs = topRules <> nestedSheets <> keyframeRules
+rules sel rs = topRules <> nestedSheets <> keyframeRules <> faceRules
   where property (Property k v) = Just (Tuple k v)
         property _              = Nothing
         nested   (Nested a ns ) = Just (Tuple a ns)
         nested   _              = Nothing
         kframes  (Keyframe fs ) = Just fs
         kframes  _              = Nothing
+        faces    (Face ns     ) = Just ns
+        faces    _              = Nothing
         topRules = rule' sel (mapMaybe property rs)
         nestedSheets = intercalate (Just (That (Sheet " "))) $ uncurry nestedRules <$> mapMaybe nested rs
         nestedRules a = rules (a : sel)
         keyframeRules = foldMap kframe $ mapMaybe kframes rs
+        faceRules = foldMap face $ mapMaybe faces rs
 
 rule' :: forall a. [App] -> [Tuple (Key a) Value] -> Rendered
 rule' sel props = maybe q o $ nel sel

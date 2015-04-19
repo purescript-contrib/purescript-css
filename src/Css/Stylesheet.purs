@@ -65,3 +65,6 @@ infixr 5 ?
 
 keyframes :: String -> NEL.NonEmpty (Tuple Number Css) -> Css
 keyframes n xs = rule $ Keyframe (Keyframes n (second runS <$> xs))
+
+fontFace :: Css -> Css
+fontFace = rule <<< Face <<< runS

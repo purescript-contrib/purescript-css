@@ -19,7 +19,7 @@ sansSerif :: GenericFontFamily
 sansSerif = GenericFontFamily $ fromString "sans-serif"
 
 fontFamily :: [String] -> NEL.NonEmpty GenericFontFamily -> Css
-fontFamily a b = key (fromString "font-family") $ value b
+fontFamily a b = key (fromString "font-family") <<< value $ (value <<< quote <$> a) <> NEL.toArray (value <$> b)
 
 fontSize :: forall a. Size a -> Css
 fontSize = key $ fromString "font-size"
