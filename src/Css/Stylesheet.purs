@@ -66,5 +66,11 @@ infixr 5 ?
 keyframes :: String -> NEL.NonEmpty (Tuple Number Css) -> Css
 keyframes n xs = rule $ Keyframe (Keyframes n (second runS <$> xs))
 
+keyframesFromTo :: String -> Css -> Css -> Css
+keyframesFromTo n a b = keyframes n $ Tuple 0 a NEL.:| [Tuple 100 b]
+
 fontFace :: Css -> Css
 fontFace = rule <<< Face <<< runS
+
+importUrl :: String -> Css
+importUrl = rule <<< Import

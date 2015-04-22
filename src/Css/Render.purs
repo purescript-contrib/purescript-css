@@ -57,17 +57,17 @@ render :: forall a. StyleM a -> Rendered
 render = rules [] <<< runS
 
 kframe :: Keyframes -> Rendered
-kframe (Keyframes ident xs) = Just <<< That <<< Sheet $ " @-webkit-keyframes " <> ident <> " { " <> intercalate " " (uncurry frame <$> xs) <> " }"
+kframe (Keyframes ident xs) = Just <<< That <<< Sheet $ "@-webkit-keyframes " <> ident <> " { " <> intercalate " " (uncurry frame <$> xs) <> " }\n"
 
 frame :: Number -> [Rule] -> String
 frame p rs = show p <> "% " <> "{ " <> x <> " }"
   where x = fromMaybe "" <<< renderedInline $ rules [] rs
 
 face :: [Rule] -> Rendered
-face rs = Just <<< That <<< Sheet $ "@font-face { " <> fromMaybe "" (renderedInline $ rules [] rs) <> " }"
+face rs = Just <<< That <<< Sheet $ "@font-face { " <> fromMaybe "" (renderedInline $ rules [] rs) <> " }\n"
 
 rules :: [App] -> [Rule] -> Rendered
-rules sel rs = topRules <> nestedSheets <> keyframeRules <> faceRules
+rules sel rs = topRules <> importRules <> keyframeRules <> faceRules <> nestedSheets
   where property (Property k v) = Just (Tuple k v)
         property _              = Nothing
         nested   (Nested a ns ) = Just (Tuple a ns)
@@ -76,11 +76,17 @@ rules sel rs = topRules <> nestedSheets <> keyframeRules <> faceRules
         kframes  _              = Nothing
         faces    (Face ns     ) = Just ns
         faces    _              = Nothing
-        topRules = rule' sel (mapMaybe property rs)
-        nestedSheets = intercalate (Just (That (Sheet " "))) $ uncurry nestedRules <$> mapMaybe nested rs
+        imports  (Import i    ) = Just i
+        imports  _              = Nothing
+        topRules      = rule' sel (mapMaybe property rs)
+        nestedSheets  = intercalate (Just (That (Sheet " "))) $ uncurry nestedRules <$> mapMaybe nested rs
         nestedRules a = rules (a : sel)
         keyframeRules = foldMap kframe $ mapMaybe kframes rs
-        faceRules = foldMap face $ mapMaybe faces rs
+        faceRules     = foldMap face   $ mapMaybe faces   rs
+        importRules   = foldMap imp    $ mapMaybe imports rs
+
+imp :: String -> Rendered
+imp t = Just <<< That <<< Sheet <<< fromString $ "@import url(" <> t <> ");\n"
 
 rule' :: forall a. [App] -> [Tuple (Key a) Value] -> Rendered
 rule' sel props = maybe q o $ nel sel
