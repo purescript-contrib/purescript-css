@@ -11,6 +11,7 @@ import Css.Font
 import Css.FontFace
 import Css.Geometry
 import Css.Gradient
+import qualified Css.Media as M
 import Css.Pseudo
 import Css.Render
 import Css.Selector
@@ -65,11 +66,8 @@ blue2 = rgb 238 238 255
 backgroundGradient :: forall a. Angle a -> Css
 backgroundGradient a = backgroundImage $ linearGradient a (ColorPoint white (pct 0)) [] (ColorPoint blue2 (pct 100))
 
-shakeLeft :: Css
-shakeLeft = transforms [translate (px (-3)) nil, rotate (deg (-2))]
-
-shakeRight :: Css
-shakeRight = transforms [translate (px 3) nil, rotate (deg 2)]
+shake :: (Number -> Number) -> Css
+shake f = transforms [translate (px (f 3)) nil, rotate (deg (f 2))]
 
 style :: Css
 style = do
@@ -81,7 +79,11 @@ style = do
                 , FontFaceSrcUrl "http://fonts.gstatic.com/s/lato/v11/EsvMC5un3kjyUhB9ZEPPwg.woff2" (Just WOFF2)
                 ]
 
-  keyframes "buzz-button" $ tuple2 50 shakeRight NEL.:| [tuple2 100 shakeLeft]
+  keyframes "buzz-button" $ tuple2 50 (shake id) NEL.:| [tuple2 100 (shake negate)]
+
+  query M.screen (NEL.singleton <<< M.maxWidth $ px 768) $
+    h1 ? do
+      fontSize (em 2)
 
   html ? height (pct 100)
   body ? do
