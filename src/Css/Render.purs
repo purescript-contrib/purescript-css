@@ -63,15 +63,29 @@ frame :: Number -> [Rule] -> String
 frame p rs = show p <> "% " <> "{ " <> x <> " }"
   where x = fromMaybe "" <<< renderedInline $ rules [] rs
 
+query' :: MediaQuery -> [App] -> [Rule] -> Rendered
+query' q sel rs = Just <<< That <<< Sheet $ mediaQuery q <> " { " <> fromMaybe "" (renderedSheet $ rules sel rs) <> " }\n"
+
+mediaQuery :: MediaQuery -> String
+mediaQuery (MediaQuery no ty fs) = "@media " <> mediaType ty <> NEL.sconcat ((" and " <>) <<< feature <$> fs)
+
+mediaType :: MediaType -> String
+mediaType (MediaType (Value s)) = plain s
+
+feature :: Feature -> String
+feature (Feature k mv) = maybe k (\(Value v) -> "(" <> k <> ": " <> plain v <> ")") mv
+
 face :: [Rule] -> Rendered
 face rs = Just <<< That <<< Sheet $ "@font-face { " <> fromMaybe "" (renderedInline $ rules [] rs) <> " }\n"
 
 rules :: [App] -> [Rule] -> Rendered
-rules sel rs = topRules <> importRules <> keyframeRules <> faceRules <> nestedSheets
+rules sel rs = topRules <> importRules <> keyframeRules <> faceRules <> nestedSheets <> queryRules
   where property (Property k v) = Just (Tuple k v)
         property _              = Nothing
         nested   (Nested a ns ) = Just (Tuple a ns)
         nested   _              = Nothing
+        queries  (Query  q ns ) = Just (Tuple q ns)
+        queries  _              = Nothing
         kframes  (Keyframe fs ) = Just fs
         kframes  _              = Nothing
         faces    (Face ns     ) = Just ns
@@ -79,8 +93,9 @@ rules sel rs = topRules <> importRules <> keyframeRules <> faceRules <> nestedSh
         imports  (Import i    ) = Just i
         imports  _              = Nothing
         topRules      = rule' sel (mapMaybe property rs)
-        nestedSheets  = intercalate (Just (That (Sheet " "))) $ uncurry nestedRules <$> mapMaybe nested rs
+        nestedSheets  = foldMap (<> (Just <<< That $ Sheet "\n")) $ uncurry nestedRules <$> mapMaybe nested rs
         nestedRules a = rules (a : sel)
+        queryRules    = foldMap (uncurry $ flip query' sel) $ mapMaybe queries rs
         keyframeRules = foldMap kframe $ mapMaybe kframes rs
         faceRules     = foldMap face   $ mapMaybe faces   rs
         importRules   = foldMap imp    $ mapMaybe imports rs

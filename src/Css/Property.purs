@@ -1,10 +1,11 @@
 module Css.Property where
 
 import Css.String
+import Data.Foldable
+import Data.Maybe
 import Data.Monoid
 import Data.Profunctor.Strong
 import Data.Tuple
-import Data.Foldable
 import qualified Data.Array.NonEmpty as NEL
 
 data Prefixed = Prefixed [Tuple String String]
@@ -21,6 +22,10 @@ instance semigroupPrefixed :: Semigroup Prefixed where
 
 instance monoidPrefixed :: Monoid Prefixed where
   mempty = Plain mempty
+
+plain :: Prefixed -> String
+plain (Prefixed xs) = fromMaybe "" $ lookup "" xs
+plain (Plain    p ) = p
 
 -- TODO: Escape
 quote :: String -> String

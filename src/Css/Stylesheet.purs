@@ -13,7 +13,7 @@ newtype MediaType = MediaType Value
 
 data NotOrOnly = Not | Only
 
-data MediaQuery = MediaQuery (Maybe NotOrOnly) MediaType [Feature]
+data MediaQuery = MediaQuery (Maybe NotOrOnly) MediaType (NEL.NonEmpty Feature)
 
 data Feature = Feature String (Maybe Value)
 
@@ -62,6 +62,9 @@ key k v = rule $ Property (cast k) (value v)
 infixr 5 ?
 (?) :: Selector -> Css -> Css
 (?) sel rs = rule $ Nested (Sub sel) (runS rs)
+
+query :: MediaType -> NEL.NonEmpty Feature -> Css -> Css
+query ty fs = rule <<< Query (MediaQuery Nothing ty fs) <<< runS
 
 keyframes :: String -> NEL.NonEmpty (Tuple Number Css) -> Css
 keyframes n xs = rule $ Keyframe (Keyframes n (second runS <$> xs))

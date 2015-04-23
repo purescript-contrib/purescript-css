@@ -11,6 +11,7 @@ import Css.Font
 import Css.FontFace
 import Css.Geometry
 import Css.Gradient
+import qualified Css.Media as M
 import Css.Pseudo
 import Css.Render
 import Css.Selector
@@ -79,6 +80,10 @@ style = do
                 ]
 
   keyframes "buzz-button" $ tuple2 50 (shake id) NEL.:| [tuple2 100 (shake negate)]
+
+  query M.screen (NEL.singleton <<< M.maxWidth $ px 768) $
+    h1 ? do
+      fontSize (em 2)
 
   html ? height (pct 100)
   body ? do
