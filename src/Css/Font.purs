@@ -1,5 +1,6 @@
 module Css.Font where
 
+import Prelude
 import Css.Color
 import Css.Property
 import Css.Size
@@ -18,7 +19,7 @@ instance valGenericFontFamily :: Val GenericFontFamily where
 sansSerif :: GenericFontFamily
 sansSerif = GenericFontFamily $ fromString "sans-serif"
 
-fontFamily :: [String] -> NEL.NonEmpty GenericFontFamily -> Css
+fontFamily :: Array String -> NEL.NonEmpty GenericFontFamily -> Css
 fontFamily a b = key (fromString "font-family") <<< value $ (value <<< quote <$> a) <> NEL.toArray (value <$> b)
 
 fontSize :: forall a. Size a -> Css

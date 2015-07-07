@@ -1,5 +1,6 @@
 module Css.Size where
 
+import Prelude
 import Css.Property
 import Css.String
 

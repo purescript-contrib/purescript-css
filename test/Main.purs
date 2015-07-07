@@ -1,5 +1,6 @@
 module Test.Main where
 
+import Prelude
 import Control.Monad
 import Control.Monad.Eff
 import Control.Monad.Eff.Exception
@@ -15,7 +16,6 @@ import Css.String
 import Css.Stylesheet
 import Data.Maybe
 import Data.These
-import Debug.Trace
 
 example1 :: Rendered
 example1 = render do
@@ -28,7 +28,7 @@ example2 = render do
 
 example3 :: Rendered
 example3 = render do
-  border dashed (px 2) green
+  border dashed (px 2.0) green
 
 example4 :: Rendered
 example4 = render do
@@ -37,10 +37,10 @@ example4 = render do
   fromString "#world" ? do
     display block
 
-assertEqual :: forall a. (Eq a, Show a) => a -> a -> Eff (err :: Exception) Unit
+assertEqual :: forall a. (Eq a, Show a) => a -> a -> Eff (err :: EXCEPTION) Unit
 assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
 
-main :: Eff (err :: Exception) Unit
+main :: Eff (err :: EXCEPTION) Unit
 main = do
   renderedInline example1 `assertEqual` Just "color: rgb(255, 0, 0); display: block"
   renderedInline example2 `assertEqual` Just "display: inline-block"

@@ -1,5 +1,6 @@
 module Css.Border where
 
+import Prelude
 import Css.Color
 import Css.Property
 import Css.Size

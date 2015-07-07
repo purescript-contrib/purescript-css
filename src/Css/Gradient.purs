@@ -1,5 +1,6 @@
 module Css.Gradient where
 
+import Prelude
 import Css.Background
 import Css.Color
 import Css.Property
@@ -9,7 +10,7 @@ import Data.Foldable
 
 data ColorPoint = ColorPoint Color (Size Rel)
 
-linearGradient :: forall a. Angle a -> ColorPoint -> [ColorPoint] -> ColorPoint-> BackgroundImage
+linearGradient :: forall a. Angle a -> ColorPoint -> Array ColorPoint -> ColorPoint-> BackgroundImage
 linearGradient a b cs e = BackgroundImage $ fromString "linear-gradient(" <> value a <> fromString ", " <> points <> fromString ")"
   where colorPoint (ColorPoint a b) = value a <> fromString " " <> value b
         points = intercalate (fromString ", ") $ [colorPoint b] <> (colorPoint <$> cs) <> [colorPoint e]

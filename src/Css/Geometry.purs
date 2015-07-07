@@ -1,5 +1,6 @@
 module Css.Geometry where
 
+import Prelude hiding (top, bottom)
 import Css.Size
 import Css.String
 import Css.Stylesheet

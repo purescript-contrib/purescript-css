@@ -1,18 +1,34 @@
-var gulp = require('gulp')
-  , browserify  = require('gulp-browserify')
-  , purescript  = require('gulp-purescript')
-  , ghPages = require('gulp-gh-pages');
+/* jshint node: true */
+"use strict";
 
-require("mandragora-bucket")(gulp);
+var gulp = require("gulp");
+var purescript = require("gulp-purescript");
+var run = require("gulp-run");
 
-gulp.task('site', function() {
-  return gulp.src(['site/Main.purs', 'src/**/*.purs', 'bower_components/purescript-*/src/**/*.purs']).pipe(purescript.psc({
-    main: 'Site',
-    modules: ['Site']
-  })).pipe(browserify({})).pipe(gulp.dest('site'));
+var sources = [
+  "src/**/*.purs",
+  "bower_components/purescript-*/src/**/*.purs",
+  "test/**/*.purs"
+];
+
+var foreigns = [
+  "src/**/*.js",
+  "bower_components/purescript-*/src/**/*.js",
+  "test/**/*.js"
+];
+
+gulp.task("make", function() {
+  return purescript.psc({ src: sources, ffi: foreigns });
 });
 
-gulp.task('deploy', ['site'], function() {
-  return gulp.src('site/**/*')
-    .pipe(ghPages());
+gulp.task("test", ["make"], function() {
+  return purescript.pscBundle({ src: "output/**/*.js", main: "Test.Main" })
+    .pipe(run("node"));
 });
+
+gulp.task("dotpsci", function () {
+  return purescript.psci({ src: sources, ffi: foreigns })
+    .pipe(gulp.dest("."));
+});
+
+gulp.task("default", ["test", "dotpsci"]);

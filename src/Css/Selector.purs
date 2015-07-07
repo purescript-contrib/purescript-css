@@ -1,7 +1,7 @@
 module Css.Selector where
 
+import Prelude
 import Css.String
-import Data.Monoid () -- Gross, forall a. [a] has an orphan I guess.
 import qualified Data.String as S
 
 data Predicate = Id String
@@ -14,16 +14,15 @@ data Predicate = Id String
                | AttrSpace String String
                | AttrHyph String String
                | Pseudo String
-               | PseudoFunc String [String]
+               | PseudoFunc String (Array String)
 
 instance eqPredicate :: Eq Predicate where
-  (==) (Id a) (Id b) = a == b
-  (/=) a b = not (a == b)
+  eq (Id a) (Id b) = a == b
 
 instance ordPredicate :: Ord Predicate where
   compare (Id a) (Id b) = compare a b
 
-newtype Refinement = Refinement [Predicate]
+newtype Refinement = Refinement (Array Predicate)
 
 instance isStringRefinement :: IsString Refinement where
   fromString s = Refinement [ case S.take 1 s of

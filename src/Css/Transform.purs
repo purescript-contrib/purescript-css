@@ -1,5 +1,6 @@
 module Css.Transform where
 
+import Prelude
 import Css.Property
 import Css.Size
 import Css.String
@@ -13,7 +14,7 @@ instance valTransformation :: Val Transformation where
 transform :: Transformation -> Css
 transform = key $ fromString "transform"
 
-transforms :: [Transformation] -> Css
+transforms :: Array Transformation -> Css
 transforms = key (fromString "transform") <<< noCommas
 
 translate :: Size Abs -> Size Abs -> Transformation
