@@ -44,10 +44,10 @@ main :: Eff (err :: EXCEPTION) Unit
 main = do
   renderedInline example1 `assertEqual` Just "color: rgb(255, 0, 0); display: block"
   renderedInline example2 `assertEqual` Just "display: inline-block"
-  renderedInline example3 `assertEqual` Just "border: dashed 2px rgb(0, 128, 0)"
+  renderedInline example3 `assertEqual` Just "border: dashed 2.0px rgb(0, 128, 0)"
 
   selector (Selector (Refinement [Id "test"]) Star) `assertEqual` "#test"
 
   selector (fromString "#test") `assertEqual` "#test"
 
-  renderedSheet example4 `assertEqual` Just "body { color: rgb(0, 128, 0) } #world { display: block }"
+  renderedSheet example4 `assertEqual` Just "body { color: rgb(0, 128, 0) }\n#world { display: block }\n"
