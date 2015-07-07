@@ -1,6 +1,5 @@
 {
   "name": "purescript-css",
-  "version": "0.0.0",
   "authors": [
     "Brian McKenna <brian@brianmckenna.org>"
   ],
@@ -18,15 +17,13 @@
     "tests"
   ],
   "dependencies": {
-    "purescript-math": "~0.1.1",
-    "purescript-nonempty-arrays": "~0.2.0",
-    "purescript-profunctor": "~0.2.1",
-    "purescript-strings": "~0.4.5",
-    "purescript-these": "~0.2.0",
-    "purescript-transformers": "~0.5.4"
+    "purescript-nonempty-arrays": "garyb/purescript-nonempty-array#0.7-updates",
+    "purescript-profunctor": "^0.3.0",
+    "purescript-strings": "^0.5.2",
+    "purescript-these": "^0.3.0",
+    "purescript-transformers": "^0.6.1"
   },
   "devDependencies": {
-    "purescript-exceptions": "~0.2.3",
-    "purescript-dom": "~0.1.2"
+    "purescript-exceptions": "^0.3.0"
   }
 }

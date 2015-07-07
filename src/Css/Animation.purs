@@ -1,5 +1,6 @@
 module Css.Animation where
 
+import Prelude
 import Css.Property
 import Css.String
 import Css.Stylesheet

@@ -1,5 +1,6 @@
 module Css.Property where
 
+import Prelude
 import Css.String
 import Data.Foldable
 import Data.Maybe
@@ -8,16 +9,16 @@ import Data.Profunctor.Strong
 import Data.Tuple
 import qualified Data.Array.NonEmpty as NEL
 
-data Prefixed = Prefixed [Tuple String String]
+data Prefixed = Prefixed (Array (Tuple String String))
               | Plain String
 
 instance isStringPrefixed :: IsString Prefixed where
   fromString = Plain
 
 instance semigroupPrefixed :: Semigroup Prefixed where
-  (<>) (Plain x) (Plain y) = Plain $ x <> y
-  (<>) (Plain x) (Prefixed ys) = Prefixed $ second (x <>) <$> ys
-  (<>) (Prefixed xs) (Plain y) = Prefixed $ second (y <>) <$> xs
+  append (Plain x) (Plain y) = Plain $ x <> y
+  append (Plain x) (Prefixed ys) = Prefixed $ second (x <>) <$> ys
+  append (Prefixed xs) (Plain y) = Prefixed $ second (y <>) <$> xs
   -- (<>) (Prefixed xs) (Prefixed ys)
 
 instance monoidPrefixed :: Monoid Prefixed where
@@ -45,7 +46,7 @@ instance isStringValue :: IsString Value where
   fromString = Value <<< fromString
 
 instance semigroupValue :: Semigroup Value where
-  (<>) (Value a) (Value b) = Value $ a <> b
+  append (Value a) (Value b) = Value $ a <> b
 
 instance monoidValue :: Monoid Value where
   mempty = Value mempty
@@ -70,11 +71,11 @@ instance valTuple :: (Val a, Val b) => Val (Tuple a b) where
 instance valNumber :: Val Number where
   value = fromString <<< show
 
-instance valList :: (Val a) => Val [a] where
+instance valList :: (Val a) => Val (Array a) where
   value = intercalate (fromString ", ") <<< (value <$>)
 
 instance valNonEmpty :: (Val a) => Val (NEL.NonEmpty a) where
   value = value <<< NEL.toArray
 
-noCommas :: forall a. (Val a) => [a] -> Value
+noCommas :: forall a. (Val a) => Array a -> Value
 noCommas = intercalate (fromString " ") <<< (value <$>)

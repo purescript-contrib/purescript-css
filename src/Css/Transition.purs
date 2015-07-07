@@ -1,5 +1,6 @@
 module Css.Transition where
 
+import Prelude
 import Css.String
 import Css.Property
 

@@ -1,11 +1,10 @@
 {
-  "dependencies": {
-    "gulp": "^3.8.11",
-    "mandragora-bucket": "^0.2.3"
-  },
+  "private": true,
   "devDependencies": {
-    "gulp-browserify": "^0.5.1",
-    "gulp-gh-pages": "^0.5.0",
-    "gulp-purescript": "^0.3.1"
+    "gulp": "^3.8.11",
+    "gulp-jscs": "^1.6.0",
+    "gulp-jshint": "^1.11.2",
+    "gulp-purescript": "^0.5.0",
+    "gulp-run": "^1.6.8"
   }
 }

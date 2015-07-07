@@ -1,5 +1,6 @@
 module Css.Text where
 
+import Prelude
 import Css.Property
 import Css.String
 import Css.Stylesheet

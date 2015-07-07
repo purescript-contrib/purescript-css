@@ -1,5 +1,6 @@
 module Css.Media where
 
+import Prelude
 import Css.Property
 import Css.Size
 import Css.String
