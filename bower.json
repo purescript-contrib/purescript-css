@@ -17,7 +17,7 @@
     "tests"
   ],
   "dependencies": {
-    "purescript-nonempty-arrays": "stevejb71/purescript-nonempty-array#master",
+    "purescript-nonempty-arrays": "68d6e04cd1874f01489a1de4b7dca5c7186f88d0",
     "purescript-profunctor": "^0.3.0",
     "purescript-strings": "^0.5.2",
     "purescript-these": "^0.3.0",
