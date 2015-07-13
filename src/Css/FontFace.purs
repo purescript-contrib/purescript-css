@@ -5,7 +5,7 @@ import Css.Property
 import Css.String
 import Css.Stylesheet
 import Data.Maybe
-import qualified Data.Array.NonEmpty as NEL
+import Data.NonEmpty
 
 fontFaceFamily :: String -> Css
 fontFaceFamily = key (fromString "font-family") <<< Literal
@@ -32,5 +32,5 @@ instance valFontFaceSrc :: Val FontFaceSrc where
   value (FontFaceSrcUrl u f) = fromString $ "url(" <> quote u <> ")" <> maybe "" (\f' -> " format(" <> formatName f' <> ")") f
   value (FontFaceSrcLocal l) = fromString $ "local(" <> quote l <> ")"
 
-fontFaceSrc :: NEL.NonEmpty FontFaceSrc -> Css
+fontFaceSrc :: NonEmpty Array FontFaceSrc -> Css
 fontFaceSrc = key $ fromString "src"
