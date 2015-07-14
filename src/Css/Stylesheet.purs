@@ -9,13 +9,13 @@ import Data.Array (singleton)
 import Data.Maybe
 import Data.Profunctor.Strong
 import Data.Tuple
-import qualified Data.Array.NonEmpty as NEL
+import Data.NonEmpty
 
 newtype MediaType = MediaType Value
 
 data NotOrOnly = Not | Only
 
-data MediaQuery = MediaQuery (Maybe NotOrOnly) MediaType (NEL.NonEmpty Feature)
+data MediaQuery = MediaQuery (Maybe NotOrOnly) MediaType (NonEmpty Array Feature)
 
 data Feature = Feature String (Maybe Value)
 
@@ -25,7 +25,7 @@ data App = Self   Refinement
          | Child  Selector
          | Sub    Selector
 
-data Keyframes = Keyframes String (NEL.NonEmpty (Tuple Number (Array Rule)))
+data Keyframes = Keyframes String (NonEmpty Array (Tuple Number (Array Rule)))
 
 data Rule = Property (Key Unit) Value
           | Nested   App (Array Rule)
@@ -65,14 +65,14 @@ infixr 5 ?
 (?) :: Selector -> Css -> Css
 (?) sel rs = rule $ Nested (Sub sel) (runS rs)
 
-query :: MediaType -> NEL.NonEmpty Feature -> Css -> Css
+query :: MediaType -> NonEmpty Array Feature -> Css -> Css
 query ty fs = rule <<< Query (MediaQuery Nothing ty fs) <<< runS
 
-keyframes :: String -> NEL.NonEmpty (Tuple Number Css) -> Css
+keyframes :: String -> NonEmpty Array (Tuple Number Css) -> Css
 keyframes n xs = rule $ Keyframe (Keyframes n (second runS <$> xs))
 
 keyframesFromTo :: String -> Css -> Css -> Css
-keyframesFromTo n a b = keyframes n $ Tuple 0.0 a NEL.:| [Tuple 100.0 b]
+keyframesFromTo n a b = keyframes n $ Tuple 0.0 a :| [Tuple 100.0 b]
 
 fontFace :: Css -> Css
 fontFace = rule <<< Face <<< runS

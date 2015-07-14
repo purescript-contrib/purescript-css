@@ -7,7 +7,7 @@ import Data.Maybe
 import Data.Monoid
 import Data.Profunctor.Strong
 import Data.Tuple
-import qualified Data.Array.NonEmpty as NEL
+import Data.NonEmpty
 
 data Prefixed = Prefixed (Array (Tuple String String))
               | Plain String
@@ -74,8 +74,8 @@ instance valNumber :: Val Number where
 instance valList :: (Val a) => Val (Array a) where
   value = intercalate (fromString ", ") <<< (value <$>)
 
-instance valNonEmpty :: (Val a) => Val (NEL.NonEmpty a) where
-  value = value <<< NEL.toArray
+instance valNonEmpty :: (Val a) => Val (NonEmpty Array a) where
+  value = value <<< oneOf
 
 noCommas :: forall a. (Val a) => Array a -> Value
 noCommas = intercalate (fromString " ") <<< (value <$>)

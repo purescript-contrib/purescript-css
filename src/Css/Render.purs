@@ -12,7 +12,7 @@ import Data.Maybe
 import Data.Monoid
 import Data.These
 import Data.Tuple
-import qualified Data.Array.NonEmpty as NEL
+import Data.NonEmpty
 
 newtype Inline = Inline String
 
@@ -58,7 +58,7 @@ query' :: MediaQuery -> Array App -> Array Rule -> Rendered
 query' q sel rs = Just <<< That <<< Sheet $ mediaQuery q <> " { " <> fromMaybe "" (renderedSheet $ rules sel rs) <> " }\n"
 
 mediaQuery :: MediaQuery -> String
-mediaQuery (MediaQuery no ty fs) = "@media " <> mediaType ty <> NEL.sconcat ((" and " <>) <<< feature <$> fs)
+mediaQuery (MediaQuery no ty fs) = "@media " <> mediaType ty <> foldl1 (<>) ((" and " <>) <<< feature <$> fs)
 
 mediaType :: MediaType -> String
 mediaType (MediaType (Value s)) = plain s
@@ -97,7 +97,7 @@ imp t = Just <<< That <<< Sheet <<< fromString $ "@import url(" <> t <> ");\n"
 rule' :: forall a. Array App -> Array (Tuple (Key a) Value) -> Rendered
 rule' sel props = maybe q o $ nel sel
   where p = props >>= collect
-        q = (This <<< Inline <<< properties <<< NEL.toArray) <$> nel p
+        q = (This <<< Inline <<< properties <<< oneOf) <$> nel p
         o sel' = Just <<< That <<< Sheet $ intercalate " " [selector (merger sel'), "{", properties p, "}"]
 
 selector :: Selector -> String
@@ -131,13 +131,13 @@ properties :: Array (Either String (Tuple String String)) -> String
 properties xs = intercalate "; " $  sheetRules <$> xs
   where sheetRules = either (\_ -> mempty) (\(Tuple k v) -> mconcat [k, ": ", v])
 
-merger :: NEL.NonEmpty App -> Selector
-merger (NEL.NonEmpty x xs) =
+merger :: NonEmpty Array App -> Selector
+merger (NonEmpty x xs) =
   case x of
     Child s -> maybe s (\xs' -> merger xs' |> s) $ nel xs
     Sub s   -> maybe s (\xs' -> merger xs' ** s) $ nel xs
     Root s  -> maybe s (\xs' -> s ** merger xs') $ nel xs
-    Pop i   -> maybe (element "TODO") merger <<< nel <<< NEL.drop i $ x NEL.:| xs
+    Pop i   -> maybe (element "TODO") merger <<< nel <<< drop i $ x : xs
     Self  sheetRules  -> maybe (star `with`  sheetRules) (\xs' -> merger xs' `with`  sheetRules) $ nel xs
 
 predicate :: Predicate -> String
@@ -153,6 +153,6 @@ predicate (AttrHyph     a v) = "[" <> a <> "|='" <> v <> "']"
 predicate (Pseudo       a  ) = ":" <> a
 predicate (PseudoFunc   a p) = ":" <> a <> "(" <> intercalate "," p <> ")"
 
-nel :: forall a. Array a -> Maybe (NEL.NonEmpty a)
+nel :: forall a. Array a -> Maybe (NonEmpty Array a)
 nel [] = Nothing
-nel xs = (\{ head: head, tail: tail } -> head NEL.:| tail) <$> uncons xs
+nel xs = (\{ head: head, tail: tail } -> head :| tail) <$> uncons xs

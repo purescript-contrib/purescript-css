@@ -6,7 +6,7 @@ import Css.Property
 import Css.Size
 import Css.String
 import Css.Stylesheet
-import qualified Data.Array.NonEmpty as NEL
+import Data.NonEmpty
 
 color :: Color -> Css
 color = key $ fromString "color"
@@ -19,8 +19,8 @@ instance valGenericFontFamily :: Val GenericFontFamily where
 sansSerif :: GenericFontFamily
 sansSerif = GenericFontFamily $ fromString "sans-serif"
 
-fontFamily :: Array String -> NEL.NonEmpty GenericFontFamily -> Css
-fontFamily a b = key (fromString "font-family") <<< value $ (value <<< quote <$> a) <> NEL.toArray (value <$> b)
+fontFamily :: Array String -> NonEmpty Array GenericFontFamily -> Css
+fontFamily a b = key (fromString "font-family") <<< value $ (value <<< quote <$> a) <> oneOf (value <$> b)
 
 fontSize :: forall a. Size a -> Css
 fontSize = key $ fromString "font-size"
