@@ -1,15 +1,18 @@
 module Css.Stylesheet where
 
 import Prelude
-import Control.Monad.Writer
-import Control.Monad.Writer.Class
-import Css.Property
-import Css.Selector
+
+import Control.Monad.Writer (Writer(), execWriter)
+import Control.Monad.Writer.Class (tell)
+
 import Data.Array (singleton)
-import Data.Maybe
-import Data.Profunctor.Strong
-import Data.Tuple
-import Data.NonEmpty
+import Data.Maybe (Maybe(..))
+import Data.NonEmpty (NonEmpty(), (:|))
+import Data.Profunctor.Strong (second)
+import Data.Tuple (Tuple(..))
+
+import Css.Property (Val, Key(), Value(), cast, value)
+import Css.Selector (Selector(), Refinement())
 
 newtype MediaType = MediaType Value
 

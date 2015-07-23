@@ -1,11 +1,13 @@
 module Css.FontFace where
 
 import Prelude
+
+import Data.Maybe (Maybe(), maybe)
+import Data.NonEmpty (NonEmpty())
+
 import Css.Property
 import Css.String
 import Css.Stylesheet
-import Data.Maybe
-import Data.NonEmpty
 
 fontFaceFamily :: String -> Css
 fontFaceFamily = key (fromString "font-family") <<< Literal

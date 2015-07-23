@@ -1,6 +1,7 @@
 module Css.Background where
 
 import Prelude
+
 import Css.Color
 import Css.Property
 import Css.String

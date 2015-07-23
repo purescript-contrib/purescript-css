@@ -1,12 +1,15 @@
 module Css.Font where
 
 import Prelude
+
+import Data.NonEmpty (NonEmpty(), oneOf)
+
 import Css.Color
 import Css.Property
 import Css.Size
 import Css.String
 import Css.Stylesheet
-import Data.NonEmpty
+
 
 color :: Color -> Css
 color = key $ fromString "color"

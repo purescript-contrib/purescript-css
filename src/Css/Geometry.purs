@@ -1,10 +1,12 @@
 module Css.Geometry where
 
 import Prelude hiding (top, bottom)
+
+import Data.Tuple.Nested (tuple4)
+
 import Css.Size
 import Css.String
 import Css.Stylesheet
-import Data.Tuple.Nested
 
 width :: forall a. Size a -> Css
 width = key $ fromString "width"

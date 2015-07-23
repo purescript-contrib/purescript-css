@@ -1,12 +1,14 @@
 module Css.Gradient where
 
 import Prelude
+
+import Data.Foldable (intercalate)
+
 import Css.Background
 import Css.Color
 import Css.Property
 import Css.Size
 import Css.String
-import Data.Foldable
 
 data ColorPoint = ColorPoint Color (Size Rel)
 

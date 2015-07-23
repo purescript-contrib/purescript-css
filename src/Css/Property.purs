@@ -1,13 +1,15 @@
 module Css.Property where
 
 import Prelude
+
+import Data.Foldable (intercalate)
+import Data.Maybe (Maybe(), fromMaybe)
+import Data.Monoid (Monoid, mempty)
+import Data.NonEmpty (NonEmpty(), oneOf)
+import Data.Profunctor.Strong (second)
+import Data.Tuple (Tuple(..), lookup)
+
 import Css.String
-import Data.Foldable
-import Data.Maybe
-import Data.Monoid
-import Data.Profunctor.Strong
-import Data.Tuple
-import Data.NonEmpty
 
 data Prefixed = Prefixed (Array (Tuple String String))
               | Plain String

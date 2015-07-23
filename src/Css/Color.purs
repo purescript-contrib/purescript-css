@@ -1,9 +1,11 @@
 module Css.Color where
 
 import Prelude
+
+import Data.Foldable (intercalate)
+
 import Css.Property
 import Css.String
-import Data.Foldable
 
 data Color = Rgba Int Int Int Int
            | Hsla Number Number Number Number
