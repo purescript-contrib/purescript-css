@@ -1,12 +1,14 @@
 module Css.Border where
 
 import Prelude
+
+import Data.Tuple.Nested (tuple3, tuple4)
+
 import Css.Color
 import Css.Property
 import Css.Size
 import Css.String
 import Css.Stylesheet
-import Data.Tuple.Nested
 
 newtype Stroke = Stroke Value
 

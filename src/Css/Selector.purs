@@ -1,8 +1,10 @@
 module Css.Selector where
 
 import Prelude
+
+import Data.String (take, drop)
+
 import Css.String
-import qualified Data.String as S
 
 data Predicate = Id String
                | Class String
@@ -25,11 +27,11 @@ instance ordPredicate :: Ord Predicate where
 newtype Refinement = Refinement (Array Predicate)
 
 instance isStringRefinement :: IsString Refinement where
-  fromString s = Refinement [ case S.take 1 s of
-                                 "#" -> Id $ S.drop 1 s
-                                 "." -> Class $ S.drop 1 s
-                                 ":" -> Pseudo $ S.drop 1 s
-                                 "@" -> Attr $ S.drop 1 s
+  fromString s = Refinement [ case take 1 s of
+                                 "#" -> Id $ drop 1 s
+                                 "." -> Class $ drop 1 s
+                                 ":" -> Pseudo $ drop 1 s
+                                 "@" -> Attr $ drop 1 s
                                  _   -> Attr s
                             ]
 
@@ -43,9 +45,9 @@ data Path f = Star
 data Selector = Selector Refinement (Path Selector)
 
 instance isStringSelector :: IsString Selector where
-  fromString s = case S.take 1 s of
-                   "#" -> Selector (Refinement [Id $ S.drop 1 s]) Star
-                   "." -> Selector (Refinement [Class $ S.drop 1 s]) Star
+  fromString s = case take 1 s of
+                   "#" -> Selector (Refinement [Id $ drop 1 s]) Star
+                   "." -> Selector (Refinement [Class $ drop 1 s]) Star
                    _   -> Selector (Refinement []) (Elem s)
 
 star :: Selector

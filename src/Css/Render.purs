@@ -1,18 +1,20 @@
 module Css.Render where
 
 import Prelude
+
+import Data.Array ((:), drop, sort, uncons, mapMaybe)
+import Data.Either (Either(..), either)
+import Data.Foldable (foldMap, intercalate, mconcat)
+import Data.Maybe (Maybe(..), fromMaybe, maybe)
+import Data.Monoid (Monoid, mempty)
+import Data.NonEmpty (NonEmpty(..), (:|), foldl1, oneOf)
+import Data.These (These(..), theseLeft, theseRight)
+import Data.Tuple (Tuple(..), lookup, uncurry)
+
 import Css.Property
 import Css.Selector
 import Css.String
 import Css.Stylesheet
-import Data.Array
-import Data.Either
-import Data.Foldable
-import Data.Maybe
-import Data.Monoid
-import Data.These
-import Data.Tuple
-import Data.NonEmpty
 
 newtype Inline = Inline String
 

@@ -1,12 +1,14 @@
 module Css.Animation where
 
 import Prelude
+
+import Data.Tuple.Nested (tuple7)
+
 import Css.Property
 import Css.String
 import Css.Stylesheet
 import Css.Time
 import Css.Transition
-import Data.Tuple.Nested
 
 newtype AnimationDirection = AnimationDirection Value
 
