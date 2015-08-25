@@ -19,9 +19,9 @@
   "dependencies": {
     "purescript-nonempty": "^0.1.2",
     "purescript-profunctor": "^0.3.0",
-    "purescript-strings": "^0.5.2",
+    "purescript-strings": "^0.7.0",
     "purescript-these": "^0.3.0",
-    "purescript-transformers": "^0.6.1"
+    "purescript-transformers": "^0.7.0-rc.2"
   },
   "devDependencies": {
     "purescript-exceptions": "^0.3.0"
