@@ -2,7 +2,7 @@
   "private": true,
   "devDependencies": {
     "purescript": "^0.7.4",
-    "gulp": "^3.8.11",
+    "gulp": "^3.9",
     "gulp-jscs": "^1.6.0",
     "gulp-jshint": "^1.11.2",
     "gulp-purescript": "^0.7.0",
