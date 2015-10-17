@@ -17,6 +17,7 @@
     "tests"
   ],
   "dependencies": {
+    "purescript-generics": "^0.6.1",
     "purescript-nonempty": "^0.1.2",
     "purescript-profunctor": "^0.3.1",
     "purescript-strings": "^0.7.0",
