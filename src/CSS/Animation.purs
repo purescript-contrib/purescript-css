@@ -1,14 +1,14 @@
-module Css.Animation where
+module CSS.Animation where
 
 import Prelude
 
 import Data.Tuple.Nested (tuple7)
 
-import Css.Property
-import Css.String
-import Css.Stylesheet
-import Css.Time
-import Css.Transition
+import CSS.Property
+import CSS.String
+import CSS.Stylesheet
+import CSS.Time
+import CSS.Transition
 
 newtype AnimationDirection = AnimationDirection Value
 
@@ -49,7 +49,7 @@ forwards = FillMode $ fromString "forwards"
 backwards :: FillMode
 backwards = FillMode $ fromString "backwards"
 
-animation :: AnimationName -> Time -> TimingFunction -> Time -> IterationCount -> AnimationDirection -> FillMode -> Css
+animation :: AnimationName -> Time -> TimingFunction -> Time -> IterationCount -> AnimationDirection -> FillMode -> CSS
 animation p de f du i di fm = key (fromString "-webkit-animation") (tuple7 p de f du i di fm)
 
 newtype AnimationName = AnimationName Value

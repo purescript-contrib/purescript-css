@@ -4,16 +4,16 @@ import Prelude
 import Control.Monad
 import Control.Monad.Eff
 import Control.Monad.Eff.Exception
-import Css.Border
-import Css.Color
-import Css.Display
-import Css.Elements
-import Css.Font
-import Css.Render
-import Css.Selector
-import Css.Size
-import Css.String
-import Css.Stylesheet
+import CSS.Border
+import CSS.Color
+import CSS.Display
+import CSS.Elements
+import CSS.Font
+import CSS.Render
+import CSS.Selector
+import CSS.Size
+import CSS.String
+import CSS.Stylesheet
 import Data.Maybe
 import Data.These
 

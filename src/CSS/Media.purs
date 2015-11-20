@@ -1,13 +1,13 @@
-module Css.Media where
+module CSS.Media where
 
 import Prelude
 
 import Data.Maybe (Maybe(..))
 
-import Css.Property
-import Css.Size
-import Css.String
-import Css.Stylesheet
+import CSS.Property
+import CSS.Size
+import CSS.String
+import CSS.Stylesheet
 
 screen :: MediaType
 screen = MediaType $ fromString "screen"

@@ -1,21 +1,21 @@
-module Css.Transform where
+module CSS.Transform where
 
 import Prelude
 
-import Css.Property
-import Css.Size
-import Css.String
-import Css.Stylesheet
+import CSS.Property
+import CSS.Size
+import CSS.String
+import CSS.Stylesheet
 
 newtype Transformation = Transformation Value
 
 instance valTransformation :: Val Transformation where
   value (Transformation v) = v
 
-transform :: Transformation -> Css
+transform :: Transformation -> CSS
 transform = key $ fromString "transform"
 
-transforms :: Array Transformation -> Css
+transforms :: Array Transformation -> CSS
 transforms = key (fromString "transform") <<< noCommas
 
 translate :: Size Abs -> Size Abs -> Transformation

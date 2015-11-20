@@ -1,4 +1,4 @@
-module Css.Stylesheet where
+module CSS.Stylesheet where
 
 import Prelude
 
@@ -11,8 +11,8 @@ import Data.NonEmpty (NonEmpty(), (:|))
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..))
 
-import Css.Property (Val, Key(), Value(), cast, value)
-import Css.Selector (Selector(), Refinement())
+import CSS.Property (Val, Key(), Value(), cast, value)
+import CSS.Selector (Selector(), Refinement())
 
 newtype MediaType = MediaType Value
 
@@ -56,29 +56,29 @@ instance monadStyleM :: Monad StyleM
 runS :: forall a. StyleM a -> Array Rule
 runS (S s) = execWriter s
 
-rule :: Rule -> Css
+rule :: Rule -> CSS
 rule = S <<< tell <<< singleton
 
-type Css = StyleM Unit
+type CSS = StyleM Unit
 
-key :: forall a. (Val a) => Key a -> a -> Css
+key :: forall a. (Val a) => Key a -> a -> CSS
 key k v = rule $ Property (cast k) (value v)
 
 infixr 5 ?
-(?) :: Selector -> Css -> Css
+(?) :: Selector -> CSS -> CSS
 (?) sel rs = rule $ Nested (Sub sel) (runS rs)
 
-query :: MediaType -> NonEmpty Array Feature -> Css -> Css
+query :: MediaType -> NonEmpty Array Feature -> CSS -> CSS
 query ty fs = rule <<< Query (MediaQuery Nothing ty fs) <<< runS
 
-keyframes :: String -> NonEmpty Array (Tuple Number Css) -> Css
+keyframes :: String -> NonEmpty Array (Tuple Number CSS) -> CSS
 keyframes n xs = rule $ Keyframe (Keyframes n (second runS <$> xs))
 
-keyframesFromTo :: String -> Css -> Css -> Css
+keyframesFromTo :: String -> CSS -> CSS -> CSS
 keyframesFromTo n a b = keyframes n $ Tuple 0.0 a :| [Tuple 100.0 b]
 
-fontFace :: Css -> Css
+fontFace :: CSS -> CSS
 fontFace = rule <<< Face <<< runS
 
-importUrl :: String -> Css
+importUrl :: String -> CSS
 importUrl = rule <<< Import

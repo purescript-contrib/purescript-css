@@ -1,10 +1,11 @@
-module Css.Selector where
+module CSS.Selector where
 
 import Prelude
 
+import Data.Generic (Generic, gEq, gCompare)
 import Data.String (take, drop)
 
-import Css.String
+import CSS.String
 
 data Predicate = Id String
                | Class String
@@ -18,11 +19,13 @@ data Predicate = Id String
                | Pseudo String
                | PseudoFunc String (Array String)
 
+derive instance genericPredicate :: Generic Predicate
+
 instance eqPredicate :: Eq Predicate where
-  eq (Id a) (Id b) = a == b
+  eq = gEq
 
 instance ordPredicate :: Ord Predicate where
-  compare (Id a) (Id b) = compare a b
+  compare = gCompare
 
 newtype Refinement = Refinement (Array Predicate)
 

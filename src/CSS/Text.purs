@@ -1,10 +1,10 @@
-module Css.Text where
+module CSS.Text where
 
 import Prelude
 
-import Css.Property
-import Css.String
-import Css.Stylesheet
+import CSS.Property
+import CSS.String
+import CSS.Stylesheet
 
 newtype TextDecoration = TextDecoration Value
 
@@ -26,5 +26,5 @@ lineThrough = TextDecoration $ fromString "line-through"
 blink :: TextDecoration
 blink = TextDecoration $ fromString "blink"
 
-textDecoration :: TextDecoration -> Css
+textDecoration :: TextDecoration -> CSS
 textDecoration = key $ fromString "text-decoration"

@@ -8,7 +8,11 @@
     "purescript",
     "css"
   ],
-  "license": "MIT",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/slamdata/purescript-css.git"
+  },
   "ignore": [
     "**/.*",
     "node_modules",
@@ -17,6 +21,7 @@
     "tests"
   ],
   "dependencies": {
+    "purescript-generics": "^0.7.0",
     "purescript-nonempty": "^0.1.2",
     "purescript-profunctor": "^0.3.1",
     "purescript-strings": "^0.7.0",

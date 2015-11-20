@@ -1,15 +1,15 @@
-module Css.Property where
+module CSS.Property where
 
 import Prelude
 
 import Data.Foldable (intercalate)
-import Data.Maybe (Maybe(), fromMaybe)
+import Data.Maybe (fromMaybe)
 import Data.Monoid (Monoid, mempty)
 import Data.NonEmpty (NonEmpty(), oneOf)
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..), lookup)
 
-import Css.String
+import CSS.String
 
 data Prefixed = Prefixed (Array (Tuple String String))
               | Plain String
@@ -21,7 +21,7 @@ instance semigroupPrefixed :: Semigroup Prefixed where
   append (Plain x) (Plain y) = Plain $ x <> y
   append (Plain x) (Prefixed ys) = Prefixed $ second (x <>) <$> ys
   append (Prefixed xs) (Plain y) = Prefixed $ second (y <>) <$> xs
-  -- (<>) (Prefixed xs) (Prefixed ys)
+  append (Prefixed xs) (Prefixed ys) = Prefixed $ xs <> ys
 
 instance monoidPrefixed :: Monoid Prefixed where
   mempty = Plain mempty
