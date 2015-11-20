@@ -1,69 +1,69 @@
-module Css.Geometry where
+module CSS.Geometry where
 
 import Prelude hiding (top, bottom)
 
 import Data.Tuple.Nested (tuple4)
 
-import Css.Size
-import Css.String
-import Css.Stylesheet
+import CSS.Size
+import CSS.String
+import CSS.Stylesheet
 
-width :: forall a. Size a -> Css
+width :: forall a. Size a -> CSS
 width = key $ fromString "width"
 
-height :: forall a. Size a -> Css
+height :: forall a. Size a -> CSS
 height = key $ fromString "height"
 
-minWidth :: forall a. Size a -> Css
+minWidth :: forall a. Size a -> CSS
 minWidth = key $ fromString "min-width"
 
-minHeight :: forall a. Size a -> Css
+minHeight :: forall a. Size a -> CSS
 minHeight = key $ fromString "min-height"
 
-maxWidth :: forall a. Size a -> Css
+maxWidth :: forall a. Size a -> CSS
 maxWidth = key $ fromString "max-width"
 
-maxHeight :: forall a. Size a -> Css
+maxHeight :: forall a. Size a -> CSS
 maxHeight = key $ fromString "max-height"
 
-top :: forall a. Size a -> Css
+top :: forall a. Size a -> CSS
 top = key $ fromString "top"
 
-bottom :: forall a. Size a -> Css
+bottom :: forall a. Size a -> CSS
 bottom = key $ fromString "bottom"
 
-left :: forall a. Size a -> Css
+left :: forall a. Size a -> CSS
 left = key $ fromString "left"
 
-right :: forall a. Size a -> Css
+right :: forall a. Size a -> CSS
 right = key $ fromString "right"
 
-padding :: forall a. Size a -> Size a -> Size a -> Size a -> Css
+padding :: forall a. Size a -> Size a -> Size a -> Size a -> CSS
 padding a b c d = key (fromString "padding") $ tuple4 a b c d
 
-paddingTop :: forall a. Size a -> Css
+paddingTop :: forall a. Size a -> CSS
 paddingTop = key $ fromString "padding-top"
 
-paddingBottom :: forall a. Size a -> Css
+paddingBottom :: forall a. Size a -> CSS
 paddingBottom = key $ fromString "padding-bottom"
 
-paddingLeft :: forall a. Size a -> Css
+paddingLeft :: forall a. Size a -> CSS
 paddingLeft = key $ fromString "padding-left"
 
-paddingRight :: forall a. Size a -> Css
+paddingRight :: forall a. Size a -> CSS
 paddingRight = key $ fromString "padding-right"
 
-margin :: forall a. Size a -> Size a -> Size a -> Size a -> Css
+margin :: forall a. Size a -> Size a -> Size a -> Size a -> CSS
 margin a b c d = key (fromString "margin") $ tuple4 a b c d
 
-marginTop :: forall a. Size a -> Css
+marginTop :: forall a. Size a -> CSS
 marginTop = key $ fromString "margin-top"
 
-marginBottom :: forall a. Size a -> Css
+marginBottom :: forall a. Size a -> CSS
 marginBottom = key $ fromString "margin-bottom"
 
-marginLeft :: forall a. Size a -> Css
+marginLeft :: forall a. Size a -> CSS
 marginLeft = key $ fromString "margin-left"
 
-marginRight :: forall a. Size a -> Css
+marginRight :: forall a. Size a -> CSS
 marginRight = key $ fromString "margin-right"

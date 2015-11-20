@@ -1,4 +1,4 @@
-module Css.String where
+module CSS.String where
 
 import Prelude
 

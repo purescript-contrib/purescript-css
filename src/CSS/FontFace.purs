@@ -1,15 +1,15 @@
-module Css.FontFace where
+module CSS.FontFace where
 
 import Prelude
 
 import Data.Maybe (Maybe(), maybe)
 import Data.NonEmpty (NonEmpty())
 
-import Css.Property
-import Css.String
-import Css.Stylesheet
+import CSS.Property
+import CSS.String
+import CSS.Stylesheet
 
-fontFaceFamily :: String -> Css
+fontFaceFamily :: String -> CSS
 fontFaceFamily = key (fromString "font-family") <<< Literal
 
 data FontFaceFormat = WOFF
@@ -34,5 +34,5 @@ instance valFontFaceSrc :: Val FontFaceSrc where
   value (FontFaceSrcUrl u f) = fromString $ "url(" <> quote u <> ")" <> maybe "" (\f' -> " format(" <> formatName f' <> ")") f
   value (FontFaceSrcLocal l) = fromString $ "local(" <> quote l <> ")"
 
-fontFaceSrc :: NonEmpty Array FontFaceSrc -> Css
+fontFaceSrc :: NonEmpty Array FontFaceSrc -> CSS
 fontFaceSrc = key $ fromString "src"

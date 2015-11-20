@@ -1,9 +1,9 @@
-module Css.Transition where
+module CSS.Transition where
 
 import Prelude
 
-import Css.String
-import Css.Property
+import CSS.String
+import CSS.Property
 
 newtype TimingFunction = TimingFunction Value
 
