@@ -15,7 +15,6 @@ import Css.Size
 import Css.String
 import Css.Stylesheet
 import Data.Maybe
-import Data.These
 
 example1 :: Rendered
 example1 = render do
