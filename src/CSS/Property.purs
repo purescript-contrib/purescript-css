@@ -1,4 +1,4 @@
-module Css.Property where
+module CSS.Property where
 
 import Prelude
 
@@ -9,7 +9,7 @@ import Data.NonEmpty (NonEmpty(), oneOf)
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..), lookup)
 
-import Css.String
+import CSS.String
 
 data Prefixed = Prefixed (Array (Tuple String String))
               | Plain String

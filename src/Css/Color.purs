@@ -1,11 +1,11 @@
-module Css.Color where
+module CSS.Color where
 
 import Prelude
 
 import Data.Foldable (intercalate)
 
-import Css.Property
-import Css.String
+import CSS.Property
+import CSS.String
 
 data Color = Rgba Int Int Int Int
            | Hsla Number Number Number Number

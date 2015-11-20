@@ -1,9 +1,9 @@
-module Css.Size where
+module CSS.Size where
 
 import Prelude
 
-import Css.Property
-import Css.String
+import CSS.Property
+import CSS.String
 
 newtype Size a = Size Value
 

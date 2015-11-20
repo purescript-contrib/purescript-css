@@ -1,10 +1,10 @@
-module Css.Selector where
+module CSS.Selector where
 
 import Prelude
 
 import Data.String (take, drop)
 
-import Css.String
+import CSS.String
 
 data Predicate = Id String
                | Class String

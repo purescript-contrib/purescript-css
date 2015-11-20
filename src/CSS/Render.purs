@@ -1,4 +1,4 @@
-module Css.Render where
+module CSS.Render where
 
 import Prelude
 
@@ -11,10 +11,10 @@ import Data.NonEmpty (NonEmpty(..), (:|), foldl1, oneOf)
 import Data.These (These(..), theseLeft, theseRight)
 import Data.Tuple (Tuple(..), lookup, uncurry)
 
-import Css.Property
-import Css.Selector
-import Css.String
-import Css.Stylesheet
+import CSS.Property
+import CSS.Selector
+import CSS.String
+import CSS.Stylesheet
 
 newtype Inline = Inline String
 

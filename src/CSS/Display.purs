@@ -1,17 +1,17 @@
-module Css.Display where
+module CSS.Display where
 
 import Prelude
 
-import Css.Property
-import Css.String
-import Css.Stylesheet
+import CSS.Property
+import CSS.String
+import CSS.Stylesheet
 
 newtype Position = Position Value
 
 instance valPosition :: Val Position where
   value (Position v) = v
 
-position :: Position -> Css
+position :: Position -> CSS
 position = key $ fromString "position"
 
 static :: Position
@@ -94,5 +94,5 @@ grid = Display $ fromString "grid"
 inlineGrid :: Display
 inlineGrid = Display $ fromString "inline-grid"
 
-display :: Display -> Css
+display :: Display -> CSS
 display = key $ fromString "display"

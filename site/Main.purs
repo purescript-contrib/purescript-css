@@ -1,27 +1,27 @@
 module Site where
 
 import Control.Monad.Eff
-import Css.Animation
-import Css.Background
-import Css.Border
-import Css.Color
-import Css.Display
-import Css.Elements
-import Css.Font
-import Css.FontFace
-import Css.Geometry
-import Css.Gradient
-import qualified Css.Media as M
-import Css.Pseudo
-import Css.Render
-import Css.Selector
-import Css.Size
-import Css.String
-import Css.Stylesheet
-import Css.Text
-import Css.Time
-import Css.Transform
-import Css.Transition
+import CSS.Animation
+import CSS.Background
+import CSS.Border
+import CSS.Color
+import CSS.Display
+import CSS.Elements
+import CSS.Font
+import CSS.FontFace
+import CSS.Geometry
+import CSS.Gradient
+import qualified CSS.Media as M
+import CSS.Pseudo
+import CSS.Render
+import CSS.Selector
+import CSS.Size
+import CSS.String
+import CSS.Stylesheet
+import CSS.Text
+import CSS.Time
+import CSS.Transform
+import CSS.Transition
 import Data.Maybe
 import Data.Tuple.Nested
 import DOM
@@ -63,13 +63,13 @@ blue1 = rgb 51 136 204
 blue2 :: Color
 blue2 = rgb 238 238 255
 
-backgroundGradient :: forall a. Angle a -> Css
+backgroundGradient :: forall a. Angle a -> CSS
 backgroundGradient a = backgroundImage $ linearGradient a (ColorPoint white (pct 0)) [] (ColorPoint blue2 (pct 100))
 
-shake :: (Number -> Number) -> Css
+shake :: (Number -> Number) -> CSS
 shake f = transforms [translate (px (f 3)) nil, rotate (deg (f 2))]
 
-style :: Css
+style :: CSS
 style = do
   fontFace $ do
     fontFaceFamily $ fromString "Lato"
@@ -108,7 +108,7 @@ style = do
   (h1 ## hover) ?
     animation (fromString "buzz-button") (sec 0.15) linear (sec 0) infinite normalAnimationDirection forwards
 
-center :: Number -> Number -> Css
+center :: Number -> Number -> CSS
 center width height = do
   marginLeft (px $ -width / 2)
   marginTop (px $ -height / 2)
