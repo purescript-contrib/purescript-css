@@ -27,35 +27,10 @@ import Data.Tuple.Nested
 import DOM
 import qualified Data.Array.NonEmpty as NEL
 
-foreign import addStyleSheet """
-  function addStyleSheet (s) {
-    return function () {
-      var e = document.createElement('style');
-      e.appendChild(document.createTextNode(s));
-      document.head.appendChild(e);
-    };
-  }
-  """ :: String -> Eff (dom :: DOM) Unit
-
-foreign import titleWidth """
-  function titleWidth () {
-    return document.getElementById('title').offsetWidth;
-  }
-  """ :: Eff (dom :: DOM) Number
-
-foreign import titleHeight """
-  function titleHeight () {
-    return document.getElementById('title').offsetHeight;
-  }
-  """ :: Eff (dom :: DOM) Number
-
-foreign import titleStyle """
-  function titleStyle (s) {
-    return function () {
-      document.getElementById('title').setAttribute('style', s);
-    };
-  }
-  """ :: String -> Eff (dom :: DOM) Unit
+foreign import addStyleSheet :: forall eff. String -> Eff (dom::DOM | eff) Unit
+foreign import titleWidth    :: forall eff. Eff (dom::DOM | eff) Number
+foreign import titleHeight   :: forall eff. Eff (dom::DOM | eff) Number
+foreign import titleStyle    :: forall eff. String -> Eff (dom::DOM | eff) Unit
 
 blue1 :: Color
 blue1 = rgb 51 136 204
@@ -64,59 +39,59 @@ blue2 :: Color
 blue2 = rgb 238 238 255
 
 backgroundGradient :: forall a. Angle a -> CSS
-backgroundGradient a = backgroundImage $ linearGradient a (ColorPoint white (pct 0)) [] (ColorPoint blue2 (pct 100))
+backgroundGradient a = backgroundImage $ linearGradient a (ColorPoint white (pct 0.0)) [] (ColorPoint blue2 (pct 100.0))
 
 shake :: (Number -> Number) -> CSS
-shake f = transforms [translate (px (f 3)) nil, rotate (deg (f 2))]
+shake f = transforms [translate (px (f 3.0)) nil, rotate (deg (f 2.0))]
 
 style :: CSS
 style = do
   fontFace $ do
     fontFaceFamily $ fromString "Lato"
-    fontWeight $ weight 300
+    fontWeight $ weight 300.0
     fontFaceSrc $ FontFaceSrcLocal "Lato Light" NEL.:|
                 [ FontFaceSrcLocal "Lato-Light"
                 , FontFaceSrcUrl "http://fonts.gstatic.com/s/lato/v11/EsvMC5un3kjyUhB9ZEPPwg.woff2" (Just WOFF2)
                 ]
 
-  keyframes "buzz-button" $ tuple2 50 (shake id) NEL.:| [tuple2 100 (shake negate)]
+  keyframes "buzz-button" $ tuple2 50.0 (shake id) NEL.:| [tuple2 100.0 (shake negate)]
 
-  query M.screen (NEL.singleton <<< M.maxWidth $ px 768) $
+  query M.screen (NEL.singleton <<< M.maxWidth $ px 768.0) $
     h1 ? do
-      fontSize (em 2)
+      fontSize (em 2.0)
 
-  html ? height (pct 100)
+  html ? height (pct 100.0)
   body ? do
     fontFamily ["Lato"] (NEL.singleton sansSerif)
     sym padding nil
     sym margin nil
-    backgroundGradient (deg 0)
+    backgroundGradient (deg 0.0)
   (h1 ** a) ? do
     display block
     color blue1
     textDecoration noneTextDecoration
-    fontWeight $ weight 100
+    fontWeight $ weight 100.0
     sym padding (em 0.5)
   h1 ? do
-    fontSize (em 3)
+    fontSize (em 3.0)
     position absolute
-    left (pct 50)
-    top (pct 50)
-    backgroundGradient (deg 180)
-    border solid (px 1) blue1
+    left (pct 50.0)
+    top (pct 50.0)
+    backgroundGradient (deg 180.0)
+    border solid (px 1.0) blue1
     sym borderRadius (em 0.25)
   (h1 ## hover) ?
-    animation (fromString "buzz-button") (sec 0.15) linear (sec 0) infinite normalAnimationDirection forwards
+    animation (fromString "buzz-button") (sec 0.15) linear (sec 0.0) infinite normalAnimationDirection forwards
 
 center :: Number -> Number -> CSS
 center width height = do
-  marginLeft (px $ -width / 2)
-  marginTop (px $ -height / 2)
+  marginLeft (px $ -width / 2.0)
+  marginTop (px $ -height / 2.0)
+
 
 main :: Eff (dom :: DOM) Unit
 main = do
   addStyleSheet <<< fromMaybe "" <<< renderedSheet $ render style
-
   width <- titleWidth
   height <- titleHeight
   titleStyle <<< fromMaybe "" <<< renderedInline <<< render $ center width height
