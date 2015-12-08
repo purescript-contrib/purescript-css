@@ -1,11 +1,4 @@
-module CSS
-    ( module X
-    , module CSS.Media
-    ) where
-
------------------------------------------
--- Modules that can be fully exported. --
------------------------------------------
+module CSS (module X) where
 
 import CSS.Animation as X
 import CSS.Background as X
@@ -27,9 +20,3 @@ import CSS.Text as X
 import CSS.Time as X
 import CSS.Transform as X
 import CSS.Transition as X
-
-----------------------------------------------
--- Modules that have conflicting functions. --
-----------------------------------------------
-
-import CSS.Media hiding (maxWidth)
