@@ -1,14 +1,14 @@
 module CSS.Animation where
 
-import Prelude
+import Prelude ((<<<), ($))
 
 import Data.Tuple.Nested (tuple7)
 
-import CSS.Property
-import CSS.String
-import CSS.Stylesheet
-import CSS.Time
-import CSS.Transition
+import CSS.Property (class Val, Value, value)
+import CSS.String (class IsString, fromString)
+import CSS.Stylesheet (CSS, key)
+import CSS.Time (Time)
+import CSS.Transition (TimingFunction)
 
 newtype AnimationDirection = AnimationDirection Value
 

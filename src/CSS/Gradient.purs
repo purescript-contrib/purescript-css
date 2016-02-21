@@ -1,14 +1,14 @@
 module CSS.Gradient where
 
-import Prelude
+import Prelude ((<>), ($), (<$>))
 
 import Data.Foldable (intercalate)
 
-import CSS.Background
-import CSS.Color
-import CSS.Property
-import CSS.Size
-import CSS.String
+import CSS.Background (BackgroundImage(BackgroundImage))
+import CSS.Color (Color)
+import CSS.Property (value)
+import CSS.Size (Angle, Rel, Size)
+import CSS.String (fromString)
 
 data ColorPoint = ColorPoint Color (Size Rel)
 

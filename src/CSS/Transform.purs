@@ -1,11 +1,11 @@
 module CSS.Transform where
 
-import Prelude
+import Prelude ((<>), ($), (<<<))
 
-import CSS.Property
-import CSS.Size
-import CSS.String
-import CSS.Stylesheet
+import CSS.Property (class Val, Value, value, noCommas)
+import CSS.Size (Angle, Abs, Size)
+import CSS.String (fromString)
+import CSS.Stylesheet (CSS, key)
 
 newtype Transformation = Transformation Value
 

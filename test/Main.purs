@@ -1,20 +1,20 @@
 module Test.Main where
 
-import Prelude
-import Control.Monad
-import Control.Monad.Eff
-import Control.Monad.Eff.Exception
-import CSS.Border
-import CSS.Color
-import CSS.Display
-import CSS.Elements
-import CSS.Font
-import CSS.Render
-import CSS.Selector
-import CSS.Size
-import CSS.String
-import CSS.Stylesheet
-import Data.Maybe
+import Prelude (class Show, class Eq, Unit, bind, show, (<>), ($), (<<<), (==))
+import Control.Monad (unless)
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Exception (EXCEPTION, error, throwException)
+import CSS.Border (dashed, border)
+import CSS.Color (green, red)
+import CSS.Display (block, display, inlineBlock)
+import CSS.Elements (body)
+import CSS.Font (color)
+import CSS.Render (Rendered, renderedSheet, selector, renderedInline, render)
+import CSS.Selector (Path(Star), Predicate(Id), Refinement(Refinement), Selector(Selector))
+import CSS.Size (px)
+import CSS.String (fromString)
+import CSS.Stylesheet ((?))
+import Data.Maybe (Maybe(Just))
 
 example1 :: Rendered
 example1 = render do

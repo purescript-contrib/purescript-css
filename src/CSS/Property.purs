@@ -1,15 +1,15 @@
 module CSS.Property where
 
-import Prelude
+import Prelude (class Semigroup, Unit, (<$>), (<<<), show, (<>), id, ($))
 
 import Data.Foldable (intercalate)
 import Data.Maybe (fromMaybe)
-import Data.Monoid (Monoid, mempty)
+import Data.Monoid (class Monoid, mempty)
 import Data.NonEmpty (NonEmpty(), oneOf)
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..), lookup)
 
-import CSS.String
+import CSS.String (class IsString, fromString)
 
 data Prefixed = Prefixed (Array (Tuple String String))
               | Plain String

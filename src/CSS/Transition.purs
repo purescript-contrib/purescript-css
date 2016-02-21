@@ -1,9 +1,9 @@
 module CSS.Transition where
 
-import Prelude
+import Prelude (($))
 
-import CSS.String
-import CSS.Property
+import CSS.String (fromString)
+import CSS.Property (class Val, Value)
 
 newtype TimingFunction = TimingFunction Value
 

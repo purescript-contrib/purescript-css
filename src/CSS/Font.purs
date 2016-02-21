@@ -1,14 +1,14 @@
 module CSS.Font where
 
-import Prelude
+import Prelude (($), (<$>), (<<<), (<>))
 
 import Data.NonEmpty (NonEmpty(), oneOf)
 
-import CSS.Color
-import CSS.Property
-import CSS.Size
-import CSS.String
-import CSS.Stylesheet
+import CSS.Color (Color)
+import CSS.Property (class Val, Value, value, quote)
+import CSS.Size (Size)
+import CSS.String (fromString)
+import CSS.Stylesheet (CSS, key)
 
 
 color :: Color -> CSS
