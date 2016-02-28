@@ -1,11 +1,11 @@
 module CSS.Background where
 
-import Prelude
+import Prelude (($))
 
-import CSS.Color
-import CSS.Property
-import CSS.String
-import CSS.Stylesheet
+import CSS.Color (Color)
+import CSS.Property (class Val, Value)
+import CSS.String (fromString)
+import CSS.Stylesheet (CSS, key)
 
 backgroundColor :: Color -> CSS
 backgroundColor = key $ fromString "background-color"

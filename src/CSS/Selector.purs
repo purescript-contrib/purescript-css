@@ -1,11 +1,11 @@
 module CSS.Selector where
 
-import Prelude
+import Prelude (class Ord, class Eq, (++), ($))
 
-import Data.Generic (Generic, gEq, gCompare)
+import Data.Generic (class Generic, gEq, gCompare)
 import Data.String (take, drop)
 
-import CSS.String
+import CSS.String (class IsString)
 
 data Predicate = Id String
                | Class String
@@ -62,17 +62,14 @@ element e = Selector (Refinement []) (Elem e)
 deep :: Selector -> Selector -> Selector
 deep a b = Selector (Refinement []) (Deep a b)
 
-(**) :: Selector -> Selector -> Selector
-(**) = deep
+infix 2 deep as **
 
 child :: Selector -> Selector -> Selector
 child a b = Selector (Refinement []) (PathChild a b)
 
-(|>) :: Selector -> Selector -> Selector
-(|>) = child
+infix 2 child as |>
 
 with :: Selector -> Refinement -> Selector
 with (Selector (Refinement fs) e) (Refinement ps) = Selector (Refinement (fs ++ ps)) e
 
-(##) :: Selector -> Refinement -> Selector
-(##) = with
+infix 2 with as ##

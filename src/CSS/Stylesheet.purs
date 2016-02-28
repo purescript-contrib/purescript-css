@@ -1,6 +1,6 @@
 module CSS.Stylesheet where
 
-import Prelude
+import Prelude (class Monad, class Applicative, class Bind, class Apply, class Functor, Unit, (<<<), ($), (<$>), pure, (>>=), (<*>))
 
 import Control.Monad.Writer (Writer(), execWriter)
 import Control.Monad.Writer.Class (tell)
@@ -11,7 +11,7 @@ import Data.NonEmpty (NonEmpty(), (:|))
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..))
 
-import CSS.Property (Val, Key(), Value(), cast, value)
+import CSS.Property (class Val, Key(), Value(), cast, value)
 import CSS.Selector (Selector(), Refinement())
 
 newtype MediaType = MediaType Value
@@ -64,9 +64,9 @@ type CSS = StyleM Unit
 key :: forall a. (Val a) => Key a -> a -> CSS
 key k v = rule $ Property (cast k) (value v)
 
-infixr 5 ?
-(?) :: Selector -> CSS -> CSS
-(?) sel rs = rule $ Nested (Sub sel) (runS rs)
+infixr 5 nestSelector as ?
+nestSelector :: Selector -> CSS -> CSS
+nestSelector sel rs = rule $ Nested (Sub sel) (runS rs)
 
 query :: MediaType -> NonEmpty Array Feature -> CSS -> CSS
 query ty fs = rule <<< Query (MediaQuery Nothing ty fs) <<< runS

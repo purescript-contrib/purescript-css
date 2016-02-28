@@ -1,10 +1,10 @@
 module CSS.Text where
 
-import Prelude
+import Prelude (($))
 
-import CSS.Property
-import CSS.String
-import CSS.Stylesheet
+import CSS.Property (class Val, Value)
+import CSS.String (fromString)
+import CSS.Stylesheet (CSS, key)
 
 newtype TextDecoration = TextDecoration Value
 

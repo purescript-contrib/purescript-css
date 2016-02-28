@@ -1,20 +1,20 @@
 module CSS.Render where
 
-import Prelude
+import Prelude (class Semigroup, (<$>), (<>), ($), (<<<), (<*>), (>>=), flip, show, map)
 
 import Data.Array ((:), drop, sort, uncons, mapMaybe)
 import Data.Either (Either(..), either)
 import Data.Foldable (foldMap, intercalate, mconcat)
 import Data.Maybe (Maybe(..), fromMaybe, maybe)
-import Data.Monoid (Monoid, mempty)
+import Data.Monoid (class Monoid, mempty)
 import Data.NonEmpty (NonEmpty(..), (:|), foldl1, oneOf)
 import Data.These (These(..), theseLeft, theseRight)
 import Data.Tuple (Tuple(..), lookup, uncurry)
 
-import CSS.Property
-import CSS.Selector
-import CSS.String
-import CSS.Stylesheet
+import CSS.Property (Key(Key), Prefixed(Prefixed, Plain), Value(Value), plain)
+import CSS.Selector (Path(Combined, Adjacent, Deep, PathChild, Elem, Star), Predicate(PseudoFunc, Pseudo, AttrHyph, AttrSpace, AttrContains, AttrEnds, AttrBegins, AttrVal, Attr, Class, Id), Refinement(Refinement), Selector(Selector), with, star, element, (**), (|>))
+import CSS.String (fromString)
+import CSS.Stylesheet (StyleM, App(Self, Pop, Root, Sub, Child), Feature(Feature), Keyframes(Keyframes), MediaQuery(MediaQuery), MediaType(MediaType), Rule(Import, Face, Keyframe, Query, Nested, Property), runS)
 
 newtype Inline = Inline String
 

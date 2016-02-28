@@ -1,9 +1,9 @@
 module CSS.Time where
 
-import Prelude
+import Prelude ((<>), ($))
 
-import CSS.Property
-import CSS.String
+import CSS.Property (class Val, Value, value)
+import CSS.String (fromString)
 
 newtype Time = Time Value
 

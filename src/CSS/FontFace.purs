@@ -1,13 +1,13 @@
 module CSS.FontFace where
 
-import Prelude
+import Prelude (($), (<>), (<<<))
 
 import Data.Maybe (Maybe(), maybe)
 import Data.NonEmpty (NonEmpty())
 
-import CSS.Property
-import CSS.String
-import CSS.Stylesheet
+import CSS.Property (class Val, Literal(Literal), quote)
+import CSS.String (fromString)
+import CSS.Stylesheet (CSS, key)
 
 fontFaceFamily :: String -> CSS
 fontFaceFamily = key (fromString "font-family") <<< Literal

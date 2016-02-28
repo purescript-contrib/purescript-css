@@ -1,11 +1,11 @@
 module CSS.Color where
 
-import Prelude
+import Prelude ((>), (<), show, (<>), ($), (<<<))
 
 import Data.Foldable (intercalate)
 
-import CSS.Property
-import CSS.String
+import CSS.Property (class Val, Value(Value))
+import CSS.String (class IsString, fromString)
 
 data Color = Rgba Int Int Int Int
            | Hsla Number Number Number Number
@@ -470,4 +470,3 @@ yellow = rgb 255 255   0
 
 yellowgreen :: Color
 yellowgreen = rgb 154 205 50
-

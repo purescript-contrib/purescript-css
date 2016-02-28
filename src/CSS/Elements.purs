@@ -1,9 +1,7 @@
 module CSS.Elements where
 
-import Prelude
-
-import CSS.Selector
-import CSS.String
+import CSS.Selector (Selector)
+import CSS.String (fromString)
 
 body :: Selector
 body = fromString "body"
