@@ -73,6 +73,9 @@ instance valTuple :: (Val a, Val b) => Val (Tuple a b) where
 instance valNumber :: Val Number where
   value = fromString <<< show
 
+instance valInt :: Val Int where
+  value = fromString <<< show
+
 instance valList :: (Val a) => Val (Array a) where
   value = intercalate (fromString ", ") <<< (value <$>)
 

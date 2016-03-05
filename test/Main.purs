@@ -8,6 +8,7 @@ import CSS.Border
 import CSS.Color
 import CSS.Display
 import CSS.Elements
+import CSS.Flexbox
 import CSS.Font
 import CSS.Render
 import CSS.Selector
@@ -36,6 +37,16 @@ example4 = render do
   fromString "#world" ? do
     display block
 
+example5 :: Rendered
+example5 = render do
+  flexDirection rowReverse
+  flexWrap noWrap
+  justifyContent flexStart
+  alignItems baseline
+  alignContent spaceBetween
+  flexGrow 2
+  flexBasis (pct 50.0)
+
 assertEqual :: forall a. (Eq a, Show a) => a -> a -> Eff (err :: EXCEPTION) Unit
 assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
 
@@ -50,3 +61,5 @@ main = do
   selector (fromString "#test") `assertEqual` "#test"
 
   renderedSheet example4 `assertEqual` Just "body { color: rgb(0, 128, 0) }\n#world { display: block }\n"
+
+  renderedInline example5 `assertEqual` Just "flex-direction: row-reverse; flex-wrap: nowrap; justify-content: flex-start; align-items: baseline; align-content: space-between; flex-grow: 2; flex-basis: 50.0%"
