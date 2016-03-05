@@ -1,7 +1,7 @@
 /* global exports */
 "use strict";
 
-// module Main
+// module Site
 
 
 exports.addStyleSheet = function(s){

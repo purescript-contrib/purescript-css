@@ -1,5 +1,8 @@
 module Site where
 
+import Prelude hiding (top)
+
+import Data.List (List(..))
 import Control.Monad.Eff
 import CSS.Animation
 import CSS.Background
@@ -25,7 +28,7 @@ import CSS.Transition
 import Data.Maybe
 import Data.Tuple.Nested
 import DOM
-import qualified Data.Array.NonEmpty as NEL
+import Data.NonEmpty as NEL
 
 foreign import addStyleSheet :: forall eff. String -> Eff (dom::DOM | eff) Unit
 foreign import titleWidth    :: forall eff. Eff (dom::DOM | eff) Number
@@ -39,7 +42,7 @@ blue2 :: Color
 blue2 = rgb 238 238 255
 
 backgroundGradient :: forall a. Angle a -> CSS
-backgroundGradient a = backgroundImage $ linearGradient a (ColorPoint white (pct 0.0)) [] (ColorPoint blue2 (pct 100.0))
+backgroundGradient a = backgroundImage $ linearGradient a (uniformScale RGB white Nil blue2)
 
 shake :: (Number -> Number) -> CSS
 shake f = transforms [translate (px (f 3.0)) nil, rotate (deg (f 2.0))]
