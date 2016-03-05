@@ -5,6 +5,7 @@ import Control.Monad
 import Control.Monad.Eff
 import Control.Monad.Eff.Exception
 import CSS.Border
+import CSS.BoxSizing
 import CSS.Color
 import CSS.Display
 import CSS.Elements
@@ -36,6 +37,11 @@ example4 = render do
   fromString "#world" ? do
     display block
 
+example5 :: Rendered
+example5 = render do
+  boxSizing contentBox
+  boxSizing borderBox
+
 assertEqual :: forall a. (Eq a, Show a) => a -> a -> Eff (err :: EXCEPTION) Unit
 assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
 
@@ -50,3 +56,5 @@ main = do
   selector (fromString "#test") `assertEqual` "#test"
 
   renderedSheet example4 `assertEqual` Just "body { color: hsl(240.0, 100.0%, 50.0%) }\n#world { display: block }\n"
+
+  renderedInline example5 `assertEqual` Just "box-sizing: content-box; box-sizing: border-box"
