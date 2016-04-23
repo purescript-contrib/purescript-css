@@ -2,6 +2,7 @@ module CSS.Stylesheet where
 
 import Prelude
 
+import Control.Apply ((*>))
 import Control.Monad.Writer (Writer(), execWriter)
 import Control.Monad.Writer.Class (tell)
 
@@ -60,6 +61,9 @@ rule :: Rule -> CSS
 rule = S <<< tell <<< singleton
 
 type CSS = StyleM Unit
+
+instance semigroupCSS :: Semigroup (StyleM Unit) where
+  append = (*>)
 
 key :: forall a. (Val a) => Key a -> a -> CSS
 key k v = rule $ Property (cast k) (value v)
