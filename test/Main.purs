@@ -8,7 +8,7 @@ import CSS.Border
 import CSS.BoxSizing
 import CSS.Color
 import CSS.Display
-import CSS.Elements
+import CSS.Elements (body)
 import CSS.Font
 import CSS.Render
 import CSS.Selector
