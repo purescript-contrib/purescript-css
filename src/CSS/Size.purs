@@ -34,6 +34,18 @@ pct i = Size (value i <> fromString "%")
 rem :: Number -> Size Rel
 rem i = Size (value i <> fromString "rem")
 
+vw :: Number -> Size Rel
+vw i = Size (value i <> fromString "vw")
+
+vh :: Number -> Size Rel
+vh i = Size (value i <> fromString "vh")
+
+vmin :: Number -> Size Rel
+vmin i = Size (value i <> fromString "vmin")
+
+vmax :: Number -> Size Rel
+vmax i = Size (value i <> fromString "vmax")
+
 sym :: forall a b. (a -> a -> a -> a -> b) -> a -> b
 sym f a = f a a a a
 
