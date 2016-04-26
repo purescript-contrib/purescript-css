@@ -27,12 +27,12 @@ example2 = render do
 
 example3 :: Rendered
 example3 = render do
-  border dashed (px 2.0) green
+  border dashed (px 2.0) blue
 
 example4 :: Rendered
 example4 = render do
   body ? do
-    color green
+    color blue
   fromString "#world" ? do
     display block
 
@@ -41,12 +41,12 @@ assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion fail
 
 main :: Eff (err :: EXCEPTION) Unit
 main = do
-  renderedInline example1 `assertEqual` Just "color: rgb(255, 0, 0); display: block"
+  renderedInline example1 `assertEqual` Just "color: hsl(0.0, 100.0%, 50.0%); display: block"
   renderedInline example2 `assertEqual` Just "display: inline-block"
-  renderedInline example3 `assertEqual` Just "border: dashed 2.0px rgb(0, 128, 0)"
+  renderedInline example3 `assertEqual` Just "border: dashed 2.0px hsl(240.0, 100.0%, 50.0%)"
 
   selector (Selector (Refinement [Id "test"]) Star) `assertEqual` "#test"
 
   selector (fromString "#test") `assertEqual` "#test"
 
-  renderedSheet example4 `assertEqual` Just "body { color: rgb(0, 128, 0) }\n#world { display: block }\n"
+  renderedSheet example4 `assertEqual` Just "body { color: hsl(240.0, 100.0%, 50.0%) }\n#world { display: block }\n"

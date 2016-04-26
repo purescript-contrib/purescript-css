@@ -9,6 +9,8 @@ import Data.NonEmpty (NonEmpty(), oneOf)
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..), lookup)
 
+import Color (Color, cssStringHSLA)
+
 import CSS.String
 
 data Prefixed = Prefixed (Array (Tuple String String))
@@ -78,6 +80,9 @@ instance valList :: (Val a) => Val (Array a) where
 
 instance valNonEmpty :: (Val a) => Val (NonEmpty Array a) where
   value = value <<< oneOf
+
+instance valColor :: Val Color where
+  value = fromString <<< cssStringHSLA
 
 noCommas :: forall a. (Val a) => Array a -> Value
 noCommas = intercalate (fromString " ") <<< (value <$>)

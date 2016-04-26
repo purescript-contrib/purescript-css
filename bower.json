@@ -26,7 +26,8 @@
     "purescript-profunctor": "^0.3.1",
     "purescript-strings": "^0.7.0",
     "purescript-these": "^0.3.0",
-    "purescript-transformers": "^0.8.1"
+    "purescript-transformers": "^0.8.1",
+    "purescript-colors": "^0.4.3"
   },
   "devDependencies": {
     "purescript-exceptions": "^0.3.0"
