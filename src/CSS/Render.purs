@@ -50,7 +50,19 @@ render :: forall a. StyleM a -> Rendered
 render = rules [] <<< runS
 
 kframe :: Keyframes -> Rendered
-kframe (Keyframes ident xs) = Just <<< That <<< Sheet $ "@-webkit-keyframes " <> ident <> " { " <> intercalate " " (uncurry frame <$> xs) <> " }\n"
+kframe (Keyframes ident xs) =
+  Just $ That $ Sheet $ allKeywordsWithContent
+  where
+  renderContent =
+    " " <> ident <> " { " <> intercalate " " (uncurry frame <$> xs) <> " }\n"
+  keywords =
+    [ "@keyframes"
+    , "@-webkit-keyframes"
+    , "@-moz-keyframes"
+    , "@-o-keyframes"
+    ]
+  allKeywordsWithContent =
+    mconcat $ map (_ <> renderContent) keywords
 
 frame :: Number -> Array Rule -> String
 frame p rs = show p <> "% " <> "{ " <> x <> " }"
