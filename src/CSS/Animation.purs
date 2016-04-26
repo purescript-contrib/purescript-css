@@ -3,6 +3,7 @@ module CSS.Animation where
 import Prelude
 
 import Data.Tuple.Nested (tuple7)
+import Data.Foldable (for_)
 
 import CSS.Property
 import CSS.String
@@ -50,7 +51,18 @@ backwards :: FillMode
 backwards = FillMode $ fromString "backwards"
 
 animation :: AnimationName -> Time -> TimingFunction -> Time -> IterationCount -> AnimationDirection -> FillMode -> CSS
-animation p de f du i di fm = key (fromString "-webkit-animation") (tuple7 p de f du i di fm)
+animation p de f du i di fm = do
+  for_ animationKeys \k ->
+    key (fromString k) (tuple7 p de f du i di fm)
+  where
+  animationKeys =
+    [ "animation"
+    , "-webkit-animation"
+    , "-moz-animation"
+    , "-o-animation"
+    ]
+
+
 
 newtype AnimationName = AnimationName Value
 
