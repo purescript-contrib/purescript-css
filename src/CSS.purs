@@ -7,6 +7,7 @@ import CSS.BoxSizing as X
 import CSS.Color as X
 import CSS.Display as X
 import CSS.Elements as X
+import CSS.Flexbox hiding (flex) as X
 import CSS.FontFace as X
 import CSS.Font as X
 import CSS.Geometry as X
