@@ -3,7 +3,7 @@ module CSS (module X) where
 import CSS.Animation as X
 import CSS.Background as X
 import CSS.Border as X
-import CSS.BoxSizing as X
+import CSS.Box as X
 import CSS.Color as X
 import CSS.Display as X
 import CSS.Elements as X

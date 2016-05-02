@@ -5,7 +5,7 @@ import Control.Monad
 import Control.Monad.Eff
 import Control.Monad.Eff.Exception
 import CSS.Border
-import CSS.BoxSizing
+import CSS.Box
 import CSS.Color
 import CSS.Display
 import CSS.Elements (body)

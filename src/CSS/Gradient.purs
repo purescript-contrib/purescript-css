@@ -1,16 +1,157 @@
 module CSS.Gradient
-  ( module Color.Scale
+  (
+  -- * Color ramp type.
+    Ramp
+
+  -- * Linear gradients.
   , linearGradient
-  ) where
+  , hGradient
+  , vGradient
 
-import Prelude
+  -- * Radial gradients.
+  , Radial
+  , circle, ellipse
+  , circular, elliptical
 
-import CSS.Background (BackgroundImage(..))
-import CSS.Property (value)
-import CSS.Size (Angle)
+  , Extend
+  , closestSide, closestCorner, farthestSide, farthestCorner
+
+  , radialGradient
+
+  -- * Repeating gradients.
+  , repeatingLinearGradient
+  , hRepeatingGradient
+  , vRepeatingGradient
+  , repeatingRadialGradient
+
+  )
+where
+
+import Data.Tuple (Tuple(Tuple))
+import Prelude (($), (<>), (<<<), map)
+
+import CSS.Background
+import CSS.Color
+import CSS.Common
+import CSS.Property
+import CSS.Size
 import CSS.String (fromString)
 
-import Color.Scale
+type Ramp = Array (Tuple Color (Size Rel))
 
-linearGradient :: forall a. Angle a -> ColorScale -> BackgroundImage
-linearGradient a cs = BackgroundImage $ fromString "linear-gradient(" <> value a <> fromString (", " <> cssColorStops cs <> ")")
+-------------------------------------------------------------------------------
+
+linearGradient :: Direction -> Ramp -> BackgroundImage
+linearGradient d xs = other $ Value $
+  let
+    lg =
+      fromString "linear-gradient("
+        <> value d
+        <> fromString ","
+        <> ramp xs
+        <> fromString ")"
+  in
+    case lg of
+      Value v -> browsers <> v
+
+hGradient :: Color -> Color -> BackgroundImage
+hGradient = shortcut (linearGradient (straight sideLeft))
+
+vGradient :: Color -> Color -> BackgroundImage
+vGradient = shortcut (linearGradient (straight sideTop ))
+
+-------------------------------------------------------------------------------
+
+repeatingLinearGradient :: Direction -> Ramp -> BackgroundImage
+repeatingLinearGradient d xs = other $ Value $
+  let
+    rlg =
+      fromString "repeating-linear-gradient("
+        <> value d
+        <> fromString ","
+        <> ramp xs
+        <> fromString ")"
+  in
+    case rlg of
+      Value v -> browsers <> v
+
+hRepeatingGradient :: Color -> Color -> BackgroundImage
+hRepeatingGradient = shortcut (repeatingLinearGradient (straight sideLeft))
+
+vRepeatingGradient :: Color -> Color -> BackgroundImage
+vRepeatingGradient = shortcut (repeatingLinearGradient (straight sideTop ))
+
+-------------------------------------------------------------------------------
+
+newtype Radial = Radial Value
+
+instance valRadial :: Val Radial where
+  value (Radial v) = v
+
+instance otherRadial :: Other Radial where
+  other = Radial
+
+circle :: Extend -> Radial
+circle ext = Radial (fromString "circle " <> value ext)
+
+ellipse :: Extend -> Radial
+ellipse ext = Radial (fromString "ellipse " <> value ext)
+
+circular :: Size Abs -> Radial
+circular radius = Radial (value (Tuple radius radius))
+
+elliptical :: forall a. Size a -> Size a -> Radial
+elliptical radx rady = Radial (value (Tuple radx rady))
+
+newtype Extend = Extend Value
+
+instance valExtend :: Val Extend where
+  value (Extend v) = v
+
+instance otherExtend :: Other Extend where
+  other = Extend
+
+closestSide :: Extend
+closestSide = Extend $ fromString "closest-side"
+
+closestCorner :: Extend
+closestCorner = Extend $ fromString "closest-corner"
+
+farthestSide :: Extend
+farthestSide = Extend $ fromString "farthest-side"
+
+farthestCorner :: Extend
+farthestCorner = Extend $ fromString "farthest-corner"
+
+-------------------------------------------------------------------------------
+
+radialGradient :: forall l. Loc l => l -> Radial -> Ramp -> BackgroundImage
+radialGradient d r xs = other $ Value $
+  let
+    rg =
+      fromString "radial-gradient("
+        <> value [value d, value r, ramp xs]
+        <> fromString ")"
+  in
+    case rg of
+      Value v -> browsers <> v
+
+repeatingRadialGradient
+  :: forall l. Loc l => l -> Radial -> Ramp -> BackgroundImage
+repeatingRadialGradient d r xs = other $ Value $
+  let
+    rrg =
+      fromString "repeating-radial-gradient("
+        <> value [value d, value r, ramp xs]
+        <> fromString ")"
+  in
+    case rrg of
+      Value v -> browsers <> v
+
+-------------------------------------------------------------------------------
+
+ramp :: Ramp -> Value
+ramp xs = value (map (\(Tuple a b) -> value (Tuple (value a) (value b))) xs)
+
+shortcut :: (Ramp -> BackgroundImage) -> Color -> Color -> BackgroundImage
+shortcut g f t = g [(Tuple f (pct 0.0)), (Tuple t (pct 100.0))]
