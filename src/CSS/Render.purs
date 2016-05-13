@@ -1,6 +1,8 @@
 module CSS.Render where
 
 import Prelude
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Console (log, CONSOLE)
 import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
 import Data.Either (Either(..), either)
 import Data.Foldable (fold, foldMap, intercalate, mconcat)
@@ -47,6 +49,14 @@ renderedSheet = (>>= (map getSheet <<< theseRight))
 
 render :: forall a. StyleM a -> Rendered
 render = rules [] <<< runS
+
+putInline :: forall e. CSS -> Eff (console :: CONSOLE | e) Unit
+putInline s =
+  log <<< fromMaybe "" <<< renderedInline <<< render $ s
+
+putStyleSheet :: forall e. CSS -> Eff (console :: CONSOLE | e) Unit
+putStyleSheet s =
+  log <<< fromMaybe "" <<< renderedSheet <<< render $ s
 
 kframe :: Keyframes -> Rendered
 kframe (Keyframes ident xs) =
