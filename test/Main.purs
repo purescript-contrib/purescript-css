@@ -48,6 +48,11 @@ nestedNodes = render do
     display block
     fromString "#child" ? display block
 
+nestedNodesWithEmptyParent :: Rendered
+nestedNodesWithEmptyParent = render do
+  fromString "#parent" ? do
+    fromString "#child" ? display block
+
 assertEqual :: forall a. (Eq a, Show a) => a -> a -> Eff (err :: EXCEPTION) Unit
 assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
 
@@ -66,4 +71,6 @@ main = do
   renderedInline example5 `assertEqual` Just "box-sizing: content-box; box-sizing: border-box"
 
   renderedSheet nestedNodes `assertEqual` Just "#parent { display: block }\n#parent #child { display: block }\n"
+
+  renderedSheet nestedNodesWithEmptyParent `assertEqual` Just "#parent #child { display: block }\n"
 

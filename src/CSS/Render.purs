@@ -1,7 +1,7 @@
 module CSS.Render where
 
 import Prelude
-import Data.Array ((:), drop, sort, uncons, mapMaybe)
+import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
 import Data.Either (Either(..), either)
 import Data.Foldable (fold, foldMap, intercalate, mconcat)
 import Data.Maybe (Maybe(..), fromMaybe, maybe)
@@ -96,7 +96,10 @@ rules sel rs = topRules <> importRules <> keyframeRules <> faceRules <> nestedSh
         faces    _              = Nothing
         imports  (Import i    ) = Just i
         imports  _              = Nothing
-        topRules      = rule' sel (mapMaybe property rs)
+        topRules      = if not null rs'
+                          then rule' sel rs'
+                          else Nothing
+          where rs' = mapMaybe property rs
         nestedSheets  = fold $ uncurry nestedRules <$> mapMaybe nested rs
         nestedRules a = rules (a : sel)
         queryRules    = foldMap (uncurry $ flip query' sel) $ mapMaybe queries rs
