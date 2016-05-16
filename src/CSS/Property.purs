@@ -86,3 +86,8 @@ instance valColor :: Val Color where
 
 noCommas :: forall a. (Val a) => Array a -> Value
 noCommas = intercalate (fromString " ") <<< (value <$>)
+
+infixr 9 !
+
+(!) :: forall a b. a -> b -> Tuple a b
+(!) = Tuple

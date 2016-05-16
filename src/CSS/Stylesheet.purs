@@ -2,6 +2,7 @@ module CSS.Stylesheet where
 
 import Prelude
 
+import Control.Apply ((*>))
 import Control.Monad.Writer (Writer(), execWriter)
 import Control.Monad.Writer.Class (tell)
 
@@ -11,7 +12,7 @@ import Data.NonEmpty (NonEmpty(), (:|))
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..))
 
-import CSS.Property (Val, Key(), Value(), cast, value)
+import CSS.Property (Val, Key(Key), Prefixed, Value(), cast, value)
 import CSS.Selector (Selector(), Refinement())
 
 newtype MediaType = MediaType Value
@@ -61,8 +62,14 @@ rule = S <<< tell <<< singleton
 
 type CSS = StyleM Unit
 
+instance semigroupCSS :: Semigroup (StyleM Unit) where
+  append = (*>)
+
 key :: forall a. (Val a) => Key a -> a -> CSS
 key k v = rule $ Property (cast k) (value v)
+
+prefixed :: forall a. Val a => Prefixed -> a -> CSS
+prefixed xs = key (Key xs)
 
 infixr 5 ?
 (?) :: Selector -> CSS -> CSS

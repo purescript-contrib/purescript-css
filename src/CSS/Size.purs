@@ -2,13 +2,20 @@ module CSS.Size where
 
 import Prelude
 
+import CSS.Common (class Auto)
 import CSS.Property
-import CSS.String
+import CSS.String (class IsString, fromString)
 
 newtype Size a = Size Value
 
+instance isStringSize :: IsString (Size a) where
+  fromString = Size <<< fromString
+
 instance valSize :: Val (Size a) where
   value (Size v) = v
+
+instance autoSize :: Auto (Size a) where
+  auto = fromString "auto"
 
 data Abs
 data Rel
