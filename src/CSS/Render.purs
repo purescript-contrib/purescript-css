@@ -1,10 +1,11 @@
 module CSS.Render where
 
 import Prelude
-
-import Data.Array ((:), drop, sort, uncons, mapMaybe)
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Console (log, CONSOLE)
+import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
 import Data.Either (Either(..), either)
-import Data.Foldable (foldMap, intercalate, mconcat)
+import Data.Foldable (fold, foldMap, intercalate, mconcat)
 import Data.Maybe (Maybe(..), fromMaybe, maybe)
 import Data.Monoid (Monoid, mempty)
 import Data.NonEmpty (NonEmpty(..), (:|), foldl1, oneOf)
@@ -48,6 +49,14 @@ renderedSheet = (>>= (map getSheet <<< theseRight))
 
 render :: forall a. StyleM a -> Rendered
 render = rules [] <<< runS
+
+putInline :: forall e. CSS -> Eff (console :: CONSOLE | e) Unit
+putInline s =
+  log <<< fromMaybe "" <<< renderedInline <<< render $ s
+
+putStyleSheet :: forall e. CSS -> Eff (console :: CONSOLE | e) Unit
+putStyleSheet s =
+  log <<< fromMaybe "" <<< renderedSheet <<< render $ s
 
 kframe :: Keyframes -> Rendered
 kframe (Keyframes ident xs) =
@@ -97,8 +106,11 @@ rules sel rs = topRules <> importRules <> keyframeRules <> faceRules <> nestedSh
         faces    _              = Nothing
         imports  (Import i    ) = Just i
         imports  _              = Nothing
-        topRules      = rule' sel (mapMaybe property rs)
-        nestedSheets  = foldMap (<> (Just <<< That $ Sheet "\n")) $ uncurry nestedRules <$> mapMaybe nested rs
+        topRules      = if not null rs'
+                          then rule' sel rs'
+                          else Nothing
+          where rs' = mapMaybe property rs
+        nestedSheets  = fold $ uncurry nestedRules <$> mapMaybe nested rs
         nestedRules a = rules (a : sel)
         queryRules    = foldMap (uncurry $ flip query' sel) $ mapMaybe queries rs
         keyframeRules = foldMap kframe $ mapMaybe kframes rs
@@ -112,7 +124,7 @@ rule' :: forall a. Array App -> Array (Tuple (Key a) Value) -> Rendered
 rule' sel props = maybe q o $ nel sel
   where p = props >>= collect
         q = (This <<< Inline <<< properties <<< oneOf) <$> nel p
-        o sel' = Just <<< That <<< Sheet $ intercalate " " [selector (merger sel'), "{", properties p, "}"]
+        o sel' = Just <<< That <<< Sheet $ intercalate " " [selector (merger sel'), "{", properties p, "}\n"]
 
 selector :: Selector -> String
 selector = intercalate ", " <<< selector'
