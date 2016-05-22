@@ -19,6 +19,7 @@ import CSS.Size as X
 import CSS.String as X
 import CSS.Stylesheet as X
 import CSS.Text as X
+import CSS.Text.Whitespace as X
 import CSS.Time as X
 import CSS.Transform as X
 import CSS.Transition as X
