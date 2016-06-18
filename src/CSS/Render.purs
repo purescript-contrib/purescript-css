@@ -5,9 +5,9 @@ import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (log, CONSOLE)
 import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
 import Data.Either (Either(..), either)
-import Data.Foldable (fold, foldMap, intercalate, mconcat)
+import Data.Foldable (fold, foldMap, intercalate)
 import Data.Maybe (Maybe(..), fromMaybe, maybe)
-import Data.Monoid (Monoid, mempty)
+import Data.Monoid (class Monoid, mempty)
 import Data.NonEmpty (NonEmpty(..), (:|), foldl1, oneOf)
 import Data.These (These(..), theseLeft, theseRight)
 import Data.Tuple (Tuple(..), lookup, uncurry)
@@ -42,10 +42,10 @@ instance monoidFile :: Monoid Sheet where
 type Rendered = Maybe (These Inline Sheet)
 
 renderedInline :: Rendered -> Maybe String
-renderedInline = (>>= (map getInline <<< theseLeft))
+renderedInline = (_ >>= (map getInline <<< theseLeft))
 
 renderedSheet :: Rendered -> Maybe String
-renderedSheet = (>>= (map getSheet <<< theseRight))
+renderedSheet = (_ >>= (map getSheet <<< theseRight))
 
 render :: forall a. StyleM a -> Rendered
 render = rules [] <<< runS
@@ -71,7 +71,7 @@ kframe (Keyframes ident xs) =
     , "@-o-keyframes"
     ]
   allKeywordsWithContent =
-    mconcat $ map (_ <> renderContent) keywords
+    fold $ map (_ <> renderContent) keywords
 
 frame :: Number -> Array Rule -> String
 frame p rs = show p <> "% " <> "{ " <> x <> " }"
@@ -81,7 +81,7 @@ query' :: MediaQuery -> Array App -> Array Rule -> Rendered
 query' q sel rs = Just <<< That <<< Sheet $ mediaQuery q <> " { " <> fromMaybe "" (renderedSheet $ rules sel rs) <> " }\n"
 
 mediaQuery :: MediaQuery -> String
-mediaQuery (MediaQuery no ty fs) = "@media " <> mediaType ty <> foldl1 (<>) ((" and " <>) <<< feature <$> fs)
+mediaQuery (MediaQuery no ty fs) = "@media " <> mediaType ty <> foldl1 (<>) ((" and " <> _) <<< feature <$> fs)
 
 mediaType :: MediaType -> String
 mediaType (MediaType (Value s)) = plain s
@@ -130,7 +130,7 @@ selector :: Selector -> String
 selector = intercalate ", " <<< selector'
 
 selector' :: Selector -> Array String
-selector' (Selector (Refinement ft) p) = (<> (foldMap predicate (sort ft))) <$> selector'' ft p
+selector' (Selector (Refinement ft) p) = (_ <> (foldMap predicate (sort ft))) <$> selector'' ft p
 
 selector'' :: Array Predicate -> Path Selector -> Array String
 selector'' [] Star = ["*"]
@@ -151,11 +151,11 @@ collect' :: Prefixed -> Prefixed -> Array (Either String (Tuple String String))
 collect' (Plain k) (Plain v) = [Right (Tuple k v)]
 collect' (Prefixed ks) (Plain v) = (\(Tuple p k) -> Right $ Tuple (p <> k) v) <$> ks
 collect' (Plain k) (Prefixed vs) = (\(Tuple p v) -> Right $ Tuple k (p <> v)) <$> vs
-collect' (Prefixed ks) (Prefixed vs) = (\(Tuple p k) -> maybe (Left (p <> k)) (Right <<< Tuple (p <> k) <<< (p <>)) $ lookup p vs) <$> ks
+collect' (Prefixed ks) (Prefixed vs) = (\(Tuple p k) -> maybe (Left (p <> k)) (Right <<< Tuple (p <> k) <<< (p <> _)) $ lookup p vs) <$> ks
 
 properties :: Array (Either String (Tuple String String)) -> String
 properties xs = intercalate "; " $  sheetRules <$> xs
-  where sheetRules = either (\_ -> mempty) (\(Tuple k v) -> mconcat [k, ": ", v])
+  where sheetRules = either (\_ -> mempty) (\(Tuple k v) -> fold [k, ": ", v])
 
 merger :: NonEmpty Array App -> Selector
 merger (NonEmpty x xs) =

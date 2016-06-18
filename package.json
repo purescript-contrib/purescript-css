@@ -6,6 +6,6 @@
     "gulp-jshint": "^1.11.2",
     "gulp-purescript": "^0.7.0",
     "gulp-run": "^1.6.8",
-    "purescript": "^0.8.2"
+    "purescript": "^0.9.1"
   }
 }

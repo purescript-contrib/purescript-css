@@ -68,7 +68,7 @@ module CSS.Background
   , angular
 
   , Location
-  , Loc
+  , class Loc
   , location
   )
 where

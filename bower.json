@@ -21,15 +21,16 @@
     "tests"
   ],
   "dependencies": {
-    "purescript-generics": "^0.7.0",
-    "purescript-nonempty": "^0.1.2",
-    "purescript-profunctor": "^0.3.1",
-    "purescript-strings": "^0.7.0",
-    "purescript-these": "^0.3.0",
-    "purescript-transformers": "^0.8.1",
-    "purescript-colors": "^0.4.3"
+    "purescript-generics": "^1.0.0",
+    "purescript-nonempty": "^1.0.0",
+    "purescript-profunctor": "^1.0.0",
+    "purescript-strings": "^1.0.0",
+    "purescript-these": "^1.0.0",
+    "purescript-transformers": "^1.0.0",
+    "purescript-colors": "^1.0.0",
+    "purescript-console": "^1.0.0"
   },
   "devDependencies": {
-    "purescript-exceptions": "^0.3.0"
+    "purescript-exceptions": "^1.0.0"
   }
 }

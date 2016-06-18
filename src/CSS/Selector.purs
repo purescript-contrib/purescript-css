@@ -2,7 +2,7 @@ module CSS.Selector where
 
 import Prelude
 
-import Data.Generic (Generic, gEq, gCompare)
+import Data.Generic (class Generic, gEq, gCompare)
 import Data.String (take, drop)
 
 import CSS.String
@@ -59,20 +59,14 @@ star = Selector (Refinement []) Star
 element :: String -> Selector
 element e = Selector (Refinement []) (Elem e)
 
+infix 1 deep as ** -- Documentation says -1 as precedence, but that doesn't work
 deep :: Selector -> Selector -> Selector
 deep a b = Selector (Refinement []) (Deep a b)
 
-(**) :: Selector -> Selector -> Selector
-(**) = deep
-
+infix 1 child as |>
 child :: Selector -> Selector -> Selector
 child a b = Selector (Refinement []) (PathChild a b)
 
-(|>) :: Selector -> Selector -> Selector
-(|>) = child
-
+infix 1 child as ##
 with :: Selector -> Refinement -> Selector
-with (Selector (Refinement fs) e) (Refinement ps) = Selector (Refinement (fs ++ ps)) e
-
-(##) :: Selector -> Refinement -> Selector
-(##) = with
+with (Selector (Refinement fs) e) (Refinement ps) = Selector (Refinement (fs <> ps)) e
