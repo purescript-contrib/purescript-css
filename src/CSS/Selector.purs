@@ -59,14 +59,14 @@ star = Selector (Refinement []) Star
 element :: String -> Selector
 element e = Selector (Refinement []) (Elem e)
 
-infix 1 deep as ** -- Documentation says -1 as precedence, but that doesn't work
 deep :: Selector -> Selector -> Selector
 deep a b = Selector (Refinement []) (Deep a b)
+infix 0 deep as **
 
-infix 1 child as |>
 child :: Selector -> Selector -> Selector
 child a b = Selector (Refinement []) (PathChild a b)
+infix 0 child as |>
 
-infix 1 child as ##
 with :: Selector -> Refinement -> Selector
 with (Selector (Refinement fs) e) (Refinement ps) = Selector (Refinement (fs <> ps)) e
+infix 0 child as ##
