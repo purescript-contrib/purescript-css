@@ -12,7 +12,7 @@ import Data.NonEmpty (NonEmpty(), (:|))
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..))
 
-import CSS.Property (Val, Key(Key), Prefixed, Value(), cast, value)
+import CSS.Property (class Val, Key(Key), Prefixed, Value(), cast, value)
 import CSS.Selector (Selector(), Refinement())
 
 newtype MediaType = MediaType Value
@@ -71,9 +71,9 @@ key k v = rule $ Property (cast k) (value v)
 prefixed :: forall a. Val a => Prefixed -> a -> CSS
 prefixed xs = key (Key xs)
 
-infixr 5 ?
-(?) :: Selector -> CSS -> CSS
-(?) sel rs = rule $ Nested (Sub sel) (runS rs)
+infixr 5 select as ?
+select :: Selector -> CSS -> CSS
+select sel rs = rule $ Nested (Sub sel) (runS rs)
 
 query :: MediaType -> NonEmpty Array Feature -> CSS -> CSS
 query ty fs = rule <<< Query (MediaQuery Nothing ty fs) <<< runS

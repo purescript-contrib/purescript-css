@@ -4,7 +4,7 @@ import Prelude
 
 import Data.Foldable (intercalate)
 import Data.Maybe (fromMaybe)
-import Data.Monoid (Monoid, mempty)
+import Data.Monoid (class Monoid, mempty)
 import Data.NonEmpty (NonEmpty(), oneOf)
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..), lookup)
@@ -21,8 +21,8 @@ instance isStringPrefixed :: IsString Prefixed where
 
 instance semigroupPrefixed :: Semigroup Prefixed where
   append (Plain x) (Plain y) = Plain $ x <> y
-  append (Plain x) (Prefixed ys) = Prefixed $ second (x <>) <$> ys
-  append (Prefixed xs) (Plain y) = Prefixed $ second (y <>) <$> xs
+  append (Plain x) (Prefixed ys) = Prefixed $ second (x <> _) <$> ys
+  append (Prefixed xs) (Plain y) = Prefixed $ second (y <> _) <$> xs
   append (Prefixed xs) (Prefixed ys) = Prefixed $ xs <> ys
 
 instance monoidPrefixed :: Monoid Prefixed where
@@ -76,7 +76,7 @@ instance valNumber :: Val Number where
   value = fromString <<< show
 
 instance valList :: (Val a) => Val (Array a) where
-  value = intercalate (fromString ", ") <<< (value <$>)
+  value = intercalate (fromString ", ") <<< (value <$> _)
 
 instance valNonEmpty :: (Val a) => Val (NonEmpty Array a) where
   value = value <<< oneOf
@@ -85,9 +85,6 @@ instance valColor :: Val Color where
   value = fromString <<< cssStringHSLA
 
 noCommas :: forall a. (Val a) => Array a -> Value
-noCommas = intercalate (fromString " ") <<< (value <$>)
+noCommas = intercalate (fromString " ") <<< (value <$> _)
 
-infixr 9 !
-
-(!) :: forall a b. a -> b -> Tuple a b
-(!) = Tuple
+infixr 9 Tuple as !

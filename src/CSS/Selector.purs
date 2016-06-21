@@ -2,7 +2,7 @@ module CSS.Selector where
 
 import Prelude
 
-import Data.Generic (Generic, gEq, gCompare)
+import Data.Generic (class Generic, gEq, gCompare)
 import Data.String (take, drop)
 
 import CSS.String
@@ -61,18 +61,12 @@ element e = Selector (Refinement []) (Elem e)
 
 deep :: Selector -> Selector -> Selector
 deep a b = Selector (Refinement []) (Deep a b)
-
-(**) :: Selector -> Selector -> Selector
-(**) = deep
+infix 0 deep as **
 
 child :: Selector -> Selector -> Selector
 child a b = Selector (Refinement []) (PathChild a b)
-
-(|>) :: Selector -> Selector -> Selector
-(|>) = child
+infix 0 child as |>
 
 with :: Selector -> Refinement -> Selector
-with (Selector (Refinement fs) e) (Refinement ps) = Selector (Refinement (fs ++ ps)) e
-
-(##) :: Selector -> Refinement -> Selector
-(##) = with
+with (Selector (Refinement fs) e) (Refinement ps) = Selector (Refinement (fs <> ps)) e
+infix 0 child as ##
