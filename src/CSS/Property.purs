@@ -3,18 +3,24 @@ module CSS.Property where
 import Prelude
 
 import Data.Foldable (intercalate)
+import Data.Generic (class Generic)
 import Data.Maybe (fromMaybe)
 import Data.Monoid (class Monoid, mempty)
-import Data.NonEmpty (NonEmpty(), oneOf)
+import Data.NonEmpty (NonEmpty, oneOf)
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..), lookup)
 
 import Color (Color, cssStringHSLA)
 
-import CSS.String
+import CSS.String (class IsString, fromString)
 
-data Prefixed = Prefixed (Array (Tuple String String))
-              | Plain String
+data Prefixed
+  = Prefixed (Array (Tuple String String))
+  | Plain String
+
+derive instance eqPrefixed :: Eq Prefixed
+derive instance ordPrefixed :: Ord Prefixed
+derive instance genericPrefixed :: Generic Prefixed
 
 instance isStringPrefixed :: IsString Prefixed where
   fromString = Plain
@@ -30,13 +36,17 @@ instance monoidPrefixed :: Monoid Prefixed where
 
 plain :: Prefixed -> String
 plain (Prefixed xs) = fromMaybe "" $ lookup "" xs
-plain (Plain    p ) = p
+plain (Plain p) = p
 
 -- TODO: Escape
 quote :: String -> String
 quote s = "\"" <> s <> "\""
 
 newtype Key a = Key Prefixed
+
+derive instance eqKey :: (Eq a) => Eq (Key a)
+derive instance ordKey :: (Ord a) => Ord (Key a)
+derive instance genericKey :: (Generic a) => Generic (Key a)
 
 instance isStringKey :: IsString (Key a) where
   fromString = Key <<< fromString
@@ -45,6 +55,10 @@ cast :: forall a. Key a -> Key Unit
 cast (Key k) = Key k
 
 newtype Value = Value Prefixed
+
+derive instance eqValue :: Eq Value
+derive instance ordValue :: Ord Value
+derive instance genericValue :: Generic Value
 
 instance isStringValue :: IsString Value where
   fromString = Value <<< fromString
@@ -62,6 +76,10 @@ instance valString :: Val String where
   value = fromString
 
 newtype Literal = Literal String
+
+derive instance eqLiteral :: Eq Literal
+derive instance ordLiteral :: Ord Literal
+derive instance genericLiteral :: Generic Literal
 
 instance valLiteral :: Val Literal where
   value (Literal a) = fromString $ quote a

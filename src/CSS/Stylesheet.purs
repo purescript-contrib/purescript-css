@@ -2,41 +2,71 @@ module CSS.Stylesheet where
 
 import Prelude
 
-import Control.Apply ((*>))
-import Control.Monad.Writer (Writer(), execWriter)
+import Control.Monad.Writer (Writer, execWriter)
 import Control.Monad.Writer.Class (tell)
 
 import Data.Array (singleton)
+import Data.Generic (class Generic)
 import Data.Maybe (Maybe(..))
-import Data.NonEmpty (NonEmpty(), (:|))
+import Data.NonEmpty (NonEmpty, (:|))
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..))
 
-import CSS.Property (class Val, Key(Key), Prefixed, Value(), cast, value)
-import CSS.Selector (Selector(), Refinement())
+import CSS.Property (class Val, Key(..), Prefixed, Value, cast, value)
+import CSS.Selector (Selector, Refinement)
 
 newtype MediaType = MediaType Value
 
+derive instance eqMediaType :: Eq MediaType
+derive instance ordMediaType:: Ord MediaType
+derive instance genericMediaType :: Generic MediaType
+
 data NotOrOnly = Not | Only
+
+derive instance eqNotOrOnly :: Eq NotOrOnly
+derive instance ordNotOrOnly:: Ord NotOrOnly
+derive instance genericNotOrOnly :: Generic NotOrOnly
 
 data MediaQuery = MediaQuery (Maybe NotOrOnly) MediaType (NonEmpty Array Feature)
 
+derive instance eqMediaQuery :: Eq MediaQuery
+derive instance ordMediaQuery :: Ord MediaQuery
+derive instance genericMediaQuery :: Generic MediaQuery
+
 data Feature = Feature String (Maybe Value)
 
-data App = Self   Refinement
-         | Root   Selector
-         | Pop    Int
-         | Child  Selector
-         | Sub    Selector
+derive instance eqFeature :: Eq Feature
+derive instance ordFeature :: Ord Feature
+derive instance genericFeature :: Generic Feature
+
+data App
+  = Self Refinement
+  | Root Selector
+  | Pop Int
+  | Child Selector
+  | Sub Selector
+
+derive instance eqApp :: Eq App
+derive instance ordApp :: Ord App
+derive instance genericApp :: Generic App
 
 data Keyframes = Keyframes String (NonEmpty Array (Tuple Number (Array Rule)))
 
-data Rule = Property (Key Unit) Value
-          | Nested   App (Array Rule)
-          | Query    MediaQuery (Array Rule)
-          | Face     (Array Rule)
-          | Keyframe Keyframes
-          | Import   String
+derive instance eqKeyframes :: Eq Keyframes
+derive instance ordKeyframes :: Ord Keyframes
+derive instance genericKeyframes :: Generic Keyframes
+
+data Rule
+  = Property (Key Unit) Value
+  | Nested App (Array Rule)
+  | Query MediaQuery (Array Rule)
+  | Face (Array Rule)
+  | Keyframe Keyframes
+  | Import String
+
+derive instance eqRule :: Eq Rule
+derive instance ordRule :: Ord Rule
+derive instance genericRule :: Generic Rule
 
 newtype StyleM a = S (Writer (Array Rule) a)
 

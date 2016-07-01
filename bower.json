@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "purescript-generics": "^1.0.0",
-    "purescript-nonempty": "^1.0.0",
+    "purescript-nonempty": "^1.1.0",
     "purescript-profunctor": "^1.0.0",
     "purescript-strings": "^1.0.0",
     "purescript-these": "^1.0.0",

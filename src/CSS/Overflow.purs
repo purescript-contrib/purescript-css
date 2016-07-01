@@ -2,11 +2,17 @@ module CSS.Overflow where
 
 import Prelude
 
-import CSS.Property
-import CSS.String
-import CSS.Stylesheet
+import Data.Generic (class Generic)
+
+import CSS.Property (class Val, Value)
+import CSS.String (fromString)
+import CSS.Stylesheet (CSS, key)
 
 newtype Overflow = Overflow Value
+
+derive instance eqOverflow :: Eq Overflow
+derive instance ordOverflow :: Ord Overflow
+derive instance genericOverflow :: Generic Overflow
 
 instance valOverflow :: Val Overflow where
   value (Overflow v) = v

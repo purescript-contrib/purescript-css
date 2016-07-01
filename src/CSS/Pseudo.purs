@@ -1,9 +1,7 @@
 module CSS.Pseudo where
 
-import Prelude
-
-import CSS.Selector
-import CSS.String
+import CSS.Selector (Refinement)
+import CSS.String (fromString)
 
 hover :: Refinement
 hover = fromString ":hover"

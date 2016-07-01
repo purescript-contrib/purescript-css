@@ -1,21 +1,31 @@
+-- | CSS Flexible Box Layout
+-- | http://dev.w3.org/csswg/css-flexbox-1
 module CSS.Flexbox where
 
-import CSS.Common
-  (class Auto, class Baseline, class Center, class Inherit, class Other)
-import CSS.Property
+import Prelude
+
+import Data.Generic (class Generic)
+
+import CSS.Common (class Center, class Inherit, class Other, class Baseline, class Auto)
+import CSS.Property (class Val, Value, value, (!))
 import CSS.Size (Size)
 import CSS.String (class IsString, fromString)
 import CSS.Stylesheet (CSS, key)
-import Prelude (($), (<<<), show)
 
--- | CSS Flexible Box Layout
--- http://dev.w3.org/csswg/css-flexbox-1
+class FlexEnd a where
+  flexEnd :: a
 
-class FlexEnd      a where flexEnd      :: a
-class FlexStart    a where flexStart    :: a
-class SpaceAround  a where spaceAround  :: a
-class SpaceBetween a where spaceBetween :: a
-class Stretch      a where stretch      :: a
+class FlexStart a where
+  flexStart :: a
+
+class SpaceAround a where
+  spaceAround :: a
+
+class SpaceBetween a where
+  spaceBetween :: a
+
+class Stretch a where
+  stretch :: a
 
 instance flexEndValue :: FlexEnd Value where
   flexEnd = fromString "flex-end"
@@ -35,6 +45,10 @@ instance stretchValue :: Stretch Value where
 -------------------------------------------------------------------------------
 
 newtype AlignContentValue = AlignContentValue Value
+
+derive instance eqAlignContentValue :: Eq AlignContentValue
+derive instance ordAlignContentValue :: Ord AlignContentValue
+derive instance genericAlignContentValue :: Generic AlignContentValue
 
 instance isStringAlignContentValue :: IsString AlignContentValue where
   fromString = AlignContentValue <<< fromString
@@ -73,6 +87,10 @@ alignContent = key $ fromString "align-content"
 
 newtype AlignItemsValue = AlignItemsValue Value
 
+derive instance eqAlignItemsValue :: Eq AlignItemsValue
+derive instance ordAlignItemsValue :: Ord AlignItemsValue
+derive instance genericAlignItemsValue :: Generic AlignItemsValue
+
 instance isStringAlignItemsValue :: IsString AlignItemsValue where
   fromString = AlignItemsValue <<< fromString
 
@@ -106,6 +124,10 @@ alignItems = key $ fromString "align-items"
 -------------------------------------------------------------------------------
 
 newtype AlignSelfValue = AlignSelfValue Value
+
+derive instance eqAlignSelfValue :: Eq AlignSelfValue
+derive instance ordAlignSelfValue :: Ord AlignSelfValue
+derive instance genericAlignSelfValue :: Generic AlignSelfValue
 
 instance isStringAlignSelfValue :: IsString AlignSelfValue where
   fromString = AlignSelfValue <<< fromString
@@ -156,6 +178,10 @@ flexBasis = key $ fromString "flex-basis"
 
 newtype FlexDirection = FlexDirection Value
 
+derive instance eqFlexDirection :: Eq FlexDirection
+derive instance ordFlexDirection :: Ord FlexDirection
+derive instance genericFlexDirection :: Generic FlexDirection
+
 instance valFlexDirection :: Val FlexDirection where
   value (FlexDirection v) = v
 
@@ -194,6 +220,10 @@ flexShrink i = key (fromString "flex-shrink") (fromString (show i) :: Value)
 
 newtype FlexWrap = FlexWrap Value
 
+derive instance eqFlexWrap :: Eq FlexWrap
+derive instance ordFlexWrap :: Ord FlexWrap
+derive instance genericFlexWrap :: Generic FlexWrap
+
 instance valFlexWrap :: Val FlexWrap where
   value (FlexWrap v) = v
 
@@ -215,6 +245,10 @@ flexWrap = key $ fromString "flex-wrap"
 -------------------------------------------------------------------------------
 
 newtype JustifyContentValue = JustifyContentValue Value
+
+derive instance eqJustifyContentValue :: Eq JustifyContentValue
+derive instance ordJustifyContentValue :: Ord JustifyContentValue
+derive instance genericJustifyContentValue :: Generic JustifyContentValue
 
 instance isStringJustifyContentValue :: IsString JustifyContentValue where
   fromString = JustifyContentValue <<< fromString

@@ -1,21 +1,11 @@
 module Test.Main where
 
 import Prelude
-import Control.Monad
-import Control.Monad.Eff
-import Control.Monad.Eff.Exception
-import CSS.Border
-import CSS.Box
-import CSS.Color
-import CSS.Display
-import CSS.Elements (body)
-import CSS.Font
-import CSS.Render
-import CSS.Selector
-import CSS.Size
-import CSS.String
-import CSS.Stylesheet
-import Data.Maybe
+
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Exception (EXCEPTION, error, throwException)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, px, dashed, border, inlineBlock, red, (?))
+import Data.Maybe (Maybe(..))
 
 example1 :: Rendered
 example1 = render do
@@ -73,4 +63,3 @@ main = do
   renderedSheet nestedNodes `assertEqual` Just "#parent { display: block }\n#parent #child { display: block }\n"
 
   renderedSheet nestedNodesWithEmptyParent `assertEqual` Just "#parent #child { display: block }\n"
-

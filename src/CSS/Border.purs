@@ -2,15 +2,20 @@ module CSS.Border where
 
 import Prelude
 
+import Data.Generic (class Generic)
 import Data.Tuple.Nested (tuple3, tuple4)
 
-import CSS.Color
-import CSS.Property
-import CSS.Size
-import CSS.String
-import CSS.Stylesheet
+import CSS.Color (Color)
+import CSS.Property (class Val, Value)
+import CSS.Size (Size, Abs)
+import CSS.String (fromString)
+import CSS.Stylesheet (CSS, key)
 
 newtype Stroke = Stroke Value
+
+derive instance eqStroke :: Eq Stroke
+derive instance ordStroke :: Ord Stroke
+derive instance genericStroke :: Generic Stroke
 
 instance valStroke :: Val Stroke where
   value (Stroke v) = v

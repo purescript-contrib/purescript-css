@@ -2,19 +2,23 @@ module CSS.Font where
 
 import Prelude
 
-import Data.NonEmpty (NonEmpty(), oneOf)
+import Data.Generic (class Generic)
+import Data.NonEmpty (NonEmpty, oneOf)
 
-import CSS.Color
-import CSS.Property
-import CSS.Size
-import CSS.String
-import CSS.Stylesheet
-
+import CSS.Color (Color)
+import CSS.Property (class Val, Value, value, quote)
+import CSS.Size (Size)
+import CSS.String (fromString)
+import CSS.Stylesheet (CSS, key)
 
 color :: Color -> CSS
 color = key $ fromString "color"
 
 newtype GenericFontFamily = GenericFontFamily Value
+
+derive instance eqGenericFontFamily :: Eq GenericFontFamily
+derive instance ordGenericFontFamily :: Ord GenericFontFamily
+derive instance genericGenericFontFamily :: Generic GenericFontFamily
 
 instance valGenericFontFamily :: Val GenericFontFamily where
   value (GenericFontFamily v) = v
@@ -29,6 +33,10 @@ fontSize :: forall a. Size a -> CSS
 fontSize = key $ fromString "font-size"
 
 newtype FontWeight = FontWeight Value
+
+derive instance eqFontWeight :: Eq FontWeight
+derive instance ordFontWeight :: Ord FontWeight
+derive instance genericFontWeight :: Generic FontWeight
 
 instance valFontWeight :: Val FontWeight where
   value (FontWeight v) = v

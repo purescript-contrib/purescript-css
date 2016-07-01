@@ -2,16 +2,21 @@ module CSS.Animation where
 
 import Prelude
 
-import Data.Tuple.Nested (tuple7)
 import Data.Foldable (for_)
+import Data.Generic (class Generic)
+import Data.Tuple.Nested (tuple7)
 
-import CSS.Property
-import CSS.String
-import CSS.Stylesheet
-import CSS.Time
-import CSS.Transition
+import CSS.Property (class Val, Value, value)
+import CSS.String (class IsString, fromString)
+import CSS.Stylesheet (CSS, key)
+import CSS.Time (Time)
+import CSS.Transition (TimingFunction)
 
 newtype AnimationDirection = AnimationDirection Value
+
+derive instance eqAnimationDirection :: Eq AnimationDirection
+derive instance ordAnimationDirection :: Ord AnimationDirection
+derive instance genericAnimationDirection :: Generic AnimationDirection
 
 instance valAnimationDirection :: Val AnimationDirection where
   value (AnimationDirection v) = v
@@ -30,6 +35,10 @@ alternateReverse = AnimationDirection $ fromString "alternate-reverse"
 
 newtype IterationCount = IterationCount Value
 
+derive instance eqIterationCount :: Eq IterationCount
+derive instance ordIterationCount :: Ord IterationCount
+derive instance genericIterationCount :: Generic IterationCount
+
 instance valIterationCount :: Val IterationCount where
   value (IterationCount v) = v
 
@@ -40,6 +49,10 @@ iterationCount :: Number -> IterationCount
 iterationCount = IterationCount <<< value
 
 newtype FillMode = FillMode Value
+
+derive instance eqFillMode :: Eq FillMode
+derive instance ordFillMode :: Ord FillMode
+derive instance genericFillMode :: Generic FillMode
 
 instance valFillMode :: Val FillMode where
   value (FillMode v) = v
@@ -62,9 +75,11 @@ animation p de f du i di fm = do
     , "-o-animation"
     ]
 
-
-
 newtype AnimationName = AnimationName Value
+
+derive instance eqAnimationName :: Eq AnimationName
+derive instance ordAnimationName :: Ord AnimationName
+derive instance genericAnimationName :: Generic AnimationName
 
 instance valAnimationName :: Val AnimationName where
   value (AnimationName v) = v

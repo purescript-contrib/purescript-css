@@ -2,11 +2,17 @@ module CSS.Size where
 
 import Prelude
 
+import Data.Generic (class Generic)
+
 import CSS.Common (class Auto)
-import CSS.Property
+import CSS.Property (class Val, Value, value)
 import CSS.String (class IsString, fromString)
 
 newtype Size a = Size Value
+
+derive instance eqSize :: Eq a => Eq (Size a)
+derive instance ordSize :: Ord a => Ord (Size a)
+derive instance genericSize :: Generic a => Generic (Size a)
 
 instance isStringSize :: IsString (Size a) where
   fromString = Size <<< fromString
@@ -60,6 +66,10 @@ data Deg
 data Rad
 
 newtype Angle a = Angle Value
+
+derive instance eqAngle :: Eq a => Eq (Angle a)
+derive instance ordAngle :: Ord a => Ord (Angle a)
+derive instance genericAngle :: Generic a => Generic (Angle a)
 
 instance valAngle :: Val (Angle a) where
   value (Angle v) = v

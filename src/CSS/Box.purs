@@ -7,19 +7,25 @@ module CSS.Box
   )
 where
 
-import Prelude (($), (<>), (<<<))
+import Prelude
 
-import CSS.Color
-import CSS.Common
-import CSS.Property
-import CSS.Stylesheet
-import CSS.Size
+import Data.Generic (class Generic)
+
+import CSS.Border (Stroke)
+import CSS.Color (Color)
+import CSS.Common (class Inherit, browsers)
+import CSS.Property (class Val, Value, (!))
+import CSS.Size (Size)
 import CSS.String (class IsString, fromString)
-import CSS.Border
+import CSS.Stylesheet (CSS, prefixed, key)
 
 -------------------------------------------------------------------------------
 
 newtype BoxType = BoxType Value
+
+derive instance eqBoxType :: Eq BoxType
+derive instance ordBoxType :: Ord BoxType
+derive instance genericBoxType :: Generic BoxType
 
 instance isStringBoxType :: IsString BoxType where
   fromString = BoxType <<< fromString
