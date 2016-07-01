@@ -1,18 +1,17 @@
 language: node_js
 dist: trusty
 sudo: required
-node_js:
-  - 4
+node_js: 6
 install:
-  - npm install bower gulp -g
-  - npm install && bower install
+  - npm install -g bower
+  - npm install
 script:
-  - gulp
+  - bower install --production
+  - npm run -s build
+  - bower install
+  - npm -s test
 after_success:
 - >-
   test $TRAVIS_TAG &&
-  node_modules/.bin/psc-publish > .pursuit.json &&
-  curl -X POST http://pursuit.purescript.org/packages \
-    -d @.pursuit.json \
-    -H 'Accept: application/json' \
-    -H "Authorization: token ${GITHUB_TOKEN}"
+  echo $GITHUB_TOKEN | pulp login &&
+  echo y | pulp publish --no-push
