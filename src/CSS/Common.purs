@@ -6,11 +6,13 @@
 
 module CSS.Common where
 
-import CSS.Property (Prefixed(Prefixed), Value)
-import CSS.String (class IsString, fromString)
+import Prelude
+
 import Data.Monoid (class Monoid)
-import Data.Tuple (Tuple(Tuple))
-import Prelude ((<>), id)
+import Data.Tuple (Tuple(..))
+
+import CSS.Property (Prefixed(..), Value)
+import CSS.String (class IsString, fromString)
 
 -------------------------------------------------------------------------------
 
@@ -65,4 +67,3 @@ browsers = Prefixed
 
 call :: forall s. (IsString s, Monoid s) => s -> s -> s
 call fn arg = fn <> fromString "(" <> arg <> fromString ")"
-

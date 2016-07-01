@@ -2,11 +2,17 @@ module CSS.Display where
 
 import Prelude
 
-import CSS.Property
-import CSS.String
-import CSS.Stylesheet
+import Data.Generic (class Generic)
+
+import CSS.Property (class Val, Value)
+import CSS.String (fromString)
+import CSS.Stylesheet (CSS, key)
 
 newtype Position = Position Value
+
+derive instance eqPosition :: Eq Position
+derive instance ordPosition :: Ord Position
+derive instance genericPosition :: Generic Position
 
 instance valPosition :: Val Position where
   value (Position v) = v
@@ -27,6 +33,10 @@ relative :: Position
 relative = Position $ fromString "relative"
 
 newtype Display = Display Value
+
+derive instance eqDisplay :: Eq Display
+derive instance ordDisplay :: Ord Display
+derive instance genericDisplay :: Generic Display
 
 instance valDisplay :: Val Display where
   value (Display v) = v

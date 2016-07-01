@@ -73,16 +73,18 @@ module CSS.Background
   )
 where
 
-import Data.Tuple (Tuple(Tuple))
-import Prelude (($), (<>), (<<<))
+import Prelude
 
-import CSS.Box
-import CSS.Color
-import CSS.Common
-import CSS.Property
-import CSS.Stylesheet
+import Data.Generic (class Generic)
+import Data.Tuple (Tuple(..))
+
+import CSS.Box (BoxType)
+import CSS.Color (Color)
+import CSS.Common (class Other, class Inherit, class None, class Auto, auto)
+import CSS.Property (class Val, Value, value)
+import CSS.Size (Size, Angle)
 import CSS.String (class IsString, fromString)
-import CSS.Size
+import CSS.Stylesheet (CSS, key)
 
 -- | We implement the generic background property as a type class that accepts
 -- multiple value types. This allows us to combine different background aspects
@@ -131,6 +133,10 @@ backgroundColor = key $ fromString "background-color"
 
 newtype BackgroundPosition = BackgroundPosition Value
 
+derive instance eqBackgroundPosition :: Eq BackgroundPosition
+derive instance ordBackgroundPosition :: Ord BackgroundPosition
+derive instance genericBackgroundPosition :: Generic BackgroundPosition
+
 instance isStringBackgroundPosition :: IsString BackgroundPosition where
   fromString = BackgroundPosition <<< fromString
 
@@ -158,6 +164,10 @@ backgroundPositions = key $ fromString "background-position"
 -------------------------------------------------------------------------------
 
 newtype BackgroundSize = BackgroundSize Value
+
+derive instance eqBackgroundSize :: Eq BackgroundSize
+derive instance ordBackgroundSize :: Ord BackgroundSize
+derive instance genericBackgroundSize :: Generic BackgroundSize
 
 instance isStringBackgroundSize :: IsString BackgroundSize where
   fromString = BackgroundSize <<< fromString
@@ -192,6 +202,10 @@ backgroundSizes = key $ fromString "background-size"
 -------------------------------------------------------------------------------
 
 newtype BackgroundRepeat = BackgroundRepeat Value
+
+derive instance eqBackgroundRepeat :: Eq BackgroundRepeat
+derive instance ordBackgroundRepeat :: Ord BackgroundRepeat
+derive instance genericBackgroundRepeat :: Generic BackgroundRepeat
 
 instance isStringBackgroundRepeat :: IsString BackgroundRepeat where
   fromString = BackgroundRepeat <<< fromString
@@ -239,6 +253,10 @@ backgroundRepeats = key $ fromString "background-repeat"
 
 newtype BackgroundImage = BackgroundImage Value
 
+derive instance eqBackgroundImage :: Eq BackgroundImage
+derive instance ordBackgroundImage :: Ord BackgroundImage
+derive instance genericBackgroundImage :: Generic BackgroundImage
+
 instance isStringBackgroundImage :: IsString BackgroundImage where
   fromString = BackgroundImage <<< fromString
 
@@ -267,6 +285,10 @@ backgroundImages = key $ fromString "background-image"
 
 newtype BackgroundOrigin = BackgroundOrigin Value
 
+derive instance eqBackgroundOrigin :: Eq BackgroundOrigin
+derive instance ordBackgroundOrigin :: Ord BackgroundOrigin
+derive instance genericBackgroundOrigin :: Generic BackgroundOrigin
+
 instance isStringBackgroundOrigin :: IsString BackgroundOrigin where
   fromString = BackgroundOrigin <<< fromString
 
@@ -292,6 +314,10 @@ backgroundOrigins = key $ fromString "background-origin"
 
 newtype BackgroundClip = BackgroundClip Value
 
+derive instance eqBackgroundClip :: Eq BackgroundClip
+derive instance ordBackgroundClip :: Ord BackgroundClip
+derive instance genericBackgroundClip :: Generic BackgroundClip
+
 instance isStringBackgroundClip :: IsString BackgroundClip where
   fromString = BackgroundClip <<< fromString
 
@@ -316,6 +342,10 @@ backgroundClips = key $ fromString "background-clip"
 -------------------------------------------------------------------------------
 
 newtype BackgroundAttachment = BackgroundAttachment Value
+
+derive instance eqBackgroundAttachment :: Eq BackgroundAttachment
+derive instance ordBackgroundAttachment :: Ord BackgroundAttachment
+derive instance genericBackgroundAttachment :: Generic BackgroundAttachment
 
 instance isStringBackgroundAttachment :: IsString BackgroundAttachment where
   fromString = BackgroundAttachment <<< fromString
@@ -344,6 +374,10 @@ backgroundAttachments = key $ fromString "background-attachment"
 -------------------------------------------------------------------------------
 
 newtype Side = Side Value
+
+derive instance eqSide :: Eq Side
+derive instance ordSide :: Ord Side
+derive instance genericSide :: Generic Side
 
 instance isStringSide :: IsString Side where
   fromString = Side <<< fromString
@@ -382,6 +416,10 @@ sideMiddle = Side $ fromString "middle"
 
 newtype Direction = Direction Value
 
+derive instance eqDirection :: Eq Direction
+derive instance ordDirection :: Ord Direction
+derive instance genericDirection :: Generic Direction
+
 instance valDirection :: Val Direction where
   value (Direction v) = v
 
@@ -395,6 +433,10 @@ angular :: forall a. Angle a -> Direction
 angular a = Direction (value a)
 
 newtype Location = Location Value
+
+derive instance eqLocation :: Eq Location
+derive instance ordLocation :: Ord Location
+derive instance genericLocation :: Generic Location
 
 instance valLocation :: Val Location where
   value (Location v) = v

@@ -2,11 +2,17 @@ module CSS.Text where
 
 import Prelude
 
-import CSS.Property
-import CSS.String
-import CSS.Stylesheet
+import Data.Generic (class Generic)
+
+import CSS.Property (class Val, Value)
+import CSS.String (fromString)
+import CSS.Stylesheet (CSS, key)
 
 newtype TextDecoration = TextDecoration Value
+
+derive instance eqTextDecoration :: Eq TextDecoration
+derive instance ordTextDecoration:: Ord TextDecoration
+derive instance genericTextDecoration :: Generic TextDecoration
 
 instance valTextDecoration :: Val TextDecoration where
   value (TextDecoration v) = v

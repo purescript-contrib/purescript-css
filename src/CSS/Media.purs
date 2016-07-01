@@ -4,10 +4,10 @@ import Prelude
 
 import Data.Maybe (Maybe(..))
 
-import CSS.Property
-import CSS.Size
-import CSS.String
-import CSS.Stylesheet
+import CSS.Property (value)
+import CSS.Size (Abs, Size)
+import CSS.String (fromString)
+import CSS.Stylesheet (Feature(..), MediaType(..))
 
 screen :: MediaType
 screen = MediaType $ fromString "screen"

@@ -1,23 +1,30 @@
 module CSS.Render where
 
 import Prelude
+
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (log, CONSOLE)
+
 import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
 import Data.Either (Either(..), either)
 import Data.Foldable (fold, foldMap, intercalate)
+import Data.Generic (class Generic)
 import Data.Maybe (Maybe(..), fromMaybe, maybe)
 import Data.Monoid (class Monoid, mempty)
 import Data.NonEmpty (NonEmpty(..), (:|), foldl1, oneOf)
 import Data.These (These(..), theseLeft, theseRight)
 import Data.Tuple (Tuple(..), lookup, uncurry)
 
-import CSS.Property
-import CSS.Selector
-import CSS.String
-import CSS.Stylesheet
+import CSS.Property (Key(..), Prefixed(..), Value(..), plain)
+import CSS.Selector (Path(..), Predicate(..), Refinement(..), Selector(..), with, star, element, (**), (|>))
+import CSS.String (fromString)
+import CSS.Stylesheet (CSS, StyleM, App(..), Feature(..), Keyframes(..), MediaQuery(..), MediaType(..), Rule(..), runS)
 
 newtype Inline = Inline String
+
+derive instance eqInline :: Eq Inline
+derive instance ordInline :: Ord Inline
+derive instance genericInline :: Generic Inline
 
 getInline :: Inline -> String
 getInline (Inline s) = s
@@ -29,6 +36,10 @@ instance monoidInline :: Monoid Inline where
   mempty = Inline mempty
 
 newtype Sheet = Sheet String
+
+derive instance eqSheet :: Eq Sheet
+derive instance ordSheet :: Ord Sheet
+derive instance genericSheet :: Generic Sheet
 
 getSheet :: Sheet -> String
 getSheet (Sheet s) = s

@@ -7,4 +7,3 @@ class IsString s where
 
 instance isStringString :: IsString String where
   fromString = id
-
