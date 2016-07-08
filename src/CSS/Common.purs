@@ -21,8 +21,10 @@ class Auto     a where auto     :: a
 class Baseline a where baseline :: a
 class Center   a where center   :: a
 class Inherit  a where inherit  :: a
+class Left     a where left     :: a
 class None     a where none     :: a
 class Normal   a where normal   :: a
+class Right    a where right    :: a
 class Visible  a where visible  :: a
 class Hidden   a where hidden   :: a
 class Initial  a where initial  :: a
@@ -39,8 +41,10 @@ instance autoValue     :: Auto     Value where auto     = fromString "auto"
 instance baselineValue :: Baseline Value where baseline = fromString "baseline"
 instance centerValue   :: Center   Value where center   = fromString "center"
 instance inheritValue  :: Inherit  Value where inherit  = fromString "inherit"
+instance leftValue     :: Left     Value where left     = fromString "left"
 instance normalValue   :: Normal   Value where normal   = fromString "normal"
 instance noneValue     :: None     Value where none     = fromString "none"
+instance rightValue    :: Right    Value where right    = fromString "right"
 instance visibleValue  :: Visible  Value where visible  = fromString "visible"
 instance hiddenValue   :: Hidden   Value where hidden   = fromString "hidden"
 instance otherValue    :: Other    Value where other    = id
