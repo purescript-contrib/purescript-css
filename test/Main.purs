@@ -1,10 +1,11 @@
 module Test.Main where
 
 import Prelude
-
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, px, dashed, border, inlineBlock, red, (?))
+import CSS.Common (none)
+import CSS.List (inside, square, listStyleImage, listStylePosition, listStyleType)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception (EXCEPTION, error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, px, dashed, border, inlineBlock, red, (?))
 import Data.Maybe (Maybe(..))
 
 example1 :: Rendered
@@ -31,6 +32,12 @@ example5 :: Rendered
 example5 = render do
   boxSizing contentBox
   boxSizing borderBox
+
+listStyle :: Rendered
+listStyle = render do
+  listStyleType square
+  listStylePosition inside
+  listStyleImage none
 
 nestedNodes :: Rendered
 nestedNodes = render do
@@ -59,6 +66,8 @@ main = do
   renderedSheet example4 `assertEqual` Just "body { color: hsl(240.0, 100.0%, 50.0%) }\n#world { display: block }\n"
 
   renderedInline example5 `assertEqual` Just "box-sizing: content-box; box-sizing: border-box"
+
+  renderedInline listStyle `assertEqual` Just "list-style-type: square; list-style-position: inside; list-style-image: none"
 
   renderedSheet nestedNodes `assertEqual` Just "#parent { display: block }\n#parent #child { display: block }\n"
 
