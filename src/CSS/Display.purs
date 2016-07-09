@@ -181,3 +181,6 @@ instance rightClear :: Right Clear where
 
 both :: Clear
 both = Clear $ fromString "both"
+
+clear :: Clear -> CSS
+clear = key $ fromString "clear"
