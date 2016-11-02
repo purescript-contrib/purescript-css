@@ -50,7 +50,7 @@ main :: Eff (err :: EXCEPTION) Unit
 main = do
   renderedInline example1 `assertEqual` Just "color: hsl(0.0, 100.0%, 50.0%); display: block"
   renderedInline example2 `assertEqual` Just "display: inline-block"
-  renderedInline example3 `assertEqual` Just "border: dashed 2.0px hsl(240.0, 100.0%, 50.0%) "
+  renderedInline example3 `assertEqual` Just "border: dashed 2.0px hsl(240.0, 100.0%, 50.0%)"
 
   selector (Selector (Refinement [Id "test"]) Star) `assertEqual` "#test"
 
