@@ -1,7 +1,8 @@
 module CSS.Property where
 
 import Prelude
-
+import CSS.String (class IsString, fromString)
+import Color (Color, cssStringHSLA)
 import Data.Foldable (intercalate)
 import Data.Generic (class Generic)
 import Data.Maybe (fromMaybe)
@@ -9,10 +10,6 @@ import Data.Monoid (class Monoid, mempty)
 import Data.NonEmpty (NonEmpty, oneOf)
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..), lookup)
-
-import Color (Color, cssStringHSLA)
-
-import CSS.String (class IsString, fromString)
 
 data Prefixed
   = Prefixed (Array (Tuple String String))
@@ -72,9 +69,6 @@ instance monoidValue :: Monoid Value where
 class Val a where
   value :: a -> Value
 
-instance valString :: Val String where
-  value = fromString
-
 newtype Literal = Literal String
 
 derive instance eqLiteral :: Eq Literal
@@ -87,6 +81,14 @@ instance valLiteral :: Val Literal where
 instance valValue :: Val Value where
   value = id
 
+instance valString :: Val String where
+  value = fromString
+
+instance valUnit :: Val Unit where
+  value u = fromString ""
+
+-- When `b` is Unit, the rendered value will have an extra
+--   space appended to end. Shouldn't hurt. I'd fix if I knew how.
 instance valTuple :: (Val a, Val b) => Val (Tuple a b) where
   value (Tuple a b) = value a <> fromString " " <> value b
 

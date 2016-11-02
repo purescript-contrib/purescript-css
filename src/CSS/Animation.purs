@@ -1,16 +1,14 @@
 module CSS.Animation where
 
 import Prelude
-
-import Data.Foldable (for_)
-import Data.Generic (class Generic)
-import Data.Tuple.Nested (tuple7)
-
 import CSS.Property (class Val, Value, value)
 import CSS.String (class IsString, fromString)
 import CSS.Stylesheet (CSS, key)
 import CSS.Time (Time)
 import CSS.Transition (TimingFunction)
+import Data.Foldable (for_)
+import Data.Generic (class Generic)
+import Data.Tuple.Nested (tuple7)
 
 newtype AnimationDirection = AnimationDirection Value
 
