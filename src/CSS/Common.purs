@@ -28,6 +28,8 @@ class Hidden   a where hidden   :: a
 class Initial  a where initial  :: a
 class Unset    a where unset    :: a
 
+class URL      a where url      :: String -> a
+
 -- | The other type class is used to escape from the type safety introduced by
 -- embedding CSS properties into the typed world of purescript-css.
 -- `Other` allows you to cast any `Value` to a specific value type.
@@ -46,6 +48,8 @@ instance hiddenValue   :: Hidden   Value where hidden   = fromString "hidden"
 instance otherValue    :: Other    Value where other    = id
 instance initialValue  :: Initial  Value where initial  = fromString "initial"
 instance unsetValue    :: Unset    Value where unset    = fromString "unset"
+
+instance urlValue :: URL Value where url s = fromString ("url(\"" <> s <> "\")")
 
 -------------------------------------------------------------------------------
 
