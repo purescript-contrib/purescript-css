@@ -1,7 +1,7 @@
 module CSS.Display where
 
 import Prelude
-import CSS.Common (class None)
+import CSS.Common (class Inherit, class None)
 import CSS.Property (class Val, Value)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
@@ -106,15 +106,15 @@ inlineGrid = Display $ fromString "inline-grid"
 display :: Display -> CSS
 display = key $ fromString "display"
 
-data Float = FloatLeft | FloatRight | None
+data Float = FloatLeft | FloatRight | FloatNone
 
 instance valFloat :: Val (Float) where
   value (FloatLeft) = fromString "left"
   value (FloatRight) = fromString "right"
-  value (None) = fromString "none"
+  value (FloatNone) = fromString "none"
 
 instance noneFloat :: None (Float) where
-  none = None
+  none = FloatNone
 
 floatLeft :: Float
 floatLeft = FloatLeft
@@ -124,3 +124,45 @@ floatRight = FloatRight
 
 float :: Float -> CSS
 float = key (fromString "float")
+
+data ClearFloat
+  = ClearFloatLeft
+  | ClearFloatRight
+  | ClearFloatBoth
+  | ClearFloatNone
+  | ClearFloatInherit
+  | ClearFloatInlineStart
+  | ClearFloatInlineEnd
+
+instance valClearFloat :: Val (ClearFloat) where
+  value (ClearFloatLeft) = fromString "left"
+  value (ClearFloatRight) = fromString "right"
+  value (ClearFloatBoth) = fromString "both"
+  value (ClearFloatNone) = fromString "none"
+  value (ClearFloatInherit) = fromString "inherit"
+  value (ClearFloatInlineStart) = fromString "inline-start"
+  value (ClearFloatInlineEnd) = fromString "inline-end"
+
+instance noneClearFloat :: None (ClearFloat) where
+  none = ClearFloatNone
+
+instance inheritClearFloat :: Inherit (ClearFloat) where
+  inherit = ClearFloatInherit
+
+clearLeft :: ClearFloat
+clearLeft = ClearFloatLeft
+
+clearRight :: ClearFloat
+clearRight = ClearFloatRight
+
+clearBoth :: ClearFloat
+clearBoth = ClearFloatBoth
+
+inlineStart :: ClearFloat
+inlineStart = ClearFloatInlineStart
+
+inlineEnd :: ClearFloat
+inlineEnd = ClearFloatInlineEnd
+
+clear :: ClearFloat -> CSS
+clear = key (fromString "clear")
