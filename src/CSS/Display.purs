@@ -1,12 +1,11 @@
 module CSS.Display where
 
 import Prelude
-
-import Data.Generic (class Generic)
-
+import CSS.Common (class None)
 import CSS.Property (class Val, Value)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
+import Data.Generic (class Generic)
 
 newtype Position = Position Value
 
@@ -106,3 +105,22 @@ inlineGrid = Display $ fromString "inline-grid"
 
 display :: Display -> CSS
 display = key $ fromString "display"
+
+data Float = FloatLeft | FloatRight | None
+
+instance valFloat :: Val (Float) where
+  value (FloatLeft) = fromString "left"
+  value (FloatRight) = fromString "right"
+  value (None) = fromString "none"
+
+instance noneFloat :: None (Float) where
+  none = None
+
+floatLeft :: Float
+floatLeft = FloatLeft
+
+floatRight :: Float
+floatRight = FloatRight
+
+float :: Float -> CSS
+float = key (fromString "float")
