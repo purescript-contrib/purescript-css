@@ -66,3 +66,6 @@ marginLeft = key $ fromString "margin-left"
 
 marginRight :: forall a. Size a -> CSS
 marginRight = key $ fromString "margin-right"
+
+lineHeight :: forall a. Size a -> CSS
+lineHeight = key $ fromString "line-height"
