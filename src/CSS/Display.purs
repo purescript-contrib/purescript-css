@@ -158,11 +158,11 @@ clearRight = ClearFloatRight
 clearBoth :: ClearFloat
 clearBoth = ClearFloatBoth
 
-inlineStart :: ClearFloat
-inlineStart = ClearFloatInlineStart
+clearInlineStart :: ClearFloat
+clearInlineStart = ClearFloatInlineStart
 
-inlineEnd :: ClearFloat
-inlineEnd = ClearFloatInlineEnd
+clearInlineEnd :: ClearFloat
+clearInlineEnd = ClearFloatInlineEnd
 
 clear :: ClearFloat -> CSS
 clear = key (fromString "clear")
