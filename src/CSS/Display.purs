@@ -5,7 +5,7 @@ import CSS.Common (class Inherit, class None)
 import CSS.Property (class Val, Value)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
-import Data.Generic (class Generic)
+import Data.Generic (class Generic, gShow)
 
 newtype Position = Position Value
 
@@ -108,6 +108,12 @@ display = key $ fromString "display"
 
 data Float = FloatLeft | FloatRight | FloatNone
 
+derive instance eqFloat :: Eq Float
+derive instance genericFloat :: Generic Float
+
+instance showFloat :: Show Float where
+  show = gShow
+
 instance valFloat :: Val (Float) where
   value (FloatLeft) = fromString "left"
   value (FloatRight) = fromString "right"
@@ -133,6 +139,12 @@ data ClearFloat
   | ClearFloatInherit
   | ClearFloatInlineStart
   | ClearFloatInlineEnd
+
+derive instance eqClearFloat :: Eq ClearFloat
+derive instance genericClearFloat :: Generic ClearFloat
+
+instance showClearFloat :: Show ClearFloat where
+  show = gShow
 
 instance valClearFloat :: Val (ClearFloat) where
   value (ClearFloatLeft) = fromString "left"
