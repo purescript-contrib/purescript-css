@@ -50,6 +50,18 @@ outset = Stroke $ fromString "outset"
 border :: Stroke -> Size Abs -> Color -> CSS
 border a b c = key (fromString "border") $ tuple3 a b c
 
+borderTop :: Stroke -> Size Abs -> Color -> CSS
+borderTop a b c = key (fromString "border-top") $ tuple3 a b c
+
+borderBottom :: Stroke -> Size Abs -> Color -> CSS
+borderBottom a b c = key (fromString "border-bottom") $ tuple3 a b c
+
+borderLeft :: Stroke -> Size Abs -> Color -> CSS
+borderLeft a b c = key (fromString "border-left") $ tuple3 a b c
+
+borderRight :: Stroke -> Size Abs -> Color -> CSS
+borderRight a b c = key (fromString "border-right") $ tuple3 a b c
+
 borderColor :: Color -> CSS
 borderColor = key $ fromString "border-color"
 
