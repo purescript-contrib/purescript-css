@@ -1,12 +1,14 @@
 module CSS.Text where
 
 import Prelude
-
-import Data.Generic (class Generic)
-
 import CSS.Property (class Val, Value)
+import CSS.Size (Size)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
+import Data.Generic (class Generic)
+
+letterSpacing :: forall a. Size a -> CSS
+letterSpacing = key $ fromString "letter-spacing"
 
 newtype TextDecoration = TextDecoration Value
 
