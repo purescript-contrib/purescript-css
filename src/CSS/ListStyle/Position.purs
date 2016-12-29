@@ -4,8 +4,11 @@ import CSS.Common (class Inherit, class Initial, class Unset)
 import CSS.Property (class Val)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
+import Data.Eq (class Eq)
 import Data.Function (($))
-import Data.Show (class Show, show)
+import Data.Generic (class Generic, gShow)
+import Data.Ord (class Ord)
+import Data.Show (class Show)
 
 data ListStylePosition
   = Inside
@@ -14,15 +17,19 @@ data ListStylePosition
   | Initial
   | Unset
 
-instance valListStylePosition :: Val ListStylePosition where
-  value s = fromString (show s)
+derive instance eqListStylePosition :: Eq ListStylePosition
+derive instance ordListStylePosition :: Ord ListStylePosition
+derive instance genericListStylePosition :: Generic ListStylePosition
 
 instance showListStylePosition :: Show ListStylePosition where
-  show (Inside) = "inside"
-  show (Outside) = "outside"
-  show (Inherit) = "inherit"
-  show (Initial) = "initial"
-  show (Unset) = "unset"
+  show = gShow
+
+instance valListStylePosition :: Val ListStylePosition where
+  value (Inside) = fromString "inside"
+  value (Outside) = fromString "outside"
+  value (Inherit) = fromString "inherit"
+  value (Initial) = fromString "initial"
+  value (Unset) = fromString "unset"
 
 instance initialListStylePosition :: Initial ListStylePosition where
   initial = Initial

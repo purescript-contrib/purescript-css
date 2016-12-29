@@ -4,9 +4,12 @@ import CSS.Common (class Inherit, class Initial, class None, class Unset, class 
 import CSS.Property (class Val)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
+import Data.Eq (class Eq)
 import Data.Function (($))
+import Data.Generic (class Generic, gShow)
+import Data.Ord (class Ord)
 import Data.Semigroup ((<>))
-import Data.Show (class Show, show)
+import Data.Show (class Show)
 
 data ListStyleImage
   = ListStyleImage String
@@ -15,15 +18,19 @@ data ListStyleImage
   | Unset
   | None
 
-instance valListStyleImage :: Val ListStyleImage where
-  value s = fromString (show s)
+derive instance eqListStyleImage :: Eq ListStyleImage
+derive instance ordListStyleImage :: Ord ListStyleImage
+derive instance genericListStyleImage :: Generic ListStyleImage
 
 instance showListStyleImage :: Show ListStyleImage where
-  show (Initial) = "initial"
-  show (Inherit) = "inherit"
-  show (Unset) = "unset"
-  show (None) = "none"
-  show (ListStyleImage url) = ("url('" <> url <> "')")
+  show = gShow
+
+instance valListStyleImage :: Val ListStyleImage where
+  value (Initial) = fromString "initial"
+  value (Inherit) = fromString "inherit"
+  value (Unset) = fromString "unset"
+  value (None) = fromString "none"
+  value (ListStyleImage url) = fromString ("url('" <> url <> "')")
 
 instance initialListStyleImage :: Initial ListStyleImage where
   initial = Initial

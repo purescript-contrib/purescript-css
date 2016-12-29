@@ -4,9 +4,12 @@ import CSS.Common (class Inherit, class Initial, class None, class Unset)
 import CSS.Property (class Val)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
+import Data.Eq (class Eq)
 import Data.Function (($))
+import Data.Generic (class Generic, gShow)
+import Data.Ord (class Ord)
 import Data.Semigroup ((<>))
-import Data.Show (class Show, show)
+import Data.Show (class Show)
 
 data ListStyleType
   = Disc
@@ -23,23 +26,27 @@ data ListStyleType
   | CustomStyleType String
   | StringStyleType String
 
-instance valListStyleType :: Val ListStyleType where
-  value s = fromString (show s)
+derive instance eqListStyleType :: Eq ListStyleType
+derive instance ordListStyleType :: Ord ListStyleType
+derive instance genericListStyleType :: Generic ListStyleType
 
 instance showListStyleType :: Show ListStyleType where
-  show (Disc) = "disc"
-  show (Circle) = "circle"
-  show (Square) = "square"
-  show (Decimal) = "decimal"
-  show (Georgian) = "georgian"
-  show (CJKIdeographic) = "cjk-ideographic"
-  show (Kannada) = "kannada"
-  show (None) = "none"
-  show (Initial) = "initial"
-  show (Inherit) = "inherit"
-  show (Unset) = "unset"
-  show (CustomStyleType s) = ("custom-" <> s)
-  show (StringStyleType s) = s
+  show = gShow
+
+instance valListStyleType :: Val ListStyleType where
+  value (Disc) = fromString "disc"
+  value (Circle) = fromString "circle"
+  value (Square) = fromString "square"
+  value (Decimal) = fromString "decimal"
+  value (Georgian) = fromString "georgian"
+  value (CJKIdeographic) = fromString "cjk-ideographic"
+  value (Kannada) = fromString "kannada"
+  value (None) = fromString "none"
+  value (Initial) = fromString "initial"
+  value (Inherit) = fromString "inherit"
+  value (Unset) = fromString "unset"
+  value (CustomStyleType s) = fromString ("custom-" <> s)
+  value (StringStyleType s) = fromString s
 
 instance initialListStyleType :: Initial ListStyleType where
   initial = Initial
