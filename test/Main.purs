@@ -4,8 +4,9 @@ import Prelude
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception (EXCEPTION, error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, px, dashed, border, inlineBlock, red, (?))
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, px, dashed, border, inlineBlock, red, (?), fontFaceSrc)
 import Data.Maybe (Maybe(..))
+import Data.NonEmpty (singleton)
 
 example1 :: Rendered
 example1 = render do
@@ -31,6 +32,10 @@ example5 :: Rendered
 example5 = render do
   boxSizing contentBox
   boxSizing borderBox
+
+example6 :: Rendered
+example6 = render do
+  fontFaceSrc $ singleton $ FontFaceSrcUrl "font.woff" $ Just WOFF
 
 nestedNodes :: Rendered
 nestedNodes = render do
@@ -63,3 +68,5 @@ main = do
   renderedSheet nestedNodes `assertEqual` Just "#parent { display: block }\n#parent #child { display: block }\n"
 
   renderedSheet nestedNodesWithEmptyParent `assertEqual` Just "#parent #child { display: block }\n"
+
+  renderedInline example6 `assertEqual` Just "src: url(\"font.woff\") format(\"woff\")"
