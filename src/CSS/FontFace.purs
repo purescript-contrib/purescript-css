@@ -42,7 +42,7 @@ derive instance ordFontFaceSrc :: Ord FontFaceSrc
 derive instance genericFontFaceSrc :: Generic FontFaceSrc
 
 instance valFontFaceSrc :: Val FontFaceSrc where
-  value (FontFaceSrcUrl u f) = fromString $ "url(" <> quote u <> ")" <> maybe "" (\f' -> " format(" <> formatName f' <> ")") f
+  value (FontFaceSrcUrl u f) = fromString $ "url(" <> quote u <> ")" <> maybe "" (\f' -> " format(" <> quote (formatName f') <> ")") f
   value (FontFaceSrcLocal l) = fromString $ "local(" <> quote l <> ")"
 
 fontFaceSrc :: NonEmpty Array FontFaceSrc -> CSS
