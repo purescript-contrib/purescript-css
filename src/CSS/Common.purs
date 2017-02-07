@@ -27,10 +27,10 @@ class Visible  a where visible  :: a
 class Hidden   a where hidden   :: a
 class Initial  a where initial  :: a
 class Unset    a where unset    :: a
-
 class Top      a where top      :: a
 class Middle   a where middle   :: a
 class Bottom   a where bottom   :: a
+class URL      a where url      :: String -> a
 
 -- | The other type class is used to escape from the type safety introduced by
 -- embedding CSS properties into the typed world of purescript-css.
@@ -50,10 +50,10 @@ instance hiddenValue   :: Hidden   Value where hidden   = fromString "hidden"
 instance otherValue    :: Other    Value where other    = id
 instance initialValue  :: Initial  Value where initial  = fromString "initial"
 instance unsetValue    :: Unset    Value where unset    = fromString "unset"
-
 instance topValue      :: Top      Value where top      = fromString "top"
 instance middleValue   :: Middle   Value where middle   = fromString "middle"
 instance bottomValue   :: Bottom   Value where bottom   = fromString "bottom"
+instance urlValue :: URL Value where url s = fromString ("url(\"" <> s <> "\")")
 
 -------------------------------------------------------------------------------
 
