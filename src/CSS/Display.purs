@@ -1,12 +1,11 @@
 module CSS.Display where
 
 import Prelude
-
-import Data.Generic (class Generic)
-
+import CSS.Common (class Inherit, class None)
 import CSS.Property (class Val, Value)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
+import Data.Generic (class Generic, gShow)
 
 newtype Position = Position Value
 
@@ -106,3 +105,76 @@ inlineGrid = Display $ fromString "inline-grid"
 
 display :: Display -> CSS
 display = key $ fromString "display"
+
+data Float = FloatLeft | FloatRight | FloatNone
+
+derive instance eqFloat :: Eq Float
+derive instance genericFloat :: Generic Float
+
+instance showFloat :: Show Float where
+  show = gShow
+
+instance valFloat :: Val (Float) where
+  value (FloatLeft) = fromString "left"
+  value (FloatRight) = fromString "right"
+  value (FloatNone) = fromString "none"
+
+instance noneFloat :: None (Float) where
+  none = FloatNone
+
+floatLeft :: Float
+floatLeft = FloatLeft
+
+floatRight :: Float
+floatRight = FloatRight
+
+float :: Float -> CSS
+float = key (fromString "float")
+
+data ClearFloat
+  = ClearFloatLeft
+  | ClearFloatRight
+  | ClearFloatBoth
+  | ClearFloatNone
+  | ClearFloatInherit
+  | ClearFloatInlineStart
+  | ClearFloatInlineEnd
+
+derive instance eqClearFloat :: Eq ClearFloat
+derive instance genericClearFloat :: Generic ClearFloat
+
+instance showClearFloat :: Show ClearFloat where
+  show = gShow
+
+instance valClearFloat :: Val (ClearFloat) where
+  value (ClearFloatLeft) = fromString "left"
+  value (ClearFloatRight) = fromString "right"
+  value (ClearFloatBoth) = fromString "both"
+  value (ClearFloatNone) = fromString "none"
+  value (ClearFloatInherit) = fromString "inherit"
+  value (ClearFloatInlineStart) = fromString "inline-start"
+  value (ClearFloatInlineEnd) = fromString "inline-end"
+
+instance noneClearFloat :: None (ClearFloat) where
+  none = ClearFloatNone
+
+instance inheritClearFloat :: Inherit (ClearFloat) where
+  inherit = ClearFloatInherit
+
+clearLeft :: ClearFloat
+clearLeft = ClearFloatLeft
+
+clearRight :: ClearFloat
+clearRight = ClearFloatRight
+
+clearBoth :: ClearFloat
+clearBoth = ClearFloatBoth
+
+clearInlineStart :: ClearFloat
+clearInlineStart = ClearFloatInlineStart
+
+clearInlineEnd :: ClearFloat
+clearInlineEnd = ClearFloatInlineEnd
+
+clear :: ClearFloat -> CSS
+clear = key (fromString "clear")
