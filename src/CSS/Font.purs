@@ -1,15 +1,14 @@
 module CSS.Font where
 
 import Prelude
-
-import Data.Generic (class Generic)
-import Data.NonEmpty (NonEmpty, oneOf)
-
 import CSS.Color (Color)
+import CSS.Common (class Inherit, class Initial, class Normal, class Unset)
 import CSS.Property (class Val, Value, value, quote)
 import CSS.Size (Size)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
+import Data.Generic (class Generic)
+import Data.NonEmpty (NonEmpty, oneOf)
 
 color :: Color -> CSS
 color = key $ fromString "color"
@@ -40,6 +39,18 @@ derive instance genericFontWeight :: Generic FontWeight
 
 instance valFontWeight :: Val FontWeight where
   value (FontWeight v) = v
+
+instance normalFontWeight :: Normal FontWeight where
+  normal = FontWeight (fromString "normal")
+
+instance initialFontWeight :: Initial FontWeight where
+  initial = FontWeight (fromString "initial")
+
+instance inheritFontWeight :: Inherit FontWeight where
+  inherit = FontWeight (fromString "inherit")
+
+instance unsetFontWeight :: Unset FontWeight where
+  unset = FontWeight (fromString "unset")
 
 bold :: FontWeight
 bold = FontWeight $ fromString "bold"
