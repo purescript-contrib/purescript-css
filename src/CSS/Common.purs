@@ -73,5 +73,5 @@ browsers = Prefixed
 
 -- | Syntax for CSS function call.
 
-call :: forall s. (IsString s, Monoid s) => s -> s -> s
+call :: forall s. IsString s => Monoid s => s -> s -> s
 call fn arg = fn <> fromString "(" <> arg <> fromString ")"
