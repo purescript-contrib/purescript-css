@@ -4,8 +4,9 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms)
 import CSS.Cursor as Cursor
+import CSS.Flexbox (flex)
 import CSS.FontStyle as FontStyle
 import CSS.Text.Overflow as TextOverflow
 import CSS.Transform as Transform
@@ -45,6 +46,10 @@ example7 :: Rendered
 example7 = render do
   zIndex 11
   opacity 0.5
+  
+example8 :: Rendered
+example8 = render do
+  flex 0.14 1.0 (pct 0.0)
 
 withSelector :: Rendered
 withSelector = render do
@@ -179,6 +184,8 @@ main = do
   renderedInline example6 `assertEqual` Just "src: url(\"font.woff\") format(\"woff\")"
 
   renderedInline example7 `assertEqual` Just "z-index: 11; opacity: 0.5"
+  
+  renderedInline example8 `assertEqual` Just "flex: 0.14 1.0 0.0%"
 
   renderedInline exampleFontStyle1 `assertEqual` Just "font-style: italic"
   renderedInline exampleFontStyle2 `assertEqual` Just "font-style: oblique"
