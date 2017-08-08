@@ -4,7 +4,7 @@ import Prelude
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception (EXCEPTION, error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, px, dashed, border, inlineBlock, red, (?), fontFaceSrc)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, px, dashed, border, inlineBlock, red, (?), fontFaceSrc, zIndex)
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton)
 
@@ -36,6 +36,10 @@ example5 = render do
 example6 :: Rendered
 example6 = render do
   fontFaceSrc $ singleton $ FontFaceSrcUrl "font.woff" $ Just WOFF
+
+example7 :: Rendered
+example7 = render do
+  zIndex 11
 
 nestedNodes :: Rendered
 nestedNodes = render do
@@ -70,3 +74,5 @@ main = do
   renderedSheet nestedNodesWithEmptyParent `assertEqual` Just "#parent #child { display: block }\n"
 
   renderedInline example6 `assertEqual` Just "src: url(\"font.woff\") format(\"woff\")"
+
+  renderedInline example7 `assertEqual` Just "z-index: 11"
