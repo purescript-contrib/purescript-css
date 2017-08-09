@@ -178,3 +178,6 @@ clearInlineEnd = ClearFloatInlineEnd
 
 clear :: ClearFloat -> CSS
 clear = key (fromString "clear")
+
+zIndex :: Int -> CSS
+zIndex = key (fromString "z-index") <<< show
