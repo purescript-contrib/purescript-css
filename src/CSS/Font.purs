@@ -22,8 +22,23 @@ derive instance genericGenericFontFamily :: Generic GenericFontFamily
 instance valGenericFontFamily :: Val GenericFontFamily where
   value (GenericFontFamily v) = v
 
+serif :: GenericFontFamily
+serif = GenericFontFamily $ fromString "serif"
+
 sansSerif :: GenericFontFamily
 sansSerif = GenericFontFamily $ fromString "sans-serif"
+
+cursive :: GenericFontFamily
+cursive = GenericFontFamily $ fromString "cursive"
+
+monospace :: GenericFontFamily
+monospace = GenericFontFamily $ fromString "monospace"
+
+fantasy :: GenericFontFamily
+fantasy = GenericFontFamily $ fromString "fantasy"
+
+systemUi :: GenericFontFamily
+systemUi = GenericFontFamily $ fromString "system-ui"
 
 fontFamily :: Array String -> NonEmpty Array GenericFontFamily -> CSS
 fontFamily a b = key (fromString "font-family") <<< value $ (value <<< quote <$> a) <> oneOf (value <$> b)
