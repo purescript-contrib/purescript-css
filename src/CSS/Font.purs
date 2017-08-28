@@ -66,3 +66,33 @@ weight i = FontWeight $ value i
 
 fontWeight :: FontWeight -> CSS
 fontWeight = key $ fromString "font-weight"
+
+newtype FontStyle = FontStyle Value
+
+derive instance eqFontStyle :: Eq FontStyle
+derive instance ordFontStyle :: Ord FontStyle
+derive instance genericFontStyle :: Generic FontStyle
+
+instance valFontStyle :: Val FontStyle where
+  value (FontStyle v) = v
+
+instance normalFontStyle :: Normal FontStyle where
+  normal = FontStyle (fromString "normal")
+
+instance initialFontStyle :: Initial FontStyle where
+  initial = FontStyle (fromString "initial")
+
+instance inheritFontStyle :: Inherit FontStyle where
+  inherit = FontStyle (fromString "inherit")
+
+instance unsetFontStyle :: Unset FontStyle where
+  unset = FontStyle (fromString "unset")
+
+italic :: FontStyle
+italic = FontStyle $ fromString "italic"
+
+oblique :: FontStyle
+oblique = FontStyle $ fromString "oblique"
+
+fontStyle :: FontStyle -> CSS
+fontStyle = key $ fromString "font-style"
