@@ -27,7 +27,7 @@
     "purescript-strings": "^3.0.0",
     "purescript-these": "^3.0.0",
     "purescript-transformers": "^3.2.0",
-    "purescript-colors": "^3.0.0",
+    "purescript-colors": "3.x - 4.x",
     "purescript-console": "^3.0.0"
   },
   "devDependencies": {
