@@ -2,7 +2,6 @@ module CSS.Selector where
 
 import Prelude
 
-import Data.Generic.Rep (class Generic)
 import Data.String (take, drop)
 
 import CSS.String (class IsString)
@@ -22,13 +21,11 @@ data Predicate
 
 derive instance eqPredicate :: Eq Predicate
 derive instance ordPredicate :: Ord Predicate
-derive instance genericPredicate :: Generic Predicate _
 
 newtype Refinement = Refinement (Array Predicate)
 
 derive instance eqRefinement :: Eq Refinement
 derive instance ordRefinement :: Ord Refinement
-derive instance genericRefinement :: Generic Refinement _
 
 instance isStringRefinement :: IsString Refinement where
   fromString s =
@@ -51,13 +48,11 @@ data Path f
 
 derive instance eqPath :: (Eq f) => Eq (Path f)
 derive instance ordPath :: (Ord f) => Ord (Path f)
-derive instance genericPath :: (Generic f rep) => Generic (Path f) _
 
 data Selector = Selector Refinement (Path Selector)
 
 derive instance eqSelector :: Eq Selector
 derive instance ordSelector :: Ord Selector
-derive instance genericSelector :: Generic Selector _
 
 instance isStringSelector :: IsString Selector where
   fromString s =

@@ -6,14 +6,11 @@ import CSS.Common (class Inherit, class None)
 import CSS.Property (class Val, Value)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
-import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
 
 newtype Position = Position Value
 
 derive instance eqPosition :: Eq Position
 derive instance ordPosition :: Ord Position
-derive instance genericPosition :: Generic Position _
 
 instance valPosition :: Val Position where
   value (Position v) = v
@@ -37,7 +34,6 @@ newtype Display = Display Value
 
 derive instance eqDisplay :: Eq Display
 derive instance ordDisplay :: Ord Display
-derive instance genericDisplay :: Generic Display _
 
 instance valDisplay :: Val Display where
   value (Display v) = v
@@ -111,10 +107,11 @@ display = key $ fromString "display"
 data Float = FloatLeft | FloatRight | FloatNone
 
 derive instance eqFloat :: Eq Float
-derive instance genericFloat :: Generic Float _
 
 instance showFloat :: Show Float where
-  show = genericShow
+  show FloatLeft = "FloatLeft"
+  show FloatRight = "FloatRight"
+  show FloatNone = "FloatNone"
 
 instance valFloat :: Val (Float) where
   value (FloatLeft) = fromString "left"
@@ -143,10 +140,15 @@ data ClearFloat
   | ClearFloatInlineEnd
 
 derive instance eqClearFloat :: Eq ClearFloat
-derive instance genericClearFloat :: Generic ClearFloat _
 
 instance showClearFloat :: Show ClearFloat where
-  show = genericShow
+  show ClearFloatLeft = "ClearFloatLeft"
+  show ClearFloatRight = "ClearFloatRight"
+  show ClearFloatBoth = "ClearFloatBoth"
+  show ClearFloatNone = "ClearFloatNone"
+  show ClearFloatInherit = "ClearFloatInherit"
+  show ClearFloatInlineStart = "ClearFloatInlineStart"
+  show ClearFloatInlineEnd = "ClearFloatInlineEnd"
 
 instance valClearFloat :: Val (ClearFloat) where
   value (ClearFloatLeft) = fromString "left"

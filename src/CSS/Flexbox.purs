@@ -4,8 +4,6 @@ module CSS.Flexbox where
 
 import Prelude
 
-import Data.Generic.Rep (class Generic)
-
 import CSS.Common (class Center, class Inherit, class Other, class Baseline, class Auto)
 import CSS.Property (class Val, Value, value, (!))
 import CSS.Size (Size)
@@ -48,7 +46,6 @@ newtype AlignContentValue = AlignContentValue Value
 
 derive instance eqAlignContentValue :: Eq AlignContentValue
 derive instance ordAlignContentValue :: Ord AlignContentValue
-derive instance genericAlignContentValue :: Generic AlignContentValue _
 
 instance isStringAlignContentValue :: IsString AlignContentValue where
   fromString = AlignContentValue <<< fromString
@@ -89,7 +86,6 @@ newtype AlignItemsValue = AlignItemsValue Value
 
 derive instance eqAlignItemsValue :: Eq AlignItemsValue
 derive instance ordAlignItemsValue :: Ord AlignItemsValue
-derive instance genericAlignItemsValue :: Generic AlignItemsValue _
 
 instance isStringAlignItemsValue :: IsString AlignItemsValue where
   fromString = AlignItemsValue <<< fromString
@@ -127,7 +123,6 @@ newtype AlignSelfValue = AlignSelfValue Value
 
 derive instance eqAlignSelfValue :: Eq AlignSelfValue
 derive instance ordAlignSelfValue :: Ord AlignSelfValue
-derive instance genericAlignSelfValue :: Generic AlignSelfValue _
 
 instance isStringAlignSelfValue :: IsString AlignSelfValue where
   fromString = AlignSelfValue <<< fromString
@@ -180,7 +175,6 @@ newtype FlexDirection = FlexDirection Value
 
 derive instance eqFlexDirection :: Eq FlexDirection
 derive instance ordFlexDirection :: Ord FlexDirection
-derive instance genericFlexDirection :: Generic FlexDirection _
 
 instance valFlexDirection :: Val FlexDirection where
   value (FlexDirection v) = v
@@ -222,7 +216,6 @@ newtype FlexWrap = FlexWrap Value
 
 derive instance eqFlexWrap :: Eq FlexWrap
 derive instance ordFlexWrap :: Ord FlexWrap
-derive instance genericFlexWrap :: Generic FlexWrap _
 
 instance valFlexWrap :: Val FlexWrap where
   value (FlexWrap v) = v
@@ -248,7 +241,6 @@ newtype JustifyContentValue = JustifyContentValue Value
 
 derive instance eqJustifyContentValue :: Eq JustifyContentValue
 derive instance ordJustifyContentValue :: Ord JustifyContentValue
-derive instance genericJustifyContentValue :: Generic JustifyContentValue _
 
 instance isStringJustifyContentValue :: IsString JustifyContentValue where
   fromString = JustifyContentValue <<< fromString

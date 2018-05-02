@@ -2,7 +2,6 @@ module CSS.FontFace where
 
 import Prelude
 
-import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe, maybe)
 import Data.NonEmpty (NonEmpty)
 
@@ -23,7 +22,6 @@ data FontFaceFormat
 
 derive instance eqFontFaceFormat :: Eq FontFaceFormat
 derive instance ordFontFaceFormat :: Ord FontFaceFormat
-derive instance genericFontFaceFormat :: Generic FontFaceFormat _
 
 formatName :: FontFaceFormat -> String
 formatName WOFF = "woff"
@@ -39,7 +37,6 @@ data FontFaceSrc
 
 derive instance eqFontFaceSrc :: Eq FontFaceSrc
 derive instance ordFontFaceSrc :: Ord FontFaceSrc
-derive instance genericFontFaceSrc :: Generic FontFaceSrc _
 
 instance valFontFaceSrc :: Val FontFaceSrc where
   value (FontFaceSrcUrl u f) = fromString $ "url(" <> quote u <> ")" <> maybe "" (\f' -> " format(" <> quote (formatName f') <> ")") f

@@ -2,8 +2,6 @@ module CSS.TextAlign where
 
 import Prelude
 
-import Data.Generic.Rep (class Generic)
-
 import CSS.Property (class Val, Value)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
@@ -12,7 +10,6 @@ newtype TextAlign = TextAlign Value
 
 derive instance eqTextAlign :: Eq TextAlign
 derive instance ordTextAlign:: Ord TextAlign
-derive instance genericTextAlign :: Generic TextAlign _
 
 instance valTextAlign :: Val TextAlign where
   value (TextAlign v) = v

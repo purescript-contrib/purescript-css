@@ -7,14 +7,12 @@ import CSS.Stylesheet (CSS, key)
 import CSS.Time (Time)
 import CSS.Transition (TimingFunction)
 import Data.Foldable (for_)
-import Data.Generic.Rep (class Generic)
 import Data.Tuple.Nested (tuple7)
 
 newtype AnimationDirection = AnimationDirection Value
 
 derive instance eqAnimationDirection :: Eq AnimationDirection
 derive instance ordAnimationDirection :: Ord AnimationDirection
-derive instance genericAnimationDirection :: Generic AnimationDirection _
 
 instance valAnimationDirection :: Val AnimationDirection where
   value (AnimationDirection v) = v
@@ -35,7 +33,6 @@ newtype IterationCount = IterationCount Value
 
 derive instance eqIterationCount :: Eq IterationCount
 derive instance ordIterationCount :: Ord IterationCount
-derive instance genericIterationCount :: Generic IterationCount _
 
 instance valIterationCount :: Val IterationCount where
   value (IterationCount v) = v
@@ -50,7 +47,6 @@ newtype FillMode = FillMode Value
 
 derive instance eqFillMode :: Eq FillMode
 derive instance ordFillMode :: Ord FillMode
-derive instance genericFillMode :: Generic FillMode _
 
 instance valFillMode :: Val FillMode where
   value (FillMode v) = v
@@ -77,7 +73,6 @@ newtype AnimationName = AnimationName Value
 
 derive instance eqAnimationName :: Eq AnimationName
 derive instance ordAnimationName :: Ord AnimationName
-derive instance genericAnimationName :: Generic AnimationName _
 
 instance valAnimationName :: Val AnimationName where
   value (AnimationName v) = v

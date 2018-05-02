@@ -9,7 +9,6 @@ import CSS.Stylesheet (CSS, StyleM, App(..), Feature(..), Keyframes(..), MediaQu
 import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
 import Data.Either (Either(..), either)
 import Data.Foldable (fold, foldMap, intercalate)
-import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..), fromMaybe, maybe)
 import Data.NonEmpty (NonEmpty(..), (:|), foldl1, oneOf)
 import Data.These (These(..), theseLeft, theseRight)
@@ -21,7 +20,6 @@ newtype Inline = Inline String
 
 derive instance eqInline :: Eq Inline
 derive instance ordInline :: Ord Inline
-derive instance genericInline :: Generic Inline _
 
 getInline :: Inline -> String
 getInline (Inline s) = s
@@ -36,7 +34,6 @@ newtype Sheet = Sheet String
 
 derive instance eqSheet :: Eq Sheet
 derive instance ordSheet :: Ord Sheet
-derive instance genericSheet :: Generic Sheet _
 
 getSheet :: Sheet -> String
 getSheet (Sheet s) = s
