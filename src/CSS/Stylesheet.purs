@@ -6,7 +6,7 @@ import Control.Monad.Writer (Writer, execWriter)
 import Control.Monad.Writer.Class (tell)
 
 import Data.Array (singleton)
-import Data.Generic (class Generic)
+import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (NonEmpty, (:|))
 import Data.Profunctor.Strong (second)
@@ -19,25 +19,25 @@ newtype MediaType = MediaType Value
 
 derive instance eqMediaType :: Eq MediaType
 derive instance ordMediaType:: Ord MediaType
-derive instance genericMediaType :: Generic MediaType
+derive instance genericMediaType :: Generic MediaType _
 
 data NotOrOnly = Not | Only
 
 derive instance eqNotOrOnly :: Eq NotOrOnly
 derive instance ordNotOrOnly:: Ord NotOrOnly
-derive instance genericNotOrOnly :: Generic NotOrOnly
+derive instance genericNotOrOnly :: Generic NotOrOnly _
 
 data MediaQuery = MediaQuery (Maybe NotOrOnly) MediaType (NonEmpty Array Feature)
 
 derive instance eqMediaQuery :: Eq MediaQuery
 derive instance ordMediaQuery :: Ord MediaQuery
-derive instance genericMediaQuery :: Generic MediaQuery
+derive instance genericMediaQuery :: Generic MediaQuery _
 
 data Feature = Feature String (Maybe Value)
 
 derive instance eqFeature :: Eq Feature
 derive instance ordFeature :: Ord Feature
-derive instance genericFeature :: Generic Feature
+derive instance genericFeature :: Generic Feature _
 
 data App
   = Self Refinement
@@ -48,13 +48,13 @@ data App
 
 derive instance eqApp :: Eq App
 derive instance ordApp :: Ord App
-derive instance genericApp :: Generic App
+derive instance genericApp :: Generic App _
 
 data Keyframes = Keyframes String (NonEmpty Array (Tuple Number (Array Rule)))
 
 derive instance eqKeyframes :: Eq Keyframes
 derive instance ordKeyframes :: Ord Keyframes
-derive instance genericKeyframes :: Generic Keyframes
+derive instance genericKeyframes :: Generic Keyframes _
 
 data Rule
   = Property (Key Unit) Value
@@ -66,7 +66,7 @@ data Rule
 
 derive instance eqRule :: Eq Rule
 derive instance ordRule :: Ord Rule
-derive instance genericRule :: Generic Rule
+derive instance genericRule :: Generic Rule _
 
 newtype StyleM a = S (Writer (Array Rule) a)
 

@@ -29,7 +29,7 @@ where
 
 import Prelude
 
-import Data.Generic (class Generic)
+import Data.Generic.Rep (class Generic)
 import Data.Tuple (Tuple(..))
 
 import CSS.Background (class Loc, BackgroundImage, Direction, sideTop, straight, sideLeft)
@@ -89,7 +89,7 @@ newtype Radial = Radial Value
 
 derive instance eqRadial :: Eq Radial
 derive instance ordRadial :: Ord Radial
-derive instance genericRadial :: Generic Radial
+derive instance genericRadial :: Generic Radial _
 
 instance valRadial :: Val Radial where
   value (Radial v) = v
@@ -113,7 +113,7 @@ newtype Extend = Extend Value
 
 derive instance eqExtend :: Eq Extend
 derive instance ordExtend :: Ord Extend
-derive instance genericExtend :: Generic Extend
+derive instance genericExtend :: Generic Extend _
 
 instance valExtend :: Val Extend where
   value (Extend v) = v

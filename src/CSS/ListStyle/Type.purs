@@ -6,7 +6,8 @@ import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
 import Data.Eq (class Eq)
 import Data.Function (($))
-import Data.Generic (class Generic, gShow)
+import Data.Generic.Rep (class Generic)
+import Data.Generic.Rep.Show (genericShow)
 import Data.Ord (class Ord)
 import Data.Semigroup ((<>))
 import Data.Show (class Show)
@@ -28,10 +29,10 @@ data ListStyleType
 
 derive instance eqListStyleType :: Eq ListStyleType
 derive instance ordListStyleType :: Ord ListStyleType
-derive instance genericListStyleType :: Generic ListStyleType
+derive instance genericListStyleType :: Generic ListStyleType _
 
 instance showListStyleType :: Show ListStyleType where
-  show = gShow
+  show = genericShow
 
 instance valListStyleType :: Val ListStyleType where
   value (Disc) = fromString "disc"

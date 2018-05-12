@@ -9,7 +9,7 @@ where
 
 import Prelude
 
-import Data.Generic (class Generic)
+import Data.Generic.Rep (class Generic)
 
 import CSS.Border (Stroke)
 import CSS.Color (Color)
@@ -25,7 +25,7 @@ newtype BoxType = BoxType Value
 
 derive instance eqBoxType :: Eq BoxType
 derive instance ordBoxType :: Ord BoxType
-derive instance genericBoxType :: Generic BoxType
+derive instance genericBoxType :: Generic BoxType _
 
 instance isStringBoxType :: IsString BoxType where
   fromString = BoxType <<< fromString

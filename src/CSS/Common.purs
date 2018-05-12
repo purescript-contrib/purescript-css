@@ -7,8 +7,6 @@
 module CSS.Common where
 
 import Prelude
-
-import Data.Monoid (class Monoid)
 import Data.Tuple (Tuple(..))
 
 import CSS.Property (Prefixed(..), Value)
@@ -47,7 +45,7 @@ instance normalValue   :: Normal   Value where normal   = fromString "normal"
 instance noneValue     :: None     Value where none     = fromString "none"
 instance visibleValue  :: Visible  Value where visible  = fromString "visible"
 instance hiddenValue   :: Hidden   Value where hidden   = fromString "hidden"
-instance otherValue    :: Other    Value where other    = id
+instance otherValue    :: Other    Value where other    = identity
 instance initialValue  :: Initial  Value where initial  = fromString "initial"
 instance unsetValue    :: Unset    Value where unset    = fromString "unset"
 instance topValue      :: Top      Value where top      = fromString "top"

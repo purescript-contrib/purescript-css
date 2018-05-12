@@ -2,8 +2,8 @@ module Test.Main where
 
 import Prelude
 
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Exception (EXCEPTION, error, throwException)
+import Effect (Effect)
+import Effect.Exception (error, throwException)
 import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, px, dashed, border, inlineBlock, red, (?), fontFaceSrc, zIndex)
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton)
@@ -52,10 +52,10 @@ nestedNodesWithEmptyParent = render do
   fromString "#parent" ? do
     fromString "#child" ? display block
 
-assertEqual :: forall a. Eq a => Show a => a -> a -> Eff (exception :: EXCEPTION) Unit
+assertEqual :: forall a. Eq a => Show a => a -> a -> Effect Unit
 assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
 
-main :: Eff (exception :: EXCEPTION) Unit
+main :: Effect Unit
 main = do
   renderedInline example1 `assertEqual` Just "color: hsl(0.0, 100.0%, 50.0%); display: block"
   renderedInline example2 `assertEqual` Just "display: inline-block"
