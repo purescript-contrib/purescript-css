@@ -1,12 +1,12 @@
 module CSS.Property where
 
 import Prelude
+
 import CSS.String (class IsString, fromString)
 import Color (Color, cssStringHSLA)
 import Data.Foldable (intercalate)
-import Data.Generic (class Generic)
+import Data.Generic.Rep (class Generic)
 import Data.Maybe (fromMaybe)
-import Data.Monoid (class Monoid, mempty)
 import Data.NonEmpty (NonEmpty, oneOf)
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..), lookup)
@@ -17,7 +17,7 @@ data Prefixed
 
 derive instance eqPrefixed :: Eq Prefixed
 derive instance ordPrefixed :: Ord Prefixed
-derive instance genericPrefixed :: Generic Prefixed
+derive instance genericPrefixed :: Generic Prefixed _
 
 instance isStringPrefixed :: IsString Prefixed where
   fromString = Plain
@@ -43,7 +43,7 @@ newtype Key a = Key Prefixed
 
 derive instance eqKey :: (Eq a) => Eq (Key a)
 derive instance ordKey :: (Ord a) => Ord (Key a)
-derive instance genericKey :: (Generic a) => Generic (Key a)
+derive instance genericKey :: (Generic a rep) => Generic (Key a) _
 
 instance isStringKey :: IsString (Key a) where
   fromString = Key <<< fromString
@@ -55,7 +55,7 @@ newtype Value = Value Prefixed
 
 derive instance eqValue :: Eq Value
 derive instance ordValue :: Ord Value
-derive instance genericValue :: Generic Value
+derive instance genericValue :: Generic Value _
 
 instance isStringValue :: IsString Value where
   fromString = Value <<< fromString
@@ -73,13 +73,13 @@ newtype Literal = Literal String
 
 derive instance eqLiteral :: Eq Literal
 derive instance ordLiteral :: Ord Literal
-derive instance genericLiteral :: Generic Literal
+derive instance genericLiteral :: Generic Literal _
 
 instance valLiteral :: Val Literal where
   value (Literal a) = fromString $ quote a
 
 instance valValue :: Val Value where
-  value = id
+  value = identity
 
 instance valString :: Val String where
   value = fromString

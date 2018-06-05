@@ -2,7 +2,7 @@ module CSS.Transition where
 
 import Prelude
 
-import Data.Generic (class Generic)
+import Data.Generic.Rep (class Generic)
 
 import CSS.String (fromString)
 import CSS.Property (class Val, Value)
@@ -11,7 +11,7 @@ newtype TimingFunction = TimingFunction Value
 
 derive instance eqTimingFunction :: Eq TimingFunction
 derive instance ordTimingFunction:: Ord TimingFunction
-derive instance genericTimingFunction :: Generic TimingFunction
+derive instance genericTimingFunction :: Generic TimingFunction _
 
 instance valTimingFunction :: Val TimingFunction where
   value (TimingFunction v) = v

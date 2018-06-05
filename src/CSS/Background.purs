@@ -75,7 +75,7 @@ where
 
 import Prelude
 
-import Data.Generic (class Generic)
+import Data.Generic.Rep (class Generic)
 import Data.Tuple (Tuple(..))
 
 import CSS.Box (BoxType)
@@ -135,7 +135,7 @@ newtype BackgroundPosition = BackgroundPosition Value
 
 derive instance eqBackgroundPosition :: Eq BackgroundPosition
 derive instance ordBackgroundPosition :: Ord BackgroundPosition
-derive instance genericBackgroundPosition :: Generic BackgroundPosition
+derive instance genericBackgroundPosition :: Generic BackgroundPosition _
 
 instance isStringBackgroundPosition :: IsString BackgroundPosition where
   fromString = BackgroundPosition <<< fromString
@@ -167,7 +167,7 @@ newtype BackgroundSize = BackgroundSize Value
 
 derive instance eqBackgroundSize :: Eq BackgroundSize
 derive instance ordBackgroundSize :: Ord BackgroundSize
-derive instance genericBackgroundSize :: Generic BackgroundSize
+derive instance genericBackgroundSize :: Generic BackgroundSize _
 
 instance isStringBackgroundSize :: IsString BackgroundSize where
   fromString = BackgroundSize <<< fromString
@@ -205,7 +205,7 @@ newtype BackgroundRepeat = BackgroundRepeat Value
 
 derive instance eqBackgroundRepeat :: Eq BackgroundRepeat
 derive instance ordBackgroundRepeat :: Ord BackgroundRepeat
-derive instance genericBackgroundRepeat :: Generic BackgroundRepeat
+derive instance genericBackgroundRepeat :: Generic BackgroundRepeat _
 
 instance isStringBackgroundRepeat :: IsString BackgroundRepeat where
   fromString = BackgroundRepeat <<< fromString
@@ -255,7 +255,7 @@ newtype BackgroundImage = BackgroundImage Value
 
 derive instance eqBackgroundImage :: Eq BackgroundImage
 derive instance ordBackgroundImage :: Ord BackgroundImage
-derive instance genericBackgroundImage :: Generic BackgroundImage
+derive instance genericBackgroundImage :: Generic BackgroundImage _
 
 instance isStringBackgroundImage :: IsString BackgroundImage where
   fromString = BackgroundImage <<< fromString
@@ -287,7 +287,7 @@ newtype BackgroundOrigin = BackgroundOrigin Value
 
 derive instance eqBackgroundOrigin :: Eq BackgroundOrigin
 derive instance ordBackgroundOrigin :: Ord BackgroundOrigin
-derive instance genericBackgroundOrigin :: Generic BackgroundOrigin
+derive instance genericBackgroundOrigin :: Generic BackgroundOrigin _
 
 instance isStringBackgroundOrigin :: IsString BackgroundOrigin where
   fromString = BackgroundOrigin <<< fromString
@@ -316,7 +316,7 @@ newtype BackgroundClip = BackgroundClip Value
 
 derive instance eqBackgroundClip :: Eq BackgroundClip
 derive instance ordBackgroundClip :: Ord BackgroundClip
-derive instance genericBackgroundClip :: Generic BackgroundClip
+derive instance genericBackgroundClip :: Generic BackgroundClip _
 
 instance isStringBackgroundClip :: IsString BackgroundClip where
   fromString = BackgroundClip <<< fromString
@@ -345,7 +345,7 @@ newtype BackgroundAttachment = BackgroundAttachment Value
 
 derive instance eqBackgroundAttachment :: Eq BackgroundAttachment
 derive instance ordBackgroundAttachment :: Ord BackgroundAttachment
-derive instance genericBackgroundAttachment :: Generic BackgroundAttachment
+derive instance genericBackgroundAttachment :: Generic BackgroundAttachment _
 
 instance isStringBackgroundAttachment :: IsString BackgroundAttachment where
   fromString = BackgroundAttachment <<< fromString
@@ -377,7 +377,7 @@ newtype Side = Side Value
 
 derive instance eqSide :: Eq Side
 derive instance ordSide :: Ord Side
-derive instance genericSide :: Generic Side
+derive instance genericSide :: Generic Side _
 
 instance isStringSide :: IsString Side where
   fromString = Side <<< fromString
@@ -418,7 +418,7 @@ newtype Direction = Direction Value
 
 derive instance eqDirection :: Eq Direction
 derive instance ordDirection :: Ord Direction
-derive instance genericDirection :: Generic Direction
+derive instance genericDirection :: Generic Direction _
 
 instance valDirection :: Val Direction where
   value (Direction v) = v
@@ -436,7 +436,7 @@ newtype Location = Location Value
 
 derive instance eqLocation :: Eq Location
 derive instance ordLocation :: Ord Location
-derive instance genericLocation :: Generic Location
+derive instance genericLocation :: Generic Location _
 
 instance valLocation :: Val Location where
   value (Location v) = v

@@ -2,7 +2,7 @@ module CSS.Overflow where
 
 import Prelude
 
-import Data.Generic (class Generic)
+import Data.Generic.Rep (class Generic)
 
 import CSS.Property (class Val, Value)
 import CSS.String (fromString)
@@ -12,7 +12,7 @@ newtype Overflow = Overflow Value
 
 derive instance eqOverflow :: Eq Overflow
 derive instance ordOverflow :: Ord Overflow
-derive instance genericOverflow :: Generic Overflow
+derive instance genericOverflow :: Generic Overflow _
 
 instance valOverflow :: Val Overflow where
   value (Overflow v) = v

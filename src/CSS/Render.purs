@@ -2,29 +2,26 @@ module CSS.Render where
 
 import Prelude
 
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (log, CONSOLE)
-
-import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
-import Data.Either (Either(..), either)
-import Data.Foldable (fold, foldMap, intercalate)
-import Data.Generic (class Generic)
-import Data.Maybe (Maybe(..), fromMaybe, maybe)
-import Data.Monoid (class Monoid, mempty)
-import Data.NonEmpty (NonEmpty(..), (:|), foldl1, oneOf)
-import Data.These (These(..), theseLeft, theseRight)
-import Data.Tuple (Tuple(..), lookup, uncurry)
-
 import CSS.Property (Key(..), Prefixed(..), Value(..), plain)
 import CSS.Selector (Path(..), Predicate(..), Refinement(..), Selector(..), with, star, element, (**), (|>))
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, StyleM, App(..), Feature(..), Keyframes(..), MediaQuery(..), MediaType(..), Rule(..), runS)
+import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
+import Data.Either (Either(..), either)
+import Data.Foldable (fold, foldMap, intercalate)
+import Data.Generic.Rep (class Generic)
+import Data.Maybe (Maybe(..), fromMaybe, maybe)
+import Data.NonEmpty (NonEmpty(..), (:|), foldl1, oneOf)
+import Data.These (These(..), theseLeft, theseRight)
+import Data.Tuple (Tuple(..), lookup, uncurry)
+import Effect (Effect)
+import Effect.Console (log)
 
 newtype Inline = Inline String
 
 derive instance eqInline :: Eq Inline
 derive instance ordInline :: Ord Inline
-derive instance genericInline :: Generic Inline
+derive instance genericInline :: Generic Inline _
 
 getInline :: Inline -> String
 getInline (Inline s) = s
@@ -39,7 +36,7 @@ newtype Sheet = Sheet String
 
 derive instance eqSheet :: Eq Sheet
 derive instance ordSheet :: Ord Sheet
-derive instance genericSheet :: Generic Sheet
+derive instance genericSheet :: Generic Sheet _
 
 getSheet :: Sheet -> String
 getSheet (Sheet s) = s
@@ -61,11 +58,11 @@ renderedSheet = (_ >>= (map getSheet <<< theseRight))
 render :: forall a. StyleM a -> Rendered
 render = rules [] <<< runS
 
-putInline :: forall e. CSS -> Eff (console :: CONSOLE | e) Unit
+putInline :: CSS -> Effect Unit
 putInline s =
   log <<< fromMaybe "" <<< renderedInline <<< render $ s
 
-putStyleSheet :: forall e. CSS -> Eff (console :: CONSOLE | e) Unit
+putStyleSheet :: CSS -> Effect Unit
 putStyleSheet s =
   log <<< fromMaybe "" <<< renderedSheet <<< render $ s
 

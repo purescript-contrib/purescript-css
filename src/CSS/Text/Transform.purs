@@ -12,7 +12,8 @@ import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
 import Data.Eq (class Eq)
 import Data.Function (($))
-import Data.Generic (class Generic, gShow)
+import Data.Generic.Rep (class Generic)
+import Data.Generic.Rep.Show (genericShow)
 import Data.Ord (class Ord)
 import Data.Show (class Show)
 
@@ -26,7 +27,7 @@ data TextTransform
 
 derive instance eqTextTransform :: Eq TextTransform
 derive instance ordTextTransform :: Ord TextTransform
-derive instance genericTextTransform :: Generic TextTransform
+derive instance genericTextTransform :: Generic TextTransform _
 
 instance valTextTransform :: Val TextTransform where
   value (Uppercase)  = fromString "uppercase"
@@ -37,7 +38,7 @@ instance valTextTransform :: Val TextTransform where
   value (Inherit)    = fromString "inherit"
 
 instance showTextTransform :: Show (TextTransform) where
-  show = gShow
+  show = genericShow
 
 instance noneTextTransform :: None TextTransform where
   none = None
