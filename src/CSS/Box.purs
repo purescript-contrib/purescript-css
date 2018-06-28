@@ -9,8 +9,6 @@ where
 
 import Prelude
 
-import Data.Generic.Rep (class Generic)
-
 import CSS.Border (Stroke)
 import CSS.Color (Color)
 import CSS.Common (class Inherit, browsers)
@@ -25,7 +23,6 @@ newtype BoxType = BoxType Value
 
 derive instance eqBoxType :: Eq BoxType
 derive instance ordBoxType :: Ord BoxType
-derive instance genericBoxType :: Generic BoxType _
 
 instance isStringBoxType :: IsString BoxType where
   fromString = BoxType <<< fromString

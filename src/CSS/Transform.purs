@@ -6,14 +6,12 @@ import CSS.Property (class Val, Value, noCommas, value)
 import CSS.Size (Angle, Abs, Size)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
-import Data.Generic.Rep (class Generic)
 import Data.Tuple.Nested (tuple3)
 
 newtype Transformation = Transformation Value
 
 derive instance eqTransformation :: Eq Transformation
 derive instance ordTransformation:: Ord Transformation
-derive instance genericTransformation :: Generic Transformation _
 
 instance valTransformation :: Val Transformation where
   value (Transformation v) = v

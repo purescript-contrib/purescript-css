@@ -6,8 +6,6 @@ import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
 import Data.Eq (class Eq)
 import Data.Function (($))
-import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
 import Data.Ord (class Ord)
 import Data.Show (class Show)
 
@@ -20,10 +18,13 @@ data ListStylePosition
 
 derive instance eqListStylePosition :: Eq ListStylePosition
 derive instance ordListStylePosition :: Ord ListStylePosition
-derive instance genericListStylePosition :: Generic ListStylePosition _
 
 instance showListStylePosition :: Show ListStylePosition where
-  show = genericShow
+  show Inside = "Inside"
+  show Outside = "Outside"
+  show Inherit = "Inherit"
+  show Initial = "Initial"
+  show Unset = "Unset"
 
 instance valListStylePosition :: Val ListStylePosition where
   value (Inside) = fromString "inside"

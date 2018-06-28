@@ -5,7 +5,6 @@ import CSS.Property (class Val, Value)
 import CSS.Size (Size)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
-import Data.Generic.Rep (class Generic)
 
 letterSpacing :: forall a. Size a -> CSS
 letterSpacing = key $ fromString "letter-spacing"
@@ -14,7 +13,6 @@ newtype TextDecoration = TextDecoration Value
 
 derive instance eqTextDecoration :: Eq TextDecoration
 derive instance ordTextDecoration:: Ord TextDecoration
-derive instance genericTextDecoration :: Generic TextDecoration _
 
 instance valTextDecoration :: Val TextDecoration where
   value (TextDecoration v) = v

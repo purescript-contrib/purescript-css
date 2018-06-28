@@ -6,11 +6,9 @@ import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
 import Data.Eq (class Eq)
 import Data.Function (($))
-import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
 import Data.Ord (class Ord)
 import Data.Semigroup ((<>))
-import Data.Show (class Show)
+import Data.Show (class Show, show)
 
 data ListStyleImage
   = ListStyleImage String
@@ -21,10 +19,13 @@ data ListStyleImage
 
 derive instance eqListStyleImage :: Eq ListStyleImage
 derive instance ordListStyleImage :: Ord ListStyleImage
-derive instance genericListStyleImage :: Generic ListStyleImage _
 
 instance showListStyleImage :: Show ListStyleImage where
-  show = genericShow
+  show (ListStyleImage url) = "(ListStyleImage " <> show url <> ")"
+  show Initial = "Initial"
+  show Inherit = "Inherit"
+  show Unset = "Unset"
+  show None = "None"
 
 instance valListStyleImage :: Val ListStyleImage where
   value (Initial) = fromString "initial"

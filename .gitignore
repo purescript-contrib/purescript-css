@@ -5,3 +5,4 @@
 /node_modules/
 /output/
 site/psc.js
+package-lock.json
