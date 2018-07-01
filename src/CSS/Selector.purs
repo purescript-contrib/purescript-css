@@ -69,12 +69,12 @@ element e = Selector (Refinement []) (Elem e)
 
 deep :: Selector -> Selector -> Selector
 deep a b = Selector (Refinement []) (Deep a b)
-infix 0 deep as **
+infix 6 deep as **
 
 child :: Selector -> Selector -> Selector
 child a b = Selector (Refinement []) (PathChild a b)
-infix 0 child as |>
+infix 6 child as |>
 
 with :: Selector -> Refinement -> Selector
 with (Selector (Refinement fs) e) (Refinement ps) = Selector (Refinement (fs <> ps)) e
-infix 0 child as ##
+infix 6 with as ##
