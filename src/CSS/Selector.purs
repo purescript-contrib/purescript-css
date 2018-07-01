@@ -54,6 +54,9 @@ data Selector = Selector Refinement (Path Selector)
 derive instance eqSelector :: Eq Selector
 derive instance ordSelector :: Ord Selector
 
+instance semigroupSelector :: Semigroup Selector where
+  append a b = Selector (Refinement []) (Combined a b)
+
 instance isStringSelector :: IsString Selector where
   fromString s =
     case take 1 s of

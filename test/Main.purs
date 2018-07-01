@@ -4,7 +4,7 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, px, dashed, border, inlineBlock, red, (?), fontFaceSrc, zIndex)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, p, a, px, dashed, border, inlineBlock, red, (?), fontFaceSrc, zIndex)
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton)
 
@@ -41,6 +41,11 @@ example7 :: Rendered
 example7 = render do
   zIndex 11
 
+combinedSelector :: Rendered
+combinedSelector = render do
+  (p <> a) ? do
+    display block
+
 nestedNodes :: Rendered
 nestedNodes = render do
   fromString "#parent" ? do
@@ -68,6 +73,8 @@ main = do
   renderedSheet example4 `assertEqual` Just "body { color: hsl(240.0, 100.0%, 50.0%) }\n#world { display: block }\n"
 
   renderedInline example5 `assertEqual` Just "box-sizing: content-box; box-sizing: border-box"
+
+  renderedSheet combinedSelector `assertEqual` Just "p, a { display: block }\n"
 
   renderedSheet nestedNodes `assertEqual` Just "#parent { display: block }\n#parent #child { display: block }\n"
 
