@@ -12,7 +12,7 @@ letterSpacing = key $ fromString "letter-spacing"
 newtype TextDecoration = TextDecoration Value
 
 derive instance eqTextDecoration :: Eq TextDecoration
-derive instance ordTextDecoration:: Ord TextDecoration
+derive instance ordTextDecoration :: Ord TextDecoration
 
 instance valTextDecoration :: Val TextDecoration where
   value (TextDecoration v) = v

@@ -4,9 +4,10 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, direction)
 import CSS.FontStyle as FontStyle
 import CSS.Text.Overflow as TextOverflow
+import CSS.Text.Direction as TextDirection
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton)
 
@@ -115,6 +116,10 @@ exampleTextOverflow2 :: Rendered
 exampleTextOverflow2 = render do
   textOverflow $ TextOverflow.custom "foobar"
 
+exampleDirection :: Rendered
+exampleDirection = render do
+  direction TextDirection.rtl
+
 nestedNodes :: Rendered
 nestedNodes = render do
   fromString "#parent" ? do
@@ -171,3 +176,4 @@ main = do
   renderedSheet attrSpace `assertEqual` Just "p[foo~='bar'] { display: block }\n"
   renderedSheet attrHyph `assertEqual` Just "p[foo|='bar'] { display: block }\n"
 
+  renderedInline exampleDirection `assertEqual` Just "direction: rtl"
