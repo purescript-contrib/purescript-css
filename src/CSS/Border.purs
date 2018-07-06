@@ -65,3 +65,6 @@ borderColor = key $ fromString "border-color"
 
 borderRadius :: forall a. Size a -> Size a -> Size a -> Size a -> CSS
 borderRadius a b c d = key (fromString "border-radius") (tuple4 a b c d)
+
+outline :: Stroke -> Size Abs -> Color -> CSS
+outline a b c = key (fromString "outline") $ tuple3 a b c

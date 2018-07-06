@@ -4,7 +4,7 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, px, dashed, border, inlineBlock, red, (?), fontFaceSrc, zIndex)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, violet, color, body, px, dashed, solid, border, outline, inlineBlock, red, (?), fontFaceSrc, zIndex)
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton)
 
@@ -17,9 +17,13 @@ example2 :: Rendered
 example2 = render do
   display inlineBlock
 
-example3 :: Rendered
-example3 = render do
+example3a :: Rendered
+example3a = render do
   border dashed (px 2.0) blue
+
+example3b :: Rendered
+example3b = render do
+  outline solid (px 1.0) violet
 
 example4 :: Rendered
 example4 = render do
@@ -59,7 +63,8 @@ main :: Effect Unit
 main = do
   renderedInline example1 `assertEqual` Just "color: hsl(0.0, 100.0%, 50.0%); display: block"
   renderedInline example2 `assertEqual` Just "display: inline-block"
-  renderedInline example3 `assertEqual` Just "border: dashed 2.0px hsl(240.0, 100.0%, 50.0%) "
+  renderedInline example3a `assertEqual` Just "border: dashed 2.0px hsl(240.0, 100.0%, 50.0%) "
+  renderedInline example3b `assertEqual` Just "outline: solid 1.0px hsl(300.0, 76.06%, 72.16%) "
 
   selector (Selector (Refinement [Id "test"]) Star) `assertEqual` "#test"
 
