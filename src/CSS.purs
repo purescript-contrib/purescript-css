@@ -11,6 +11,7 @@ import CSS.Flexbox (class FlexEnd, class FlexStart, class SpaceAround, class Spa
 import CSS.FontFace (FontFaceFormat(..), FontFaceSrc(..), fontFaceFamily, fontFaceSrc, formatName) as X
 import CSS.Font (FontWeight(..), GenericFontFamily(..), bold, bolder, color, fontFamily, fontSize, fontWeight, lighter, sansSerif, weight) as X
 import CSS.FontStyle (FontStyle, fontStyle) as X
+import CSS.Cursor (Cursor, cursor) as X
 import CSS.Geometry (bottom, height, left, lineHeight, margin, marginBottom, marginLeft, marginRight, marginTop, maxHeight, maxWidth, minHeight, minWidth, padding, paddingBottom, paddingLeft, paddingRight, paddingTop, right, top, width) as X
 import CSS.Gradient (Extend, Radial, Ramp, circle, circular, closestCorner, closestSide, ellipse, elliptical, farthestCorner, farthestSide, hGradient, hRepeatingGradient, linearGradient, radialGradient, repeatingLinearGradient, repeatingRadialGradient, vGradient, vRepeatingGradient) as X
 import CSS.Property (class Val, Key(..), Literal(..), Prefixed(..), Value(..), cast, noCommas, plain, quote, value, (!)) as X
