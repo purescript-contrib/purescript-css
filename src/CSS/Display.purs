@@ -183,5 +183,8 @@ clearInlineEnd = ClearFloatInlineEnd
 clear :: ClearFloat -> CSS
 clear = key (fromString "clear")
 
+opacity :: Number -> CSS
+opacity = key $ fromString "opacity"
+
 zIndex :: Int -> CSS
 zIndex = key (fromString "z-index") <<< show
