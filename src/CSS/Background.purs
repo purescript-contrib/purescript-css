@@ -86,8 +86,8 @@ import CSS.String (class IsString, fromString)
 import CSS.Stylesheet (CSS, key)
 
 -- | We implement the generic background property as a type class that accepts
--- multiple value types. This allows us to combine different background aspects
--- into a shorthand syntax.
+-- | multiple value types. This allows us to combine different background aspects
+-- | into a shorthand syntax.
 
 class Val a <= Background a where
   background :: a -> CSS
