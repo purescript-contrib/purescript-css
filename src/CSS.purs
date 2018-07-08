@@ -15,7 +15,7 @@ import CSS.Geometry (bottom, height, left, lineHeight, margin, marginBottom, mar
 import CSS.Gradient (Extend, Radial, Ramp, circle, circular, closestCorner, closestSide, ellipse, elliptical, farthestCorner, farthestSide, hGradient, hRepeatingGradient, linearGradient, radialGradient, repeatingLinearGradient, repeatingRadialGradient, vGradient, vRepeatingGradient) as X
 import CSS.Property (class Val, Key(..), Literal(..), Prefixed(..), Value(..), cast, noCommas, plain, quote, value, (!)) as X
 import CSS.Render (Inline(..), Rendered, Sheet(..), collect, collect', face, feature, frame, getInline, getSheet, imp, kframe, mediaQuery, mediaType, merger, nel, predicate, properties, putInline, putStyleSheet, query', render, renderedInline, renderedSheet, rule', rules, selector, selector', selector'', sepWith) as X
-import CSS.Pseudo (hover) as X
+import CSS.Pseudo (active, any, anyLink, checked, default, defined, disabled, empty, enabled, first, firstChild, firstOfType, fullscreen, focus, focusVisible, hover, indeterminate, inRange, invalid, lastChild, lastOfType, link, onlyChild, onlyOfType, optional, outOfRange, readOnly, readWrite, required, root, scope, target, valid, visited) as X
 import CSS.Selector (Path(..), Predicate(..), Refinement(..), Selector(..), child, deep, element, star, with, (##), (**), (|>)) as X
 import CSS.Size (Abs, Angle(..), Deg, Rad, Rel, Size(..), deg, em, ex, nil, pct, pt, px, rad, rem, sym, vh, vmax, vmin, vw) as X
 import CSS.String (class IsString, fromString) as X
