@@ -4,7 +4,8 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (##), (|>), (**), hover, fontFaceSrc, zIndex)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (##), (|>), (**), hover, fontFaceSrc, fontStyle, deg, zIndex)
+import CSS.FontStyle as FontStyle
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton)
 
@@ -58,6 +59,18 @@ deepSelector = render do
   p ** a ? do
     display block
 
+exampleFontStyle1 :: Rendered
+exampleFontStyle1 = render do
+  fontStyle FontStyle.italic
+
+exampleFontStyle2 :: Rendered
+exampleFontStyle2 = render do
+  fontStyle FontStyle.oblique
+
+exampleFontStyle3 :: Rendered
+exampleFontStyle3 = render do
+  fontStyle $ FontStyle.obliqueAngle (deg 45.0)
+
 nestedNodes :: Rendered
 nestedNodes = render do
   fromString "#parent" ? do
@@ -97,3 +110,7 @@ main = do
   renderedInline example6 `assertEqual` Just "src: url(\"font.woff\") format(\"woff\")"
 
   renderedInline example7 `assertEqual` Just "z-index: 11"
+
+  renderedInline exampleFontStyle1 `assertEqual` Just "font-style: italic"
+  renderedInline exampleFontStyle2 `assertEqual` Just "font-style: oblique"
+  renderedInline exampleFontStyle3 `assertEqual` Just "font-style: oblique 45.0deg"
