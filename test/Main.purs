@@ -4,8 +4,9 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (##), (|>), (**), hover, fontFaceSrc, fontStyle, deg, zIndex)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (##), (|>), (**), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow)
 import CSS.FontStyle as FontStyle
+import CSS.Text.Overflow as TextOverflow
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton)
 
@@ -71,6 +72,14 @@ exampleFontStyle3 :: Rendered
 exampleFontStyle3 = render do
   fontStyle $ FontStyle.obliqueAngle (deg 45.0)
 
+exampleTextOverflow1 :: Rendered
+exampleTextOverflow1 = render do
+  textOverflow TextOverflow.ellipsis
+
+exampleTextOverflow2 :: Rendered
+exampleTextOverflow2 = render do
+  textOverflow $ TextOverflow.custom "foobar"
+
 nestedNodes :: Rendered
 nestedNodes = render do
   fromString "#parent" ? do
@@ -114,3 +123,6 @@ main = do
   renderedInline exampleFontStyle1 `assertEqual` Just "font-style: italic"
   renderedInline exampleFontStyle2 `assertEqual` Just "font-style: oblique"
   renderedInline exampleFontStyle3 `assertEqual` Just "font-style: oblique 45.0deg"
+
+  renderedInline exampleTextOverflow1 `assertEqual` Just "text-overflow: ellipsis"
+  renderedInline exampleTextOverflow2 `assertEqual` Just "text-overflow: \"foobar\""
