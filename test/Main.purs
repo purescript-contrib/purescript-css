@@ -4,7 +4,7 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (##), (|>), (**), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (##), (|>), (**), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity)
 import CSS.FontStyle as FontStyle
 import CSS.Text.Overflow as TextOverflow
 import Data.Maybe (Maybe(..))
@@ -42,6 +42,7 @@ example6 = render do
 example7 :: Rendered
 example7 = render do
   zIndex 11
+  opacity 0.5
 
 withSelector :: Rendered
 withSelector = render do
@@ -118,7 +119,7 @@ main = do
 
   renderedInline example6 `assertEqual` Just "src: url(\"font.woff\") format(\"woff\")"
 
-  renderedInline example7 `assertEqual` Just "z-index: 11"
+  renderedInline example7 `assertEqual` Just "z-index: 11; opacity: 0.5"
 
   renderedInline exampleFontStyle1 `assertEqual` Just "font-style: italic"
   renderedInline exampleFontStyle2 `assertEqual` Just "font-style: oblique"
