@@ -3,7 +3,8 @@ module CSS.Selector where
 import Prelude
 
 import Data.String (take, drop)
-
+import Data.String.CodeUnits (uncons)
+import Data.Maybe(Maybe(..))
 import CSS.String (class IsString)
 
 data Predicate
@@ -18,6 +19,7 @@ data Predicate
   | AttrHyph String String
   | Pseudo String
   | PseudoFunc String (Array String)
+  | PseudoElem String
 
 derive instance eqPredicate :: Eq Predicate
 derive instance ordPredicate :: Ord Predicate
@@ -29,14 +31,19 @@ derive instance ordRefinement :: Ord Refinement
 
 instance isStringRefinement :: IsString Refinement where
   fromString s =
-    Refinement
-      [ case take 1 s of
-          "#" -> Id $ drop 1 s
-          "." -> Class $ drop 1 s
-          ":" -> Pseudo $ drop 1 s
-          "@" -> Attr $ drop 1 s
-          _   -> Attr s
-      ]
+    case uncons s of
+      (Just { head, tail }) -> Refinement [predicate tail head]
+      Nothing -> Refinement [Attr s]
+    where
+    predicate v =
+      case _ of
+        '#' -> Id v
+        '.' -> Class v
+        ':' -> pseudoPredicate v (uncons v)
+        '@' -> Attr v
+        _   -> Attr s
+    pseudoPredicate _ (Just { head: ':', tail: el }) = PseudoElem el
+    pseudoPredicate v _ = Pseudo v
 
 data Path f
   = Star

@@ -172,18 +172,19 @@ merger (NonEmpty x xs) =
     Self  sheetRules  -> maybe (star `with` sheetRules) (\xs' -> merger xs' `with`  sheetRules) $ nel xs
 
 predicate :: Predicate -> String
-predicate (Id           a  ) = "#" <> a
-predicate (Class        a  ) = "." <> a
-predicate (Attr         a  ) = "[" <> a <> "]"
-predicate (AttrVal      a v) = "[" <> a <> "='" <> v <> "']"
-predicate (AttrBegins   a v) = "[" <> a <> "^='" <> v <> "']"
-predicate (AttrEnds     a v) = "[" <> a <> "$='" <> v <> "']"
-predicate (AttrContains a v) = "[" <> a <> "*='" <> v <> "']"
-predicate (AttrSpace    a v) = "[" <> a <> "~='" <> v <> "']"
-predicate (AttrHyph     a v) = "[" <> a <> "|='" <> v <> "']"
-predicate (Pseudo       a  ) = ":" <> a
-predicate (PseudoFunc   a p) = ":" <> a <> "(" <> intercalate "," p <> ")"
+predicate (Id           a  ) = "#"  <> a
+predicate (Class        a  ) = "."  <> a
+predicate (Attr         a  ) = "["  <> a <> "]"
+predicate (AttrVal      a v) = "["  <> a <> "='" <> v <> "']"
+predicate (AttrBegins   a v) = "["  <> a <> "^='" <> v <> "']"
+predicate (AttrEnds     a v) = "["  <> a <> "$='" <> v <> "']"
+predicate (AttrContains a v) = "["  <> a <> "*='" <> v <> "']"
+predicate (AttrSpace    a v) = "["  <> a <> "~='" <> v <> "']"
+predicate (AttrHyph     a v) = "["  <> a <> "|='" <> v <> "']"
+predicate (Pseudo       a  ) = ":"  <> a
+predicate (PseudoFunc   a p) = ":"  <> a <> "(" <> intercalate "," p <> ")"
+predicate (PseudoElem   a  ) = "::" <> a
 
 nel :: forall a. Array a -> Maybe (NonEmpty Array a)
 nel [] = Nothing
-nel xs = (\{ head: head, tail: tail } -> head :| tail) <$> uncons xs
+nel xs = (\{ head, tail } -> head :| tail) <$> uncons xs
