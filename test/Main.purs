@@ -4,7 +4,7 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (##), (|>), (**), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity)
 import CSS.FontStyle as FontStyle
 import CSS.Text.Overflow as TextOverflow
 import Data.Maybe (Maybe(..))
@@ -48,7 +48,7 @@ withSelector :: Rendered
 withSelector = render do
   a ? do
     color blue
-  a ## hover ? do
+  a & hover ? do
     color red
 
 childSelector :: Rendered
@@ -58,8 +58,42 @@ childSelector = render do
 
 deepSelector :: Rendered
 deepSelector = render do
-  p ** a ? do
+  p |* a ? do
     display block
+
+byClassById :: Rendered
+byClassById = render do
+  a & byClass "bar" ? color red
+  p & byId "foo" ? display block
+
+attrVal :: Rendered
+attrVal = render do
+  p & ("foo" @= "bar") ? display block
+
+attrBegins :: Rendered
+attrBegins = render do
+  p & ("foo" ^= "bar") ? display block
+
+attrEnds :: Rendered
+attrEnds = render do
+  p & ("foo" $= "bar") ? display block
+
+attrContains :: Rendered
+attrContains = render do
+  p & ("foo" *= "bar") ? display block
+
+attrSpace :: Rendered
+attrSpace = render do
+  p & ("foo" ~= "bar") ? display block
+
+attrHyph :: Rendered
+attrHyph = render do
+  p & ("foo" |= "bar") ? display block
+
+adjacentSelector :: Rendered
+adjacentSelector = render do
+  a |+ a ? do
+    display inlineBlock
 
 exampleFontStyle1 :: Rendered
 exampleFontStyle1 = render do
@@ -112,6 +146,7 @@ main = do
   renderedSheet withSelector `assertEqual` Just "a { color: hsl(240.0, 100.0%, 50.0%) }\na:hover { color: hsl(0.0, 100.0%, 50.0%) }\n"
   renderedSheet childSelector `assertEqual` Just "p > a { z-index: 9 }\n"
   renderedSheet deepSelector `assertEqual` Just "p a { display: block }\n"
+  renderedSheet adjacentSelector `assertEqual` Just "a + a { display: inline-block }\n"
 
   renderedSheet nestedNodes `assertEqual` Just "#parent { display: block }\n#parent #child { display: block }\n"
 
@@ -127,3 +162,12 @@ main = do
 
   renderedInline exampleTextOverflow1 `assertEqual` Just "text-overflow: ellipsis"
   renderedInline exampleTextOverflow2 `assertEqual` Just "text-overflow: \"foobar\""
+
+  renderedSheet byClassById `assertEqual` Just "a.bar { color: hsl(0.0, 100.0%, 50.0%) }\np#foo { display: block }\n"
+  renderedSheet attrVal `assertEqual` Just "p[foo='bar'] { display: block }\n"
+  renderedSheet attrBegins `assertEqual` Just "p[foo^='bar'] { display: block }\n"
+  renderedSheet attrEnds `assertEqual` Just "p[foo$='bar'] { display: block }\n"
+  renderedSheet attrContains `assertEqual` Just "p[foo*='bar'] { display: block }\n"
+  renderedSheet attrSpace `assertEqual` Just "p[foo~='bar'] { display: block }\n"
+  renderedSheet attrHyph `assertEqual` Just "p[foo|='bar'] { display: block }\n"
+

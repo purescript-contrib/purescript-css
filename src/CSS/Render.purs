@@ -3,7 +3,7 @@ module CSS.Render where
 import Prelude
 
 import CSS.Property (Key(..), Prefixed(..), Value(..), plain)
-import CSS.Selector (Path(..), Predicate(..), Refinement(..), Selector(..), with, star, element, (**), (|>))
+import CSS.Selector (Path(..), Predicate(..), Refinement(..), Selector(..), with, star, element, (|*), (|>))
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, StyleM, App(..), Feature(..), Keyframes(..), MediaQuery(..), MediaType(..), Rule(..), runS)
 import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
@@ -166,10 +166,10 @@ merger :: NonEmpty Array App -> Selector
 merger (NonEmpty x xs) =
   case x of
     Child s -> maybe s (\xs' -> merger xs' |> s) $ nel xs
-    Sub s   -> maybe s (\xs' -> merger xs' ** s) $ nel xs
-    Root s  -> maybe s (\xs' -> s ** merger xs') $ nel xs
+    Sub s   -> maybe s (\xs' -> merger xs' |* s) $ nel xs
+    Root s  -> maybe s (\xs' -> s |* merger xs') $ nel xs
     Pop i   -> maybe (element "TODO") merger <<< nel <<< drop i $ x : xs
-    Self  sheetRules  -> maybe (star `with`  sheetRules) (\xs' -> merger xs' `with`  sheetRules) $ nel xs
+    Self  sheetRules  -> maybe (star `with` sheetRules) (\xs' -> merger xs' `with`  sheetRules) $ nel xs
 
 predicate :: Predicate -> String
 predicate (Id           a  ) = "#" <> a
