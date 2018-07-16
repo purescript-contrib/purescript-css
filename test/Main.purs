@@ -4,9 +4,10 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, transform)
 import CSS.FontStyle as FontStyle
 import CSS.Text.Overflow as TextOverflow
+import CSS.Transform as Transform
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton)
 
@@ -95,6 +96,16 @@ adjacentSelector = render do
   a |+ a ? do
     display inlineBlock
 
+scaleTransform1 :: Rendered
+scaleTransform1 = render do
+  transform $ Transform.scaleX 1.0
+  transform $ Transform.scaleY 0.5
+  transform $ Transform.scaleZ 0.5
+
+scaleTransform2 :: Rendered
+scaleTransform2 = render do
+  transform $ Transform.scale 0.2 0.8
+
 exampleFontStyle1 :: Rendered
 exampleFontStyle1 = render do
   fontStyle FontStyle.italic
@@ -170,4 +181,7 @@ main = do
   renderedSheet attrContains `assertEqual` Just "p[foo*='bar'] { display: block }\n"
   renderedSheet attrSpace `assertEqual` Just "p[foo~='bar'] { display: block }\n"
   renderedSheet attrHyph `assertEqual` Just "p[foo|='bar'] { display: block }\n"
+
+  renderedInline scaleTransform1 `assertEqual` Just "transform: scaleX(1.0); transform: scaleY(0.5); transform: scaleZ(0.5)"
+  renderedInline scaleTransform2 `assertEqual` Just "transform: scale(0.2, 0.8)"
 
