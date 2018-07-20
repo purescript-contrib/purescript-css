@@ -19,18 +19,18 @@ data VerticalAlign
   | Initial
   | Unset
 
-instance valVerticalAlign :: Val (VerticalAlign) where
-  value (Baseline) = fromString "baseline"
-  value (Sub) = fromString "sub"
-  value (Super) = fromString "super"
-  value (TextTop) = fromString "text-top"
-  value (TextBottom) = fromString "text-bottom"
-  value (Middle) = fromString "middle"
-  value (Top) = fromString "top"
-  value (Bottom) = fromString "bottom"
-  value (Inherit) = fromString "inherit"
-  value (Initial) = fromString "initial"
-  value (Unset) = fromString "unset"
+instance valVerticalAlign :: Val VerticalAlign where
+  value Baseline = fromString "baseline"
+  value Sub = fromString "sub"
+  value Super = fromString "super"
+  value TextTop = fromString "text-top"
+  value TextBottom = fromString "text-bottom"
+  value Middle = fromString "middle"
+  value Top = fromString "top"
+  value Bottom = fromString "bottom"
+  value Inherit = fromString "inherit"
+  value Initial = fromString "initial"
+  value Unset = fromString "unset"
 
 instance inheritVerticalAlign :: Inherit (VerticalAlign) where
   inherit = Inherit

@@ -26,4 +26,4 @@ import CSS.Text.Transform (TextTransform, textTransform) as X
 import CSS.Text.Overflow (TextOverflow, textOverflow) as X
 import CSS.Time (Time(..), ms, sec) as X
 import CSS.Transform (TransformOrigin(..), TransformOriginOffset(..), Transformation(..), offset, offsetBottom, offsetCenter, offsetLeft, offsetRight, offsetTop, rotate, transform, transformOrigin, transforms, translate) as X
-import CSS.Transition (TimingFunction(..), easeOut, linear) as X
+import CSS.Transition (TimingFunction(..), ease, easeIn, easeOut, easeInOut, linear, stepStart, stepEnd, steps, cubicBezier, transition, transitionProperty, transitionProperties, transitionDuration, transitionDurations, transitionTimingFunction, transitionTimingFunctions, transitionDelay, transitionDelays) as X
