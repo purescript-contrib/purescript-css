@@ -4,7 +4,7 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, transform)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, transform, transition, easeInOut, ms)
 import CSS.FontStyle as FontStyle
 import CSS.Text.Overflow as TextOverflow
 import CSS.Transform as Transform
@@ -137,6 +137,10 @@ nestedNodesWithEmptyParent = render do
   fromString "#parent" ? do
     fromString "#child" ? display block
 
+transition1 :: Rendered
+transition1 = render do
+  transition "background-color" (ms 1.0) easeInOut (ms 0.0)
+
 assertEqual :: forall a. Eq a => Show a => a -> a -> Effect Unit
 assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
 
@@ -185,3 +189,4 @@ main = do
   renderedInline scaleTransform1 `assertEqual` Just "transform: scaleX(1.0); transform: scaleY(0.5); transform: scaleZ(0.5)"
   renderedInline scaleTransform2 `assertEqual` Just "transform: scale(0.2, 0.8)"
 
+  renderedInline transition1 `assertEqual` Just "-webkit-transition: background-color 1.0ms ease-in-out 0.0ms; -moz-transition: background-color 1.0ms ease-in-out 0.0ms; -ms-transition: background-color 1.0ms ease-in-out 0.0ms; -o-transition: background-color 1.0ms ease-in-out 0.0ms; transition: background-color 1.0ms ease-in-out 0.0ms"
