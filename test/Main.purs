@@ -2,14 +2,15 @@ module Test.Main where
 
 import Prelude
 
-import Effect (Effect)
-import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, before, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, transform, transition, easeInOut, ms)
+import CSS (FontFaceFormat(..), FontFaceSrc(..), Path(..), Predicate(..), Refinement(..), Rendered, Selector(..), a, block, blue, body, border, borderBox, boxSizing, byClass, byId, color, contentBox, dashed, deg, display, easeInOut, fontFaceSrc, fontStyle, fromString, hover, inlineBlock, ms, opacity, p, px, red, render, renderedInline, renderedSheet, selector, textOverflow, transform, transition, zIndex, ($=), (&), (*=), (?), (@=), (^=), (|*), (|+), (|=), (|>), (~=))
 import CSS.FontStyle as FontStyle
+import CSS.Refinement (before)
 import CSS.Text.Overflow as TextOverflow
 import CSS.Transform as Transform
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton)
+import Effect (Effect)
+import Effect.Exception (error, throwException)
 
 example1 :: Rendered
 example1 = render do

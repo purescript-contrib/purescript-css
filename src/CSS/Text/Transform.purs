@@ -27,12 +27,12 @@ derive instance eqTextTransform :: Eq TextTransform
 derive instance ordTextTransform :: Ord TextTransform
 
 instance valTextTransform :: Val TextTransform where
-  value Uppercase  = fromString "uppercase"
-  value Lowercase  = fromString "lowercase"
+  value Uppercase = fromString "uppercase"
+  value Lowercase = fromString "lowercase"
   value Capitalize = fromString "capitalize"
-  value None       = fromString "none"
-  value Initial    = fromString "initial"
-  value Inherit    = fromString "inherit"
+  value None = fromString "none"
+  value Initial= fromString "initial"
+  value Inherit  = fromString "inherit"
 
 instance showTextTransform :: Show TextTransform where
   show Uppercase = "Uppercase"

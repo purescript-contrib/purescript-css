@@ -2,17 +2,16 @@ module CSS.Stylesheet where
 
 import Prelude
 
+import CSS.Property (class Val, Key(..), Prefixed, Value, cast, value)
+import CSS.Refinement (Refinement)
+import CSS.Selector (Selector)
 import Control.Monad.Writer (Writer, execWriter)
 import Control.Monad.Writer.Class (tell)
-
 import Data.Array (singleton)
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (NonEmpty, (:|))
 import Data.Profunctor.Strong (second)
 import Data.Tuple (Tuple(..))
-
-import CSS.Property (class Val, Key(..), Prefixed, Value, cast, value)
-import CSS.Selector (Selector, Refinement)
 
 newtype MediaType = MediaType Value
 

@@ -2,8 +2,12 @@ module CSS.Render where
 
 import Prelude
 
+import CSS.Predicate (Predicate(..))
 import CSS.Property (Key(..), Prefixed(..), Value(..), plain)
-import CSS.Selector (Path(..), Predicate(..), Refinement(..), Selector(..), with, star, element, (|*), (|>))
+import CSS.PseudoClass (pseudoClassName)
+import CSS.PseudoElement (pseudoElementName)
+import CSS.Refinement (Refinement(..))
+import CSS.Selector (Path(..), Selector(..), with, star, element, (|*), (|>))
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, StyleM, App(..), Feature(..), Keyframes(..), MediaQuery(..), MediaType(..), Rule(..), runS)
 import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
@@ -56,12 +60,10 @@ render :: forall a. StyleM a -> Rendered
 render = rules [] <<< runS
 
 putInline :: CSS -> Effect Unit
-putInline s =
-  log <<< fromMaybe "" <<< renderedInline <<< render $ s
+putInline = log <<< fromMaybe "" <<< renderedInline <<< render
 
 putStyleSheet :: CSS -> Effect Unit
-putStyleSheet s =
-  log <<< fromMaybe "" <<< renderedSheet <<< render $ s
+putStyleSheet = log <<< fromMaybe "" <<< renderedSheet <<< render
 
 kframe :: Keyframes -> Rendered
 kframe (Keyframes ident xs) =
@@ -83,47 +85,61 @@ frame p rs = show p <> "% " <> "{ " <> x <> " }"
   where x = fromMaybe "" <<< renderedInline $ rules [] rs
 
 query' :: MediaQuery -> Array App -> Array Rule -> Rendered
-query' q sel rs = Just <<< That <<< Sheet $ mediaQuery q <> " { " <> fromMaybe "" (renderedSheet $ rules sel rs) <> " }\n"
+query' q sel rs =
+  Just <<< That <<< Sheet $
+  mediaQuery q <> " { " <> fromMaybe "" (renderedSheet $ rules sel rs) <> " }\n"
 
 mediaQuery :: MediaQuery -> String
-mediaQuery (MediaQuery no ty fs) = "@media " <> mediaType ty <> foldl1 (<>) ((" and " <> _) <<< feature <$> fs)
+mediaQuery (MediaQuery no ty fs) =
+  "@media " <> mediaType ty <> foldl1 (<>) ((" and " <> _) <<< feature <$> fs)
 
 mediaType :: MediaType -> String
 mediaType (MediaType (Value s)) = plain s
 
 feature :: Feature -> String
-feature (Feature k mv) = maybe k (\(Value v) -> "(" <> k <> ": " <> plain v <> ")") mv
+feature (Feature k mv) =
+  maybe k (\(Value v) -> "(" <> k <> ": " <> plain v <> ")") mv
 
 face :: Array Rule -> Rendered
-face rs = Just <<< That <<< Sheet $ "@font-face { " <> fromMaybe "" (renderedInline $ rules [] rs) <> " }\n"
+face rs =
+  Just <<< That <<< Sheet $
+  "@font-face { " <> fromMaybe "" (renderedInline $ rules [] rs) <> " }\n"
 
 rules :: Array App -> Array Rule -> Rendered
-rules sel rs = topRules <> importRules <> keyframeRules <> faceRules <> nestedSheets <> queryRules
-  where property (Property k v) = Just (Tuple k v)
-        property _              = Nothing
-        nested   (Nested a ns ) = Just (Tuple a ns)
-        nested   _              = Nothing
-        queries  (Query  q ns ) = Just (Tuple q ns)
-        queries  _              = Nothing
-        kframes  (Keyframe fs ) = Just fs
-        kframes  _              = Nothing
-        faces    (Face ns     ) = Just ns
-        faces    _              = Nothing
-        imports  (Import i    ) = Just i
-        imports  _              = Nothing
-        topRules      = if not null rs'
-                          then rule' sel rs'
-                          else Nothing
-          where rs' = mapMaybe property rs
-        nestedSheets  = fold $ uncurry nestedRules <$> mapMaybe nested rs
-        nestedRules a = rules (a : sel)
-        queryRules    = foldMap (uncurry $ flip query' sel) $ mapMaybe queries rs
-        keyframeRules = foldMap kframe $ mapMaybe kframes rs
-        faceRules     = foldMap face   $ mapMaybe faces   rs
-        importRules   = foldMap imp    $ mapMaybe imports rs
+rules sel rs =
+  topRules
+  <> importRules
+  <> keyframeRules
+  <> faceRules
+  <> nestedSheets
+  <> queryRules
+  where
+  property (Property k v) = Just (Tuple k v)
+  property _ = Nothing
+  nested (Nested a ns) = Just (Tuple a ns)
+  nested _ = Nothing
+  queries (Query q ns) = Just (Tuple q ns)
+  queries _ = Nothing
+  kframes (Keyframe fs) = Just fs
+  kframes _ = Nothing
+  faces (Face ns) = Just ns
+  faces _ = Nothing
+  imports (Import i) = Just i
+  imports _ = Nothing
+  topRules =
+    if not null rs' then rule' sel rs' else Nothing
+    where rs' = mapMaybe property rs
+  nestedSheets = fold $ uncurry nestedRules <$> mapMaybe nested rs
+  nestedRules a = rules (a : sel)
+  queryRules = foldMap (uncurry $ flip query' sel) $ mapMaybe queries rs
+  keyframeRules = foldMap kframe $ mapMaybe kframes rs
+  faceRules = foldMap face $ mapMaybe faces   rs
+  importRules = foldMap imp $ mapMaybe imports rs
 
 imp :: String -> Rendered
-imp t = Just <<< That <<< Sheet <<< fromString $ "@import url(" <> t <> ");\n"
+imp t =
+  Just <<< That <<< Sheet <<< fromString $
+  "@import url(" <> t <> ");\n"
 
 rule' :: forall a. Array App -> Array (Tuple (Key a) Value) -> Rendered
 rule' sel props = maybe q o $ nel sel
@@ -135,7 +151,8 @@ selector :: Selector -> String
 selector = intercalate ", " <<< selector'
 
 selector' :: Selector -> Array String
-selector' (Selector (Refinement ft) p) = (_ <> (foldMap predicate (sort ft))) <$> selector'' ft p
+selector' (Selector (Refinement ft) p) =
+  (_ <> (foldMap predicate (sort ft))) <$> selector'' ft p
 
 selector'' :: Array Predicate -> Path Selector -> Array String
 selector'' [] Star = ["*"]
@@ -153,10 +170,14 @@ collect :: forall a. Tuple (Key a) Value -> Array (Either String (Tuple String S
 collect (Tuple (Key ky) (Value v1)) = collect' ky v1
 
 collect' :: Prefixed -> Prefixed -> Array (Either String (Tuple String String))
-collect' (Plain k) (Plain v) = [Right (Tuple k v)]
-collect' (Prefixed ks) (Plain v) = (\(Tuple p k) -> Right $ Tuple (p <> k) v) <$> ks
-collect' (Plain k) (Prefixed vs) = (\(Tuple p v) -> Right $ Tuple k (p <> v)) <$> vs
-collect' (Prefixed ks) (Prefixed vs) = (\(Tuple p k) -> maybe (Left (p <> k)) (Right <<< Tuple (p <> k) <<< (p <> _)) $ lookup p vs) <$> ks
+collect' (Plain k) (Plain v) =
+  [Right (Tuple k v)]
+collect' (Prefixed ks) (Plain v) =
+  (\(Tuple p k) -> Right $ Tuple (p <> k) v) <$> ks
+collect' (Plain k) (Prefixed vs) =
+  (\(Tuple p v) -> Right $ Tuple k (p <> v)) <$> vs
+collect' (Prefixed ks) (Prefixed vs) =
+  (\(Tuple p k) -> maybe (Left (p <> k)) (Right <<< Tuple (p <> k) <<< (p <> _)) $ lookup p vs) <$> ks
 
 properties :: Array (Either String (Tuple String String)) -> String
 properties xs = intercalate "; " $  sheetRules <$> xs
@@ -166,24 +187,24 @@ merger :: NonEmpty Array App -> Selector
 merger (NonEmpty x xs) =
   case x of
     Child s -> maybe s (\xs' -> merger xs' |> s) $ nel xs
-    Sub s   -> maybe s (\xs' -> merger xs' |* s) $ nel xs
-    Root s  -> maybe s (\xs' -> s |* merger xs') $ nel xs
-    Pop i   -> maybe (element "TODO") merger <<< nel <<< drop i $ x : xs
-    Self  sheetRules  -> maybe (star `with` sheetRules) (\xs' -> merger xs' `with`  sheetRules) $ nel xs
+    Sub s -> maybe s (\xs' -> merger xs' |* s) $ nel xs
+    Root s -> maybe s (\xs' -> s |* merger xs') $ nel xs
+    Pop i -> maybe (element "TODO") merger <<< nel <<< drop i $ x : xs
+    Self sheetRules -> maybe (star `with` sheetRules) (\xs' -> merger xs' `with`  sheetRules) $ nel xs
 
 predicate :: Predicate -> String
-predicate (Id           a  ) = "#"  <> a
-predicate (Class        a  ) = "."  <> a
-predicate (Attr         a  ) = "["  <> a <> "]"
-predicate (AttrVal      a v) = "["  <> a <> "='" <> v <> "']"
-predicate (AttrBegins   a v) = "["  <> a <> "^='" <> v <> "']"
-predicate (AttrEnds     a v) = "["  <> a <> "$='" <> v <> "']"
-predicate (AttrContains a v) = "["  <> a <> "*='" <> v <> "']"
-predicate (AttrSpace    a v) = "["  <> a <> "~='" <> v <> "']"
-predicate (AttrHyph     a v) = "["  <> a <> "|='" <> v <> "']"
-predicate (Pseudo       a  ) = ":"  <> a
-predicate (PseudoFunc   a p) = ":"  <> a <> "(" <> intercalate "," p <> ")"
-predicate (PseudoElem   a  ) = "::" <> a
+predicate (Id a) = "#" <> a
+predicate (Class a) = "." <> a
+predicate (Attr a) = "[" <> a <> "]"
+predicate (AttrVal a v) = "[" <> a <> "='" <> v <> "']"
+predicate (AttrBegins a v) = "[" <> a <> "^='" <> v <> "']"
+predicate (AttrEnds a v) = "[" <> a <> "$='" <> v <> "']"
+predicate (AttrContains a v) = "[" <> a <> "*='" <> v <> "']"
+predicate (AttrSpace a v) = "[" <> a <> "~='" <> v <> "']"
+predicate (AttrHyph a v) = "[" <> a <> "|='" <> v <> "']"
+predicate (PseudoClass a) = ":" <> pseudoClassName a
+predicate (PseudoFunc a p) = ":" <> a <> "(" <> intercalate "," p <> ")"
+predicate (PseudoElement a) = "::" <> pseudoElementName a
 
 nel :: forall a. Array a -> Maybe (NonEmpty Array a)
 nel [] = Nothing
