@@ -5,30 +5,11 @@ import Prelude
 import CSS.Predicate (Predicate(..))
 import CSS.PseudoClass (PseudoClass(..))
 import CSS.PseudoElement (PseudoElement(..))
-import CSS.String (class IsString, fromString)
-import Data.Maybe (Maybe(..))
-import Data.String.CodeUnits (uncons)
 
 newtype Refinement = Refinement (Array Predicate)
 
 derive instance eqRefinement :: Eq Refinement
 derive instance ordRefinement :: Ord Refinement
-
-instance isStringRefinement :: IsString Refinement where
-  fromString s =
-    case uncons s of
-      Just { head, tail } -> Refinement [predicate tail head]
-      Nothing -> Refinement [Attr s]
-    where
-    predicate v =
-      case _ of
-        '#' -> Id v
-        '.' -> Class v
-        ':' -> pseudoPredicate v (uncons v)
-        '@' -> Attr v
-        _   -> Attr s
-    pseudoPredicate _ (Just { head: ':', tail: el }) = PseudoElement $ fromString el
-    pseudoPredicate v _ = PseudoClass $ fromString v
 
 -- | Filter elements by id.
 byId :: String -> Refinement
@@ -37,18 +18,6 @@ byId = Refinement <<< pure <<< Id
 -- | Filter elements by class.
 byClass :: String -> Refinement
 byClass = Refinement <<< pure <<< Class
-
--- | Filter by pseudo element.
--- | The preferred syntax is to use `::pseudo-element` or
--- | use one of the predefined ones from `CSS.PseudoElement`.
-pseudoElement :: String -> Refinement
-pseudoElement = Refinement <<< pure <<< PseudoElement <<< fromString
-
--- | Filter elements by pseudo class.
--- | The preferred syntax is to use `:pseudo-class` or
--- | use one of the predefined ones from `CSS.PseudoClass`.
-pseudoClass ∷ String -> Refinement
-pseudoClass = Refinement <<< pure <<< PseudoClass <<< fromString
 
 -- | Filter elements by pseudo selector functions.
 -- | The preferred way is to use one of the predefined functions from `CSS.Pseudo`.

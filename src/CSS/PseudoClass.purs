@@ -1,6 +1,5 @@
 module CSS.PseudoClass where
 
-import CSS.String (class IsString)
 import Data.Eq (class Eq)
 import Data.Ord (class Ord)
 
@@ -41,50 +40,9 @@ data PseudoClass
   | Target
   | Valid
   | Visited
-  | Raw String
 
 derive instance eqPseudoClass :: Eq PseudoClass
 derive instance ordPseudoClass :: Ord PseudoClass
-
-instance isStringPseudoClass ∷ IsString PseudoClass where
-  fromString = case _ of
-    "active" -> Active
-    "any" -> Any
-    "any-link" -> AnyLink
-    "checked" -> Checked
-    "default" -> Default
-    "defined" -> Defined
-    "disabled" -> Disabled
-    "empty" -> Empty
-    "enabled" -> Enabled
-    "first" -> First
-    "first-child" -> FirstChild
-    "first-of-type" -> FirstOfType
-    "fullscreen" -> Fullscreen
-    "focus" -> Focus
-    "focus-visible" -> FocusVisible
-    "hover" -> Hover
-    "indeterminate" -> Indeterminate
-    "in-range" -> InRange
-    "invalid" -> Invalid
-    "last-child" -> LastChild
-    "last-of-type" -> LastOfType
-    "left" -> Left
-    "link" -> Link
-    "only-child" -> OnlyChild
-    "only-of-type" -> OnlyOfType
-    "optional" -> Optional
-    "out-of-range" -> OutOfRange
-    "read-only" -> ReadOnly
-    "read-write" -> ReadWrite
-    "required" -> Required
-    "right" -> Right
-    "root" -> Root
-    "scope" -> Scope
-    "target" -> Target
-    "valid" -> Valid
-    "visited" -> Visited
-    s -> Raw s
 
 pseudoClassName :: PseudoClass -> String
 pseudoClassName = case _ of
@@ -124,4 +82,3 @@ pseudoClassName = case _ of
   Target -> "target"
   Valid -> "valid"
   Visited -> "visited"
-  Raw s -> s
