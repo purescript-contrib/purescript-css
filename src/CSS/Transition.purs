@@ -40,7 +40,7 @@ instance valTimingFunction :: Val TimingFunction where
   value StepStart = fromString "step-start"
   value StepEnd = fromString "step-end"
   value (Steps n v) = fromString "steps(" <> value [fromString $ show n, value v] <> fromString ")"
-  value (CubicBezier a b c d) = fromString "cubic-bezier(" <> value (a ! b ! c ! d) <> fromString ")"
+  value (CubicBezier a b c d) = fromString "cubic-bezier(" <> value [a, b, c, d] <> fromString ")"
 
 ease :: TimingFunction
 ease = Ease
