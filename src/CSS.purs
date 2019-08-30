@@ -1,3 +1,30 @@
+-- | The module centralises every dependencies you should need when writing your custom css
+-- |
+-- | You can create ready to print `Rendered` with the syntax:
+-- |
+-- | ```
+-- |nestedNodes :: Rendered
+-- |nestedNodes = render do
+-- |  fromString "#parent" ? do
+-- |    display block
+-- |    fromString "#child" ? display block
+-- | ```
+-- |
+-- | then use `renderedSheet` print the corresponding stylesheet:
+-- | ```
+-- |renderedSheet nestedNodes
+-- |-- Just "#parent { display: block }\n#parent #child { display: block }\n"
+-- | ```
+-- |
+-- | ## Style
+-- |
+-- | Using this library should feel like writting regular CSS with type safety
+-- | included. You should be aware of some quirks:
+-- |
+-- | The `Size` type writes left to right with a `Number`: `margin-top: 5em` becomes `marginTop (em 5.0)`
+-- |
+-- | There are generic classes for shared properties so `padding-bottom: 0` becomes `paddingBottom nil`,
+-- | while `margin: 0 auto` writes `margin nil auto nil auto`
 module CSS (module X) where
 
 import CSS.Animation (AnimationDirection(..), AnimationName(..), FillMode(..), IterationCount(..), alternate, alternateReverse, animation, backwards, forwards, infinite, iterationCount, normalAnimationDirection, reverse) as X

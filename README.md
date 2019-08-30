@@ -5,6 +5,8 @@
 
 A type-safe library for describing, manipulating, and rendering CSS.
 
+See `test/Main.purs` for examples of how to use the library
+
 ## Installation
 
 ```
