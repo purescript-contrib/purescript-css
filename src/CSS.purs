@@ -18,7 +18,7 @@
 -- |
 -- | ## Style
 -- |
--- | Using this library should feel like writting regular CSS with type safety
+-- | Using this library should feel like writing regular CSS with type safety
 -- | included. You should be aware of some quirks:
 -- |
 -- | The `Size` type writes left to right with a `Number`: `margin-top: 5em` becomes `marginTop (em 5.0)`
