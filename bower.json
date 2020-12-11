@@ -25,7 +25,7 @@
     "purescript-nonempty": "master",
     "purescript-profunctor": "master",
     "purescript-strings": "master",
-    "purescript-these": "master",
+    "purescript-these": "main",
     "purescript-transformers": "master",
     "purescript-colors": "master",
     "purescript-console": "master"
