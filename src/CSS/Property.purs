@@ -37,6 +37,7 @@ plain (Plain p) = p
 quote :: String -> String
 quote s = "\"" <> s <> "\""
 
+newtype Key :: Type -> Type
 newtype Key a = Key Prefixed
 
 derive instance eqKey :: (Eq a) => Eq (Key a)
