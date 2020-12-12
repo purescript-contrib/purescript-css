@@ -4,7 +4,8 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, transform, transition, easeInOut, cubicBezier, ms)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms)
+import CSS.Cursor as Cursor
 import CSS.FontStyle as FontStyle
 import CSS.Text.Overflow as TextOverflow
 import CSS.Transform as Transform
@@ -126,6 +127,10 @@ exampleTextOverflow2 :: Rendered
 exampleTextOverflow2 = render do
   textOverflow $ TextOverflow.custom "foobar"
 
+exampleCursor :: Rendered
+exampleCursor = render do
+  cursor Cursor.notAllowed
+
 nestedNodes :: Rendered
 nestedNodes = render do
   fromString "#parent" ? do
@@ -189,6 +194,8 @@ main = do
   renderedSheet attrContains `assertEqual` Just "p[foo*='bar'] { display: block }\n"
   renderedSheet attrSpace `assertEqual` Just "p[foo~='bar'] { display: block }\n"
   renderedSheet attrHyph `assertEqual` Just "p[foo|='bar'] { display: block }\n"
+
+  renderedInline exampleCursor `assertEqual` Just "cursor: not-allowed"
 
   renderedInline scaleTransform1 `assertEqual` Just "transform: scaleX(1.0); transform: scaleY(0.5); transform: scaleZ(0.5)"
   renderedInline scaleTransform2 `assertEqual` Just "transform: scale(0.2, 0.8)"

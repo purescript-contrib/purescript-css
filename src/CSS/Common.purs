@@ -1,8 +1,8 @@
 -- | A bunch of type classes representing common values shared between multiple
--- CSS properties, like `Auto`, `Inherit`, `None`, `Normal` and several more.
---
--- All the common value type classes have an instance for the Value type,
--- making them easily derivable for custom value types.
+-- | CSS properties, like `Auto`, `Inherit`, `None`, `Normal` and several more.
+-- |
+-- | All the common value type classes have an instance for the `Value` type,
+-- | making them easily derivable for custom value types.
 
 module CSS.Common where
 
@@ -11,8 +11,6 @@ import Data.Tuple (Tuple(..))
 
 import CSS.Property (Prefixed(..), Value)
 import CSS.String (class IsString, fromString)
-
--------------------------------------------------------------------------------
 
 class All      a where all      :: a
 class Auto     a where auto     :: a
@@ -31,10 +29,9 @@ class Bottom   a where bottom   :: a
 class URL      a where url      :: String -> a
 
 -- | The other type class is used to escape from the type safety introduced by
--- embedding CSS properties into the typed world of purescript-css.
--- `Other` allows you to cast any `Value` to a specific value type.
-
-class Other    a where other    :: Value -> a
+-- | embedding CSS properties into the typed world of purescript-css.
+-- | `Other` allows you to cast any `Value` to a specific value type.
+class Other a where other :: Value -> a
 
 instance allValue      :: All      Value where all      = fromString "all"
 instance autoValue     :: Auto     Value where auto     = fromString "auto"
@@ -53,11 +50,8 @@ instance middleValue   :: Middle   Value where middle   = fromString "middle"
 instance bottomValue   :: Bottom   Value where bottom   = fromString "bottom"
 instance urlValue :: URL Value where url s = fromString ("url(\"" <> s <> "\")")
 
--------------------------------------------------------------------------------
-
--- | Common list browser prefixes to make experimental properties work in
--- different browsers.
-
+-- | Common list browser prefixes to make
+-- | experimental properties work in different browsers.
 browsers :: Prefixed
 browsers = Prefixed
   [ Tuple "-webkit-" ""
@@ -67,9 +61,6 @@ browsers = Prefixed
   , Tuple         "" ""
   ]
 
--------------------------------------------------------------------------------
-
 -- | Syntax for CSS function call.
-
 call :: forall s. IsString s => Monoid s => s -> s -> s
 call fn arg = fn <> fromString "(" <> arg <> fromString ")"
