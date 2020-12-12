@@ -11,7 +11,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/slamdata/purescript-css.git"
+    "url": "https://github.com/purescript-contrib/purescript-css.git"
   },
   "ignore": [
     "**/.*",
@@ -21,16 +21,16 @@
     "tests"
   ],
   "dependencies": {
-    "purescript-generics-rep": "^6.0.0",
-    "purescript-nonempty": "^5.0.0",
-    "purescript-profunctor": "^4.0.0",
-    "purescript-strings": "^4.0.0",
-    "purescript-these": "^4.0.0",
-    "purescript-transformers": "^4.1.0",
-    "purescript-colors": "^5.0.0",
-    "purescript-console": "^4.1.0"
+    "purescript-generics-rep": "master",
+    "purescript-nonempty": "master",
+    "purescript-profunctor": "master",
+    "purescript-strings": "master",
+    "purescript-these": "main",
+    "purescript-transformers": "master",
+    "purescript-colors": "master",
+    "purescript-console": "master"
   },
   "devDependencies": {
-    "purescript-exceptions": "^4.0.0"
+    "purescript-exceptions": "master"
   }
 }
