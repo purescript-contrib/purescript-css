@@ -8,6 +8,7 @@ import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
 import Data.Tuple.Nested (tuple4)
 
+data TextShadow :: Type -> Type
 data TextShadow a
   = TextShadow (Size a) (Size a) (Size a) (Color)
   | None

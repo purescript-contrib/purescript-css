@@ -99,12 +99,14 @@ matrix3d w0 x0 y0 z0
        , w3, x3, y3, z3
        ] <> fromString ")"
 
+data TransformOrigin :: Type -> Type
 data TransformOrigin a
   = TransformOrigin (TransformOriginOffset a) (TransformOriginOffset a) (Size a)
   | Initial
   | Inherit
   | Unset
 
+data TransformOriginOffset :: Type -> Type
 data TransformOriginOffset a
   = OffsetLength (Size a)
   | OffsetTop
