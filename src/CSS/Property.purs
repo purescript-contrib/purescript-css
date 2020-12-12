@@ -40,6 +40,8 @@ quote s = "\"" <> s <> "\""
 newtype Key :: Type -> Type
 newtype Key a = Key Prefixed
 
+type role Key representational
+
 derive instance eqKey :: (Eq a) => Eq (Key a)
 derive instance ordKey :: (Ord a) => Ord (Key a)
 
