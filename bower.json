@@ -21,14 +21,13 @@
     "tests"
   ],
   "dependencies": {
-    "purescript-generics-rep": "master",
+    "purescript-colors": "master",
+    "purescript-console": "master",
     "purescript-nonempty": "master",
     "purescript-profunctor": "master",
     "purescript-strings": "master",
     "purescript-these": "main",
-    "purescript-transformers": "master",
-    "purescript-colors": "master",
-    "purescript-console": "master"
+    "purescript-transformers": "master"
   },
   "devDependencies": {
     "purescript-exceptions": "master"
