@@ -4,7 +4,6 @@
   , "console"
   , "effect"
   , "exceptions"
-  , "generics-rep"
   , "nonempty"
   , "profunctor"
   , "psci-support"
