@@ -6,6 +6,8 @@ Notable changes to this project are documented in this file. The format is based
 
 Breaking changes (😱!!!):
 
+- Changed `flex`, `flexGrow`, and `flexShrink` to use `Number` rather than `Int` for the `grow` and `shrink` values - #64 (@andywhite37)
+
 New features:
 
 Bugfixes:
