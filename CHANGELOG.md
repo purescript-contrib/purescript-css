@@ -20,7 +20,6 @@ New features:
 - Added transition CSS properties and values (#106 by @vyorkin)
 - Added various transformations (#103 by @vyorkin)
 - Added various selector combinators (#100 by @vyorkin)
-- Added `border-spacing` (#114 by @mjgpy3)
 
 Bugfixes:
 - Fixed cubic-bezier rendering (#109 by @vyorkin)
