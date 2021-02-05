@@ -4,11 +4,11 @@ import Prelude
 
 import CSS.String (class IsString, fromString)
 import Color (Color, cssStringHSLA)
-import Data.Foldable (intercalate)
+import Data.Foldable (intercalate, lookup)
 import Data.Maybe (fromMaybe)
 import Data.NonEmpty (NonEmpty, oneOf)
 import Data.Profunctor.Strong (second)
-import Data.Tuple (Tuple(..), lookup)
+import Data.Tuple (Tuple(..))
 
 data Prefixed
   = Prefixed (Array (Tuple String String))
