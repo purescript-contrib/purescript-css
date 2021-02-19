@@ -21,7 +21,7 @@
     "tests"
   ],
   "dependencies": {
-    "purescript-colors": null,
+    "purescript-colors": "^5.0.0",
     "purescript-console": "^5.0.0",
     "purescript-effect": "^3.0.0",
     "purescript-nonempty": "^6.0.0",
