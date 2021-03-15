@@ -4,7 +4,17 @@ Notable changes to this project are documented in this file. The format is based
 
 ## [Unreleased]
 
-Breaking changes (😱!!!):
+Breaking changes:
+
+New features:
+
+Bugfixes:
+
+Other improvements:
+
+## [v5.0.0](https://github.com/purescript-contrib/purescript-css/releases/tag/v5.0.0) - 2021-02-26
+
+Breaking changes:
 - Added support for PureScript 0.14 and dropped support for all previous versions (#125 by @JordanMartinez, #126 by @kl0tl)
 - Changed `flex`, `flexGrow`, and `flexShrink` to use `Number` rather than `Int` for the `grow` and `shrink` values (#64 by @andywhite37)
 - Refactored `FontStyle` type to be a sum type rather than a newtype and added tests (#95 by @vyorkin)
