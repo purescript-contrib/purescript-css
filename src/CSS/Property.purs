@@ -83,7 +83,7 @@ instance valString :: Val String where
   value = fromString
 
 instance valUnit :: Val Unit where
-  value u = fromString ""
+  value _ = fromString ""
 
 -- When `b` is Unit, the rendered value will have an extra
 --   space appended to end. Shouldn't hurt. I'd fix if I knew how.

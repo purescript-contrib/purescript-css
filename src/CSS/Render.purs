@@ -87,7 +87,7 @@ query' :: MediaQuery -> Array App -> Array Rule -> Rendered
 query' q sel rs = Just <<< That <<< Sheet $ mediaQuery q <> " { " <> fromMaybe "" (renderedSheet $ rules sel rs) <> " }\n"
 
 mediaQuery :: MediaQuery -> String
-mediaQuery (MediaQuery no ty fs) = "@media " <> mediaType ty <> foldl1 (<>) ((" and " <> _) <<< feature <$> fs)
+mediaQuery (MediaQuery _ ty fs) = "@media " <> mediaType ty <> foldl1 (<>) ((" and " <> _) <<< feature <$> fs)
 
 mediaType :: MediaType -> String
 mediaType (MediaType (Value s)) = plain s
