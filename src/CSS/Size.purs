@@ -50,6 +50,9 @@ em i = Size (value i <> fromString "em")
 ex :: Number -> Size Abs
 ex i = Size (value i <> fromString "ex")
 
+ch :: Number -> Size Abs
+ch i = Size (value i <> fromString "ch")
+
 -- | SimpleSize in percents.
 pct :: Number -> Size Rel
 pct i = Size (value i <> fromString "%")
