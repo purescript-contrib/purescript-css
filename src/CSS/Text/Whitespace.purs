@@ -10,8 +10,6 @@ module CSS.Text.Whitespace
 
 import Prelude
 
-import Data.Generic (class Generic)
-
 import CSS.Property (class Val, Value)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
@@ -20,7 +18,6 @@ newtype TextWhitespace = TextWhitespace Value
 
 derive instance eqTextWhitespace :: Eq TextWhitespace
 derive instance ordTextWhitespace :: Ord TextWhitespace
-derive instance genericTextWhitespace :: Generic TextWhitespace
 
 instance valTextWhitespace :: Val TextWhitespace where
   value (TextWhitespace v) = v

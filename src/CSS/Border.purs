@@ -2,7 +2,6 @@ module CSS.Border where
 
 import Prelude
 
-import Data.Generic (class Generic)
 import Data.Tuple.Nested (tuple3, tuple4)
 
 import CSS.Color (Color)
@@ -15,7 +14,6 @@ newtype Stroke = Stroke Value
 
 derive instance eqStroke :: Eq Stroke
 derive instance ordStroke :: Ord Stroke
-derive instance genericStroke :: Generic Stroke
 
 instance valStroke :: Val Stroke where
   value (Stroke v) = v
@@ -67,3 +65,6 @@ borderColor = key $ fromString "border-color"
 
 borderRadius :: forall a. Size a -> Size a -> Size a -> Size a -> CSS
 borderRadius a b c d = key (fromString "border-radius") (tuple4 a b c d)
+
+borderSpacing :: forall a. Size a -> CSS
+borderSpacing = key $ fromString "border-spacing"

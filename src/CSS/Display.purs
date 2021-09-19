@@ -1,17 +1,16 @@
 module CSS.Display where
 
 import Prelude
+
 import CSS.Common (class Inherit, class None)
 import CSS.Property (class Val, Value)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
-import Data.Generic (class Generic, gShow)
 
 newtype Position = Position Value
 
 derive instance eqPosition :: Eq Position
 derive instance ordPosition :: Ord Position
-derive instance genericPosition :: Generic Position
 
 instance valPosition :: Val Position where
   value (Position v) = v
@@ -35,7 +34,6 @@ newtype Display = Display Value
 
 derive instance eqDisplay :: Eq Display
 derive instance ordDisplay :: Ord Display
-derive instance genericDisplay :: Generic Display
 
 instance valDisplay :: Val Display where
   value (Display v) = v
@@ -109,10 +107,11 @@ display = key $ fromString "display"
 data Float = FloatLeft | FloatRight | FloatNone
 
 derive instance eqFloat :: Eq Float
-derive instance genericFloat :: Generic Float
 
 instance showFloat :: Show Float where
-  show = gShow
+  show FloatLeft = "FloatLeft"
+  show FloatRight = "FloatRight"
+  show FloatNone = "FloatNone"
 
 instance valFloat :: Val (Float) where
   value (FloatLeft) = fromString "left"
@@ -141,10 +140,15 @@ data ClearFloat
   | ClearFloatInlineEnd
 
 derive instance eqClearFloat :: Eq ClearFloat
-derive instance genericClearFloat :: Generic ClearFloat
 
 instance showClearFloat :: Show ClearFloat where
-  show = gShow
+  show ClearFloatLeft = "ClearFloatLeft"
+  show ClearFloatRight = "ClearFloatRight"
+  show ClearFloatBoth = "ClearFloatBoth"
+  show ClearFloatNone = "ClearFloatNone"
+  show ClearFloatInherit = "ClearFloatInherit"
+  show ClearFloatInlineStart = "ClearFloatInlineStart"
+  show ClearFloatInlineEnd = "ClearFloatInlineEnd"
 
 instance valClearFloat :: Val (ClearFloat) where
   value (ClearFloatLeft) = fromString "left"
@@ -178,3 +182,9 @@ clearInlineEnd = ClearFloatInlineEnd
 
 clear :: ClearFloat -> CSS
 clear = key (fromString "clear")
+
+opacity :: Number -> CSS
+opacity = key $ fromString "opacity"
+
+zIndex :: Int -> CSS
+zIndex = key (fromString "z-index") <<< show
