@@ -1,11 +1,10 @@
 module CSS.Geometry where
 
-import Data.Function (($))
-import Data.Tuple.Nested (tuple4)
-
 import CSS.Size (Size)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
+import Data.Function (($))
+import Data.Tuple (Tuple(..))
 
 width :: forall a. Size a -> CSS
 width = key $ fromString "width"
@@ -39,6 +38,8 @@ right = key $ fromString "right"
 
 padding :: forall a. Size a -> Size a -> Size a -> Size a -> CSS
 padding a b c d = key (fromString "padding") $ tuple4 a b c d
+  where
+  tuple4 a b c d = Tuple a (Tuple b (Tuple c d))
 
 paddingTop :: forall a. Size a -> CSS
 paddingTop = key $ fromString "padding-top"
@@ -54,6 +55,8 @@ paddingRight = key $ fromString "padding-right"
 
 margin :: forall a. Size a -> Size a -> Size a -> Size a -> CSS
 margin a b c d = key (fromString "margin") $ tuple4 a b c d
+  where
+  tuple4 a b c d = Tuple a (Tuple b (Tuple c d))
 
 marginTop :: forall a. Size a -> CSS
 marginTop = key $ fromString "margin-top"

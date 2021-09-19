@@ -7,7 +7,8 @@ import CSS.Stylesheet (CSS, key)
 import CSS.Time (Time)
 import CSS.Transition (TimingFunction)
 import Data.Foldable (for_)
-import Data.Tuple.Nested (tuple7)
+import Data.Generic (class Generic)
+import Data.Tuple (Tuple(..))
 
 newtype AnimationDirection = AnimationDirection Value
 
@@ -68,6 +69,7 @@ animation p de f du i di fm = do
     , "-moz-animation"
     , "-o-animation"
     ]
+  tuple7 a b c d e f g = Tuple a ( Tuple b (Tuple c (Tuple d (Tuple e (Tuple f g)))))
 
 newtype AnimationName = AnimationName Value
 
