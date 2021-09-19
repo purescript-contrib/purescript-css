@@ -7,7 +7,6 @@ import CSS.Stylesheet (CSS, key)
 import CSS.Time (Time)
 import CSS.Transition (TimingFunction)
 import Data.Foldable (for_)
-import Data.Generic (class Generic)
 import Data.Tuple (Tuple(..))
 
 newtype AnimationDirection = AnimationDirection Value

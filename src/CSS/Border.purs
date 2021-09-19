@@ -7,7 +7,6 @@ import CSS.Property (class Val, Value)
 import CSS.Size (Size, Abs)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
-import Data.Generic (class Generic)
 import Data.Tuple (Tuple(..))
 
 newtype Stroke = Stroke Value
