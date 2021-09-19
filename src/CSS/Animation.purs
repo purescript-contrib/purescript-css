@@ -61,7 +61,7 @@ backwards = FillMode $ fromString "backwards"
 animation :: AnimationName -> Time -> TimingFunction -> Time -> IterationCount -> AnimationDirection -> FillMode -> CSS
 animation p de f du i di fm = do
   for_ animationKeys \k ->
-    key (fromString k) (tuple7 p de f du i di fm)
+    key (fromString k) (Tuple (Tuple (Tuple p de) (Tuple f du)) (Tuple (Tuple i di) fm))
   where
   animationKeys =
     [ "animation"
@@ -69,7 +69,6 @@ animation p de f du i di fm = do
     , "-moz-animation"
     , "-o-animation"
     ]
-  tuple7 a b c d e f g = Tuple a ( Tuple b (Tuple c (Tuple d (Tuple e (Tuple f g)))))
 
 newtype AnimationName = AnimationName Value
 

@@ -6,7 +6,7 @@ import CSS.Property (class Val, Value, noCommas, value)
 import CSS.Size (Angle, Size)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
-import Data.Tuple.Nested (tuple3)
+import Data.Tuple (Tuple(..))
 
 newtype Transformation = Transformation Value
 
@@ -124,7 +124,7 @@ instance valTransformOriginOffset :: Val (TransformOriginOffset a) where
   value (OffsetCenter) = fromString "center"
 
 instance valTransformOrigin :: Val (TransformOrigin a) where
-  value (TransformOrigin x y z) = value (tuple3 x y z)
+  value (TransformOrigin x y z) = value (Tuple (Tuple x y) z)
   value (Initial) = fromString "initial"
   value (Inherit) = fromString "inherit"
   value (Unset) = fromString "unset"
