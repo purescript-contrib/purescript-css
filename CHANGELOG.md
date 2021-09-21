@@ -7,6 +7,7 @@ Notable changes to this project are documented in this file. The format is based
 Breaking changes:
 
 New features:
+- Add smart constructors for generic font families (#68, #136 by @Unisay and @JordanMartinez)
 
 Bugfixes:
 
