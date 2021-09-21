@@ -40,6 +40,27 @@ fantasy = GenericFontFamily $ fromString "fantasy"
 systemUi :: GenericFontFamily
 systemUi = GenericFontFamily $ fromString "system-ui"
 
+uiSerif :: GenericFontFamily
+uiSerif = GenericFontFamily $ fromString "ui-serif"
+
+uiSansSerif :: GenericFontFamily
+uiSansSerif = GenericFontFamily $ fromString "ui-sans-serif"
+
+uiMonospace :: GenericFontFamily
+uiMonospace = GenericFontFamily $ fromString "ui-monospace"
+
+uiRounded :: GenericFontFamily
+uiRounded = GenericFontFamily $ fromString "ui-rounded"
+
+emoji :: GenericFontFamily
+emoji = GenericFontFamily $ fromString "emoji"
+
+math :: GenericFontFamily
+math = GenericFontFamily $ fromString "math"
+
+fangsong :: GenericFontFamily
+fangsong = GenericFontFamily $ fromString "fangsong"
+
 fontFamily :: Array String -> NonEmpty Array GenericFontFamily -> CSS
 fontFamily a b = key (fromString "font-family") <<< value $ (value <<< quote <$> a) <> oneOf (value <$> b)
 
