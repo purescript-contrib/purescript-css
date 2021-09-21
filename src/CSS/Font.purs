@@ -7,7 +7,6 @@ import CSS.Property (class Val, Value, value, quote)
 import CSS.Size (Size)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
-import Data.Generic (class Generic)
 import Data.NonEmpty (NonEmpty, oneOf)
 
 color :: Color -> CSS
@@ -17,7 +16,6 @@ newtype GenericFontFamily = GenericFontFamily Value
 
 derive instance eqGenericFontFamily :: Eq GenericFontFamily
 derive instance ordGenericFontFamily :: Ord GenericFontFamily
-derive instance genericGenericFontFamily :: Generic GenericFontFamily
 
 instance valGenericFontFamily :: Val GenericFontFamily where
   value (GenericFontFamily v) = v
@@ -71,7 +69,6 @@ newtype FontWeight = FontWeight Value
 
 derive instance eqFontWeight :: Eq FontWeight
 derive instance ordFontWeight :: Ord FontWeight
-derive instance genericFontWeight :: Generic FontWeight
 
 instance valFontWeight :: Val FontWeight where
   value (FontWeight v) = v

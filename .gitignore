@@ -1,7 +1,8 @@
-/.*
-!/.gitignore
-!/.travis.yml
-/bower_components/
-/node_modules/
-/output/
-site/psc.js
+.*
+!.gitignore
+!.github
+!.editorconfig
+
+output
+generated-docs
+bower_components

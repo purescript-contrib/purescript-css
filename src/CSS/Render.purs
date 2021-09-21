@@ -2,29 +2,25 @@ module CSS.Render where
 
 import Prelude
 
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (log, CONSOLE)
-
-import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
-import Data.Either (Either(..), either)
-import Data.Foldable (fold, foldMap, intercalate)
-import Data.Generic (class Generic)
-import Data.Maybe (Maybe(..), fromMaybe, maybe)
-import Data.Monoid (class Monoid, mempty)
-import Data.NonEmpty (NonEmpty(..), (:|), foldl1, oneOf)
-import Data.These (These(..), theseLeft, theseRight)
-import Data.Tuple (Tuple(..), lookup, uncurry)
-
 import CSS.Property (Key(..), Prefixed(..), Value(..), plain)
-import CSS.Selector (Path(..), Predicate(..), Refinement(..), Selector(..), with, star, element, (**), (|>))
+import CSS.Selector (Path(..), Predicate(..), Refinement(..), Selector(..), with, star, element, (|*), (|>))
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, StyleM, App(..), Feature(..), Keyframes(..), MediaQuery(..), MediaType(..), Rule(..), runS)
+import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
+import Data.Either (Either(..), either)
+import Data.Foldable (fold, foldMap, intercalate, lookup)
+import Data.Maybe (Maybe(..), fromMaybe, maybe)
+import Data.NonEmpty (NonEmpty(..), (:|), oneOf)
+import Data.Semigroup.Foldable (foldl1)
+import Data.These (These(..), theseLeft, theseRight)
+import Data.Tuple (Tuple(..), uncurry)
+import Effect (Effect)
+import Effect.Console (log)
 
 newtype Inline = Inline String
 
 derive instance eqInline :: Eq Inline
 derive instance ordInline :: Ord Inline
-derive instance genericInline :: Generic Inline
 
 getInline :: Inline -> String
 getInline (Inline s) = s
@@ -39,7 +35,6 @@ newtype Sheet = Sheet String
 
 derive instance eqSheet :: Eq Sheet
 derive instance ordSheet :: Ord Sheet
-derive instance genericSheet :: Generic Sheet
 
 getSheet :: Sheet -> String
 getSheet (Sheet s) = s
@@ -61,11 +56,11 @@ renderedSheet = (_ >>= (map getSheet <<< theseRight))
 render :: forall a. StyleM a -> Rendered
 render = rules [] <<< runS
 
-putInline :: forall e. CSS -> Eff (console :: CONSOLE | e) Unit
+putInline :: CSS -> Effect Unit
 putInline s =
   log <<< fromMaybe "" <<< renderedInline <<< render $ s
 
-putStyleSheet :: forall e. CSS -> Eff (console :: CONSOLE | e) Unit
+putStyleSheet :: CSS -> Effect Unit
 putStyleSheet s =
   log <<< fromMaybe "" <<< renderedSheet <<< render $ s
 
@@ -92,7 +87,7 @@ query' :: MediaQuery -> Array App -> Array Rule -> Rendered
 query' q sel rs = Just <<< That <<< Sheet $ mediaQuery q <> " { " <> fromMaybe "" (renderedSheet $ rules sel rs) <> " }\n"
 
 mediaQuery :: MediaQuery -> String
-mediaQuery (MediaQuery no ty fs) = "@media " <> mediaType ty <> foldl1 (<>) ((" and " <> _) <<< feature <$> fs)
+mediaQuery (MediaQuery _ ty fs) = "@media " <> mediaType ty <> foldl1 (<>) ((" and " <> _) <<< feature <$> fs)
 
 mediaType :: MediaType -> String
 mediaType (MediaType (Value s)) = plain s
@@ -172,10 +167,10 @@ merger :: NonEmpty Array App -> Selector
 merger (NonEmpty x xs) =
   case x of
     Child s -> maybe s (\xs' -> merger xs' |> s) $ nel xs
-    Sub s   -> maybe s (\xs' -> merger xs' ** s) $ nel xs
-    Root s  -> maybe s (\xs' -> s ** merger xs') $ nel xs
+    Sub s   -> maybe s (\xs' -> merger xs' |* s) $ nel xs
+    Root s  -> maybe s (\xs' -> s |* merger xs') $ nel xs
     Pop i   -> maybe (element "TODO") merger <<< nel <<< drop i $ x : xs
-    Self  sheetRules  -> maybe (star `with`  sheetRules) (\xs' -> merger xs' `with`  sheetRules) $ nel xs
+    Self  sheetRules  -> maybe (star `with` sheetRules) (\xs' -> merger xs' `with`  sheetRules) $ nel xs
 
 predicate :: Predicate -> String
 predicate (Id           a  ) = "#" <> a

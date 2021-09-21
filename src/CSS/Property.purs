@@ -1,15 +1,14 @@
 module CSS.Property where
 
 import Prelude
+
 import CSS.String (class IsString, fromString)
 import Color (Color, cssStringHSLA)
-import Data.Foldable (intercalate)
-import Data.Generic (class Generic)
+import Data.Foldable (intercalate, lookup)
 import Data.Maybe (fromMaybe)
-import Data.Monoid (class Monoid, mempty)
 import Data.NonEmpty (NonEmpty, oneOf)
 import Data.Profunctor.Strong (second)
-import Data.Tuple (Tuple(..), lookup)
+import Data.Tuple (Tuple(..))
 
 data Prefixed
   = Prefixed (Array (Tuple String String))
@@ -17,7 +16,6 @@ data Prefixed
 
 derive instance eqPrefixed :: Eq Prefixed
 derive instance ordPrefixed :: Ord Prefixed
-derive instance genericPrefixed :: Generic Prefixed
 
 instance isStringPrefixed :: IsString Prefixed where
   fromString = Plain
@@ -39,11 +37,13 @@ plain (Plain p) = p
 quote :: String -> String
 quote s = "\"" <> s <> "\""
 
+newtype Key :: Type -> Type
 newtype Key a = Key Prefixed
+
+type role Key representational
 
 derive instance eqKey :: (Eq a) => Eq (Key a)
 derive instance ordKey :: (Ord a) => Ord (Key a)
-derive instance genericKey :: (Generic a) => Generic (Key a)
 
 instance isStringKey :: IsString (Key a) where
   fromString = Key <<< fromString
@@ -55,7 +55,6 @@ newtype Value = Value Prefixed
 
 derive instance eqValue :: Eq Value
 derive instance ordValue :: Ord Value
-derive instance genericValue :: Generic Value
 
 instance isStringValue :: IsString Value where
   fromString = Value <<< fromString
@@ -73,22 +72,19 @@ newtype Literal = Literal String
 
 derive instance eqLiteral :: Eq Literal
 derive instance ordLiteral :: Ord Literal
-derive instance genericLiteral :: Generic Literal
 
 instance valLiteral :: Val Literal where
   value (Literal a) = fromString $ quote a
 
 instance valValue :: Val Value where
-  value = id
+  value = identity
 
 instance valString :: Val String where
   value = fromString
 
 instance valUnit :: Val Unit where
-  value u = fromString ""
+  value _ = fromString ""
 
--- When `b` is Unit, the rendered value will have an extra
---   space appended to end. Shouldn't hurt. I'd fix if I knew how.
 instance valTuple :: (Val a, Val b) => Val (Tuple a b) where
   value (Tuple a b) = value a <> fromString " " <> value b
 

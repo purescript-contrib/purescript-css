@@ -6,10 +6,9 @@ import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
 import Data.Eq (class Eq)
 import Data.Function (($))
-import Data.Generic (class Generic, gShow)
 import Data.Ord (class Ord)
 import Data.Semigroup ((<>))
-import Data.Show (class Show)
+import Data.Show (class Show, show)
 
 data ListStyleType
   = Disc
@@ -28,10 +27,21 @@ data ListStyleType
 
 derive instance eqListStyleType :: Eq ListStyleType
 derive instance ordListStyleType :: Ord ListStyleType
-derive instance genericListStyleType :: Generic ListStyleType
 
 instance showListStyleType :: Show ListStyleType where
-  show = gShow
+  show Disc = "Disc"
+  show Circle = "Circle"
+  show Square = "Square"
+  show Decimal = "Decimal"
+  show Georgian = "Georgian"
+  show CJKIdeographic = "CJKIdeographic"
+  show Kannada = "Kannada"
+  show None = "None"
+  show Inherit = "Inherit"
+  show Initial = "Initial"
+  show Unset = "Unset"
+  show (CustomStyleType s) = "(CustomStyleType " <> show s <> ")"
+  show (StringStyleType s) = "(StringStyleType " <> show s <> ")"
 
 instance valListStyleType :: Val ListStyleType where
   value (Disc) = fromString "disc"
