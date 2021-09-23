@@ -8,7 +8,7 @@ Breaking changes:
 
 New features:
 - Add smart constructors for generic font families (#68, #136 by @Unisay and @JordanMartinez)
-- Add support for `text-direction` (#83 by @vyorkin)
+- Add support for `text-direction` (#83, #137 by @vyorkin and @JordanMartinez)
 
 Bugfixes:
 
