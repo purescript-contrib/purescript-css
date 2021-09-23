@@ -8,11 +8,12 @@ import CSS.String (fromString)
 import CSS.Stylesheet (CSS, StyleM, App(..), Feature(..), Keyframes(..), MediaQuery(..), MediaType(..), Rule(..), runS)
 import Data.Array (null, (:), drop, sort, uncons, mapMaybe)
 import Data.Either (Either(..), either)
-import Data.Foldable (fold, foldMap, intercalate)
+import Data.Foldable (fold, foldMap, intercalate, lookup)
 import Data.Maybe (Maybe(..), fromMaybe, maybe)
-import Data.NonEmpty (NonEmpty(..), (:|), foldl1, oneOf)
+import Data.NonEmpty (NonEmpty(..), (:|), oneOf)
+import Data.Semigroup.Foldable (foldl1)
 import Data.These (These(..), theseLeft, theseRight)
-import Data.Tuple (Tuple(..), lookup, uncurry)
+import Data.Tuple (Tuple(..), uncurry)
 import Effect (Effect)
 import Effect.Console (log)
 
@@ -86,7 +87,7 @@ query' :: MediaQuery -> Array App -> Array Rule -> Rendered
 query' q sel rs = Just <<< That <<< Sheet $ mediaQuery q <> " { " <> fromMaybe "" (renderedSheet $ rules sel rs) <> " }\n"
 
 mediaQuery :: MediaQuery -> String
-mediaQuery (MediaQuery no ty fs) = "@media " <> mediaType ty <> foldl1 (<>) ((" and " <> _) <<< feature <$> fs)
+mediaQuery (MediaQuery _ ty fs) = "@media " <> mediaType ty <> foldl1 (<>) ((" and " <> _) <<< feature <$> fs)
 
 mediaType :: MediaType -> String
 mediaType (MediaType (Value s)) = plain s

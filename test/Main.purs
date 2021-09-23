@@ -4,10 +4,13 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, direction)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction)
+import CSS.Cursor as Cursor
+import CSS.Flexbox (flex)
 import CSS.FontStyle as FontStyle
-import CSS.Text.Overflow as TextOverflow
 import CSS.Text.Direction as TextDirection
+import CSS.Text.Overflow as TextOverflow
+import CSS.Transform as Transform
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton)
 
@@ -44,6 +47,10 @@ example7 :: Rendered
 example7 = render do
   zIndex 11
   opacity 0.5
+  
+example8 :: Rendered
+example8 = render do
+  flex 0.14 1.0 (pct 0.0)
 
 withSelector :: Rendered
 withSelector = render do
@@ -96,6 +103,16 @@ adjacentSelector = render do
   a |+ a ? do
     display inlineBlock
 
+scaleTransform1 :: Rendered
+scaleTransform1 = render do
+  transform $ Transform.scaleX 1.0
+  transform $ Transform.scaleY 0.5
+  transform $ Transform.scaleZ 0.5
+
+scaleTransform2 :: Rendered
+scaleTransform2 = render do
+  transform $ Transform.scale 0.2 0.8
+
 exampleFontStyle1 :: Rendered
 exampleFontStyle1 = render do
   fontStyle FontStyle.italic
@@ -120,6 +137,10 @@ exampleDirection :: Rendered
 exampleDirection = render do
   direction TextDirection.rtl
 
+exampleCursor :: Rendered
+exampleCursor = render do
+  cursor Cursor.notAllowed
+
 nestedNodes :: Rendered
 nestedNodes = render do
   fromString "#parent" ? do
@@ -131,6 +152,14 @@ nestedNodesWithEmptyParent = render do
   fromString "#parent" ? do
     fromString "#child" ? display block
 
+transition1 :: Rendered
+transition1 = render do
+  transition "background-color" (ms 1.0) easeInOut (ms 0.0)
+
+transition2 :: Rendered
+transition2 = render do
+  transition "background-color" (ms 1.0) (cubicBezier 0.3 0.3 0.7 1.4) (ms 0.0)
+
 assertEqual :: forall a. Eq a => Show a => a -> a -> Effect Unit
 assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
 
@@ -138,7 +167,7 @@ main :: Effect Unit
 main = do
   renderedInline example1 `assertEqual` Just "color: hsl(0.0, 100.0%, 50.0%); display: block"
   renderedInline example2 `assertEqual` Just "display: inline-block"
-  renderedInline example3 `assertEqual` Just "border: dashed 2.0px hsl(240.0, 100.0%, 50.0%) "
+  renderedInline example3 `assertEqual` Just "border: dashed 2.0px hsl(240.0, 100.0%, 50.0%)"
 
   selector (Selector (Refinement [Id "test"]) Star) `assertEqual` "#test"
 
@@ -160,6 +189,8 @@ main = do
   renderedInline example6 `assertEqual` Just "src: url(\"font.woff\") format(\"woff\")"
 
   renderedInline example7 `assertEqual` Just "z-index: 11; opacity: 0.5"
+  
+  renderedInline example8 `assertEqual` Just "flex: 0.14 1.0 0.0%"
 
   renderedInline exampleFontStyle1 `assertEqual` Just "font-style: italic"
   renderedInline exampleFontStyle2 `assertEqual` Just "font-style: oblique"
@@ -177,3 +208,11 @@ main = do
   renderedSheet attrHyph `assertEqual` Just "p[foo|='bar'] { display: block }\n"
 
   renderedInline exampleDirection `assertEqual` Just "direction: rtl"
+
+  renderedInline exampleCursor `assertEqual` Just "cursor: not-allowed"
+
+  renderedInline scaleTransform1 `assertEqual` Just "transform: scaleX(1.0); transform: scaleY(0.5); transform: scaleZ(0.5)"
+  renderedInline scaleTransform2 `assertEqual` Just "transform: scale(0.2, 0.8)"
+
+  renderedInline transition1 `assertEqual` Just "-webkit-transition: background-color 1.0ms ease-in-out 0.0ms; -moz-transition: background-color 1.0ms ease-in-out 0.0ms; -ms-transition: background-color 1.0ms ease-in-out 0.0ms; -o-transition: background-color 1.0ms ease-in-out 0.0ms; transition: background-color 1.0ms ease-in-out 0.0ms"
+  renderedInline transition2 `assertEqual` Just "-webkit-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -moz-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -ms-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -o-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms"

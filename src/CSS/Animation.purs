@@ -7,7 +7,7 @@ import CSS.Stylesheet (CSS, key)
 import CSS.Time (Time)
 import CSS.Transition (TimingFunction)
 import Data.Foldable (for_)
-import Data.Tuple.Nested (tuple7)
+import Data.Tuple (Tuple(..))
 
 newtype AnimationDirection = AnimationDirection Value
 
@@ -60,7 +60,7 @@ backwards = FillMode $ fromString "backwards"
 animation :: AnimationName -> Time -> TimingFunction -> Time -> IterationCount -> AnimationDirection -> FillMode -> CSS
 animation p de f du i di fm = do
   for_ animationKeys \k ->
-    key (fromString k) (tuple7 p de f du i di fm)
+    key (fromString k) (Tuple (Tuple (Tuple p de) (Tuple f du)) (Tuple (Tuple i di) fm))
   where
   animationKeys =
     [ "animation"

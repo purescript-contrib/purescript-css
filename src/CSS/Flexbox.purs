@@ -159,7 +159,7 @@ alignSelf = key $ fromString "align-self"
 
 -------------------------------------------------------------------------------
 
-flex :: forall b. Int -> Int -> Size b -> CSS
+flex :: forall b. Number -> Number -> Size b -> CSS
 flex g s b = key (fromString "flex") (gs ! ss ! value b)
   where gs = fromString (show g) :: Value
         ss = fromString (show s) :: Value
@@ -204,10 +204,10 @@ flexFlow d w = key (fromString "flex-flow") (d ! w)
 
 -------------------------------------------------------------------------------
 
-flexGrow :: Int -> CSS
+flexGrow :: Number -> CSS
 flexGrow i = key (fromString "flex-grow") (fromString (show i) :: Value)
 
-flexShrink :: Int  -> CSS
+flexShrink :: Number  -> CSS
 flexShrink i = key (fromString "flex-shrink") (fromString (show i) :: Value)
 
 -------------------------------------------------------------------------------

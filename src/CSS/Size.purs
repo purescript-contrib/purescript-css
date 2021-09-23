@@ -6,7 +6,10 @@ import CSS.Common (class Auto)
 import CSS.Property (class Val, Value, value)
 import CSS.String (class IsString, fromString)
 
+newtype Size :: Type -> Type
 newtype Size a = Size Value
+
+type role Size nominal
 
 derive instance eqSize :: Eq a => Eq (Size a)
 derive instance ordSize :: Ord a => Ord (Size a)
@@ -47,6 +50,9 @@ em i = Size (value i <> fromString "em")
 ex :: Number -> Size Abs
 ex i = Size (value i <> fromString "ex")
 
+ch :: Number -> Size Abs
+ch i = Size (value i <> fromString "ch")
+
 -- | SimpleSize in percents.
 pct :: Number -> Size Rel
 pct i = Size (value i <> fromString "%")
@@ -77,7 +83,10 @@ sym f a = f a a a a
 data Deg
 data Rad
 
+newtype Angle :: Type -> Type
 newtype Angle a = Angle Value
+
+type role Angle nominal
 
 derive instance eqAngle :: Eq a => Eq (Angle a)
 derive instance ordAngle :: Ord a => Ord (Angle a)
