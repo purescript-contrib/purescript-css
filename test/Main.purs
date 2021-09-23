@@ -4,10 +4,11 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction)
 import CSS.Cursor as Cursor
 import CSS.Flexbox (flex)
 import CSS.FontStyle as FontStyle
+import CSS.Text.Direction as TextDirection
 import CSS.Text.Overflow as TextOverflow
 import CSS.Transform as Transform
 import Data.Maybe (Maybe(..))
@@ -132,6 +133,10 @@ exampleTextOverflow2 :: Rendered
 exampleTextOverflow2 = render do
   textOverflow $ TextOverflow.custom "foobar"
 
+exampleDirection :: Rendered
+exampleDirection = render do
+  direction TextDirection.rtl
+
 exampleCursor :: Rendered
 exampleCursor = render do
   cursor Cursor.notAllowed
@@ -201,6 +206,8 @@ main = do
   renderedSheet attrContains `assertEqual` Just "p[foo*='bar'] { display: block }\n"
   renderedSheet attrSpace `assertEqual` Just "p[foo~='bar'] { display: block }\n"
   renderedSheet attrHyph `assertEqual` Just "p[foo|='bar'] { display: block }\n"
+
+  renderedInline exampleDirection `assertEqual` Just "direction: rtl"
 
   renderedInline exampleCursor `assertEqual` Just "cursor: not-allowed"
 
