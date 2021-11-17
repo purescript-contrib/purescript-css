@@ -13,6 +13,7 @@ New features:
 Bugfixes:
 
 Other improvements:
+- Added `purs-tidy` formatter (#138 by @thomashoneyman)
 - Remove ending space in css output (e.g. `padding: 1 2 3 4 `) (#135 by @chexxor and @JordanMartinez)
 
 ## [v5.0.1](https://github.com/purescript-contrib/purescript-css/releases/tag/v5.0.1) - 2021-04-19
