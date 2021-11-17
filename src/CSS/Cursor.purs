@@ -10,7 +10,7 @@ data Cursor
   = Default
   | Help
   | Pointer
-  | Progress 
+  | Progress
   | Wait
   | Cell
   | Crosshair
@@ -19,13 +19,13 @@ data Cursor
   | Alias
   | Copy
   | Move
-  | NoDrop 
+  | NoDrop
   | NotAllowed
   | Grab
   | Grabbing
   | AllScroll
   | ColResize
-  | RowResize 
+  | RowResize
   | NResize
   | EResize
   | SResize
@@ -45,29 +45,29 @@ derive instance eqCursor :: Eq Cursor
 derive instance ordCursor :: Ord Cursor
 
 instance valCursor :: Val Cursor where
-  value Default  = fromString "default"
+  value Default = fromString "default"
   value Help = fromString "help"
-  value Pointer  = fromString "pointer"
+  value Pointer = fromString "pointer"
   value Progress = fromString "progress"
   value Wait = fromString "wait"
   value Cell = fromString "cell"
-  value Crosshair  = fromString "crosshair"
+  value Crosshair = fromString "crosshair"
   value Text = fromString "text"
   value VerticalText = fromString "vertical-text"
-  value Alias  = fromString "alias"
+  value Alias = fromString "alias"
   value Copy = fromString "copy"
   value Move = fromString "move"
   value NoDrop = fromString "no-drop"
   value NotAllowed = fromString "not-allowed"
   value Grab = fromString "grab"
   value Grabbing = fromString "grabbing"
-  value AllScroll  = fromString "all-scroll"
-  value ColResize  = fromString "col-resize"
-  value RowResize  = fromString "row-resize"
-  value NResize  = fromString "n-resize"
-  value EResize  = fromString "e-resize"
-  value SResize  = fromString "s-resize"
-  value WResize  = fromString "w-resize"
+  value AllScroll = fromString "all-scroll"
+  value ColResize = fromString "col-resize"
+  value RowResize = fromString "row-resize"
+  value NResize = fromString "n-resize"
+  value EResize = fromString "e-resize"
+  value SResize = fromString "s-resize"
+  value WResize = fromString "w-resize"
   value NEResize = fromString "ne-resize"
   value NWResize = fromString "nw-resize"
   value SEResize = fromString "se-resize"
@@ -77,7 +77,7 @@ instance valCursor :: Val Cursor where
   value NESWResize = fromString "nesw-resize"
   value NWSEResize = fromString "nwse-resize"
   value ZoomIn = fromString "zoom-in"
-  value ZoomOut  = fromString "zoom-out"
+  value ZoomOut = fromString "zoom-out"
 
 cursor :: Cursor -> CSS
 cursor = key $ fromString "cursor"

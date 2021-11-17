@@ -161,8 +161,9 @@ alignSelf = key $ fromString "align-self"
 
 flex :: forall b. Number -> Number -> Size b -> CSS
 flex g s b = key (fromString "flex") (gs ! ss ! value b)
-  where gs = fromString (show g) :: Value
-        ss = fromString (show s) :: Value
+  where
+  gs = fromString (show g) :: Value
+  ss = fromString (show s) :: Value
 
 -------------------------------------------------------------------------------
 
@@ -207,7 +208,7 @@ flexFlow d w = key (fromString "flex-flow") (d ! w)
 flexGrow :: Number -> CSS
 flexGrow i = key (fromString "flex-grow") (fromString (show i) :: Value)
 
-flexShrink :: Number  -> CSS
+flexShrink :: Number -> CSS
 flexShrink i = key (fromString "flex-shrink") (fromString (show i) :: Value)
 
 -------------------------------------------------------------------------------
@@ -264,10 +265,12 @@ instance flexStartJustifyContentValue :: FlexStart JustifyContentValue where
   flexStart = fromString "flex-start"
 
 instance spaceAroundJustifyContentValue :: SpaceAround JustifyContentValue
-  where spaceAround = fromString "space-around"
+  where
+  spaceAround = fromString "space-around"
 
 instance spaceBetweenJustifyContentValue :: SpaceBetween JustifyContentValue
-  where spaceBetween = fromString "space-between"
+  where
+  spaceBetween = fromString "space-between"
 
 justifyContent :: JustifyContentValue -> CSS
 justifyContent = key $ fromString "justify-content"

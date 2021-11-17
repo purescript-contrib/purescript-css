@@ -1,6 +1,6 @@
 module CSS.Gradient
   (
-  -- * Color ramp type.
+    -- * Color ramp type.
     Ramp
 
   -- * Linear gradients.
@@ -10,11 +10,16 @@ module CSS.Gradient
 
   -- * Radial gradients.
   , Radial
-  , circle, ellipse
-  , circular, elliptical
+  , circle
+  , ellipse
+  , circular
+  , elliptical
 
   , Extend
-  , closestSide, closestCorner, farthestSide, farthestCorner
+  , closestSide
+  , closestCorner
+  , farthestSide
+  , farthestCorner
 
   , radialGradient
 
@@ -24,8 +29,7 @@ module CSS.Gradient
   , vRepeatingGradient
   , repeatingRadialGradient
 
-  )
-where
+  ) where
 
 import Prelude
 
@@ -59,7 +63,7 @@ hGradient :: Color -> Color -> BackgroundImage
 hGradient = shortcut (linearGradient (straight sideLeft))
 
 vGradient :: Color -> Color -> BackgroundImage
-vGradient = shortcut (linearGradient (straight sideTop ))
+vGradient = shortcut (linearGradient (straight sideTop))
 
 -------------------------------------------------------------------------------
 
@@ -80,7 +84,7 @@ hRepeatingGradient :: Color -> Color -> BackgroundImage
 hRepeatingGradient = shortcut (repeatingLinearGradient (straight sideLeft))
 
 vRepeatingGradient :: Color -> Color -> BackgroundImage
-vRepeatingGradient = shortcut (repeatingLinearGradient (straight sideTop ))
+vRepeatingGradient = shortcut (repeatingLinearGradient (straight sideTop))
 
 -------------------------------------------------------------------------------
 
@@ -137,7 +141,7 @@ radialGradient d r xs = other $ Value $
   let
     rg =
       fromString "radial-gradient("
-        <> value [value d, value r, ramp xs]
+        <> value [ value d, value r, ramp xs ]
         <> fromString ")"
   in
     case rg of
@@ -149,7 +153,7 @@ repeatingRadialGradient d r xs = other $ Value $
   let
     rrg =
       fromString "repeating-radial-gradient("
-        <> value [value d, value r, ramp xs]
+        <> value [ value d, value r, ramp xs ]
         <> fromString ")"
   in
     case rrg of
@@ -161,4 +165,4 @@ ramp :: Ramp -> Value
 ramp xs = value (map (\(Tuple a b) -> value (Tuple (value a) (value b))) xs)
 
 shortcut :: (Ramp -> BackgroundImage) -> Color -> Color -> BackgroundImage
-shortcut g f t = g [(Tuple f (pct 0.0)), (Tuple t (pct 100.0))]
+shortcut g f t = g [ (Tuple f (pct 0.0)), (Tuple t (pct 100.0)) ]

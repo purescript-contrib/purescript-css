@@ -31,7 +31,7 @@ nil :: forall a. Size a
 nil = Size $ fromString "0"
 
 -- | Unitless size (as recommended for line-height).
-unitless ∷ forall a. Number → Size a
+unitless :: forall a. Number -> Size a
 unitless = Size <<< value
 
 -- | Size in pixels.
