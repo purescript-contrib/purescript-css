@@ -264,12 +264,10 @@ instance flexEndJustifyContentValue :: FlexEnd JustifyContentValue where
 instance flexStartJustifyContentValue :: FlexStart JustifyContentValue where
   flexStart = fromString "flex-start"
 
-instance spaceAroundJustifyContentValue :: SpaceAround JustifyContentValue
-  where
+instance spaceAroundJustifyContentValue :: SpaceAround JustifyContentValue where
   spaceAround = fromString "space-around"
 
-instance spaceBetweenJustifyContentValue :: SpaceBetween JustifyContentValue
-  where
+instance spaceBetweenJustifyContentValue :: SpaceBetween JustifyContentValue where
   spaceBetween = fromString "space-between"
 
 justifyContent :: JustifyContentValue -> CSS
