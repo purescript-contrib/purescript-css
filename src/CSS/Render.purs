@@ -57,12 +57,10 @@ render :: forall a. StyleM a -> Rendered
 render = rules [] <<< runS
 
 putInline :: CSS -> Effect Unit
-putInline s =
-  log <<< fromMaybe "" <<< renderedInline <<< render $ s
+putInline s = log <<< fromMaybe "" <<< renderedInline <<< render $ s
 
 putStyleSheet :: CSS -> Effect Unit
-putStyleSheet s =
-  log <<< fromMaybe "" <<< renderedSheet <<< render $ s
+putStyleSheet s = log <<< fromMaybe "" <<< renderedSheet <<< render $ s
 
 kframe :: Keyframes -> Rendered
 kframe (Keyframes ident xs) =
@@ -70,12 +68,14 @@ kframe (Keyframes ident xs) =
   where
   renderContent =
     " " <> ident <> " { " <> intercalate " " (uncurry frame <$> xs) <> " }\n"
+
   keywords =
     [ "@keyframes"
     , "@-webkit-keyframes"
     , "@-moz-keyframes"
     , "@-o-keyframes"
     ]
+
   allKeywordsWithContent =
     fold $ map (_ <> renderContent) keywords
 
@@ -114,11 +114,9 @@ rules sel rs = topRules <> importRules <> keyframeRules <> faceRules <> nestedSh
   faces _ = Nothing
   imports (Import i) = Just i
   imports _ = Nothing
-  topRules =
-    if not null rs' then rule' sel rs'
-    else Nothing
-    where
-    rs' = mapMaybe property rs
+  topRules = do
+    let rs' = mapMaybe property rs
+    if not null rs' then rule' sel rs' else Nothing
   nestedSheets = fold $ uncurry nestedRules <$> mapMaybe nested rs
   nestedRules a = rules (a : sel)
   queryRules = foldMap (uncurry $ flip query' sel) $ mapMaybe queries rs

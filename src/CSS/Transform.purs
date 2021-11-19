@@ -100,43 +100,11 @@ matrix3d
   -> Number
   -> Number
   -> Transformation
-matrix3d
-  w0
-  x0
-  y0
-  z0
-  w1
-  x1
-  y1
-  z1
-  w2
-  x2
-  y2
-  z2
-  w3
-  x3
-  y3
-  z3 =
-  Transformation $ fromString "matrix3d("
-    <> value
-      [ w0
-      , x0
-      , y0
-      , z0
-      , w1
-      , x1
-      , y1
-      , z1
-      , w2
-      , x2
-      , y2
-      , z2
-      , w3
-      , x3
-      , y3
-      , z3
-      ]
-    <> fromString ")"
+matrix3d w0 x0 y0 z0 w1 x1 y1 z1 w2 x2 y2 z2 w3 x3 y3 z3 =
+  Transformation $
+    fromString "matrix3d("
+      <> value [ w0, x0, y0, z0, w1, x1, y1, z1, w2, x2, y2, z2, w3, x3, y3, z3 ]
+      <> fromString ")"
 
 data TransformOrigin :: Type -> Type
 data TransformOrigin a

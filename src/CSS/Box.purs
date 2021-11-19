@@ -57,6 +57,5 @@ boxShadow x y w c =
 
 -------------------------------------------------------------------------------
 
-insetBoxShadow
-  :: forall a. Stroke -> Size a -> Size a -> Size a -> Color -> CSS
+insetBoxShadow :: forall a. Stroke -> Size a -> Size a -> Size a -> Color -> CSS
 insetBoxShadow x y w c z = prefixed (browsers <> fromString "box-shadow") (x ! y ! w ! c ! z)

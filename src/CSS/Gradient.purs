@@ -47,17 +47,16 @@ type Ramp = Array (Tuple Color (Size Rel))
 -------------------------------------------------------------------------------
 
 linearGradient :: Direction -> Ramp -> BackgroundImage
-linearGradient d xs = other $ Value $
+linearGradient d xs = other $ Value do
   let
-    lg =
+    (Value v) =
       fromString "linear-gradient("
         <> value d
         <> fromString ","
         <> ramp xs
         <> fromString ")"
-  in
-    case lg of
-      Value v -> browsers <> v
+
+  browsers <> v
 
 hGradient :: Color -> Color -> BackgroundImage
 hGradient = shortcut (linearGradient (straight sideLeft))
@@ -68,17 +67,16 @@ vGradient = shortcut (linearGradient (straight sideTop))
 -------------------------------------------------------------------------------
 
 repeatingLinearGradient :: Direction -> Ramp -> BackgroundImage
-repeatingLinearGradient d xs = other $ Value $
+repeatingLinearGradient d xs = other $ Value do
   let
-    rlg =
+    (Value v) =
       fromString "repeating-linear-gradient("
         <> value d
         <> fromString ","
         <> ramp xs
         <> fromString ")"
-  in
-    case rlg of
-      Value v -> browsers <> v
+
+  browsers <> v
 
 hRepeatingGradient :: Color -> Color -> BackgroundImage
 hRepeatingGradient = shortcut (repeatingLinearGradient (straight sideLeft))
@@ -137,27 +135,24 @@ farthestCorner = Extend $ fromString "farthest-corner"
 -------------------------------------------------------------------------------
 
 radialGradient :: forall l. Loc l => l -> Radial -> Ramp -> BackgroundImage
-radialGradient d r xs = other $ Value $
+radialGradient d r xs = other $ Value do
   let
-    rg =
+    (Value v) =
       fromString "radial-gradient("
         <> value [ value d, value r, ramp xs ]
         <> fromString ")"
-  in
-    case rg of
-      Value v -> browsers <> v
 
-repeatingRadialGradient
-  :: forall l. Loc l => l -> Radial -> Ramp -> BackgroundImage
-repeatingRadialGradient d r xs = other $ Value $
+  browsers <> v
+
+repeatingRadialGradient :: forall l. Loc l => l -> Radial -> Ramp -> BackgroundImage
+repeatingRadialGradient d r xs = other $ Value do
   let
-    rrg =
+    (Value v) =
       fromString "repeating-radial-gradient("
         <> value [ value d, value r, ramp xs ]
         <> fromString ")"
-  in
-    case rrg of
-      Value v -> browsers <> v
+
+  browsers <> v
 
 -------------------------------------------------------------------------------
 
