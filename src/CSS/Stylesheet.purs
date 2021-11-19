@@ -17,12 +17,12 @@ import CSS.Selector (Selector, Refinement)
 newtype MediaType = MediaType Value
 
 derive instance eqMediaType :: Eq MediaType
-derive instance ordMediaType:: Ord MediaType
+derive instance ordMediaType :: Ord MediaType
 
 data NotOrOnly = Not | Only
 
 derive instance eqNotOrOnly :: Eq NotOrOnly
-derive instance ordNotOrOnly:: Ord NotOrOnly
+derive instance ordNotOrOnly :: Ord NotOrOnly
 
 data MediaQuery = MediaQuery (Maybe NotOrOnly) MediaType (NonEmpty Array Feature)
 
@@ -94,6 +94,7 @@ prefixed :: forall a. Val a => Prefixed -> a -> CSS
 prefixed xs = key (Key xs)
 
 infixr 5 select as ?
+
 select :: Selector -> CSS -> CSS
 select sel rs = rule $ Nested (Sub sel) (runS rs)
 
@@ -104,7 +105,7 @@ keyframes :: String -> NonEmpty Array (Tuple Number CSS) -> CSS
 keyframes n xs = rule $ Keyframe (Keyframes n (second runS <$> xs))
 
 keyframesFromTo :: String -> CSS -> CSS -> CSS
-keyframesFromTo n a b = keyframes n $ Tuple 0.0 a :| [Tuple 100.0 b]
+keyframesFromTo n a b = keyframes n $ Tuple 0.0 a :| [ Tuple 100.0 b ]
 
 fontFace :: CSS -> CSS
 fontFace = rule <<< Face <<< runS

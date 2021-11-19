@@ -9,7 +9,7 @@ import CSS.Stylesheet (CSS, key)
 newtype TextAlign = TextAlign Value
 
 derive instance eqTextAlign :: Eq TextAlign
-derive instance ordTextAlign:: Ord TextAlign
+derive instance ordTextAlign :: Ord TextAlign
 
 instance valTextAlign :: Val TextAlign where
   value (TextAlign v) = v

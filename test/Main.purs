@@ -47,7 +47,7 @@ example7 :: Rendered
 example7 = render do
   zIndex 11
   opacity 0.5
-  
+
 example8 :: Rendered
 example8 = render do
   flex 0.14 1.0 (pct 0.0)
@@ -169,7 +169,7 @@ main = do
   renderedInline example2 `assertEqual` Just "display: inline-block"
   renderedInline example3 `assertEqual` Just "border: dashed 2.0px hsl(240.0, 100.0%, 50.0%)"
 
-  selector (Selector (Refinement [Id "test"]) Star) `assertEqual` "#test"
+  selector (Selector (Refinement [ Id "test" ]) Star) `assertEqual` "#test"
 
   selector (fromString "#test") `assertEqual` "#test"
 
@@ -189,7 +189,7 @@ main = do
   renderedInline example6 `assertEqual` Just "src: url(\"font.woff\") format(\"woff\")"
 
   renderedInline example7 `assertEqual` Just "z-index: 11; opacity: 0.5"
-  
+
   renderedInline example8 `assertEqual` Just "flex: 0.14 1.0 0.0%"
 
   renderedInline exampleFontStyle1 `assertEqual` Just "font-style: italic"

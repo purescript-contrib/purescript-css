@@ -8,7 +8,7 @@ import CSS.String (fromString)
 newtype Time = Time Value
 
 derive instance eqTime :: Eq Time
-derive instance ordTime:: Ord Time
+derive instance ordTime :: Ord Time
 
 instance valTime :: Val Time where
   value (Time v) = v

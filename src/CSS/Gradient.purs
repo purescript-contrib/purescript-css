@@ -1,6 +1,6 @@
 module CSS.Gradient
   (
-  -- * Color ramp type.
+    -- * Color ramp type.
     Ramp
 
   -- * Linear gradients.
@@ -10,11 +10,16 @@ module CSS.Gradient
 
   -- * Radial gradients.
   , Radial
-  , circle, ellipse
-  , circular, elliptical
+  , circle
+  , ellipse
+  , circular
+  , elliptical
 
   , Extend
-  , closestSide, closestCorner, farthestSide, farthestCorner
+  , closestSide
+  , closestCorner
+  , farthestSide
+  , farthestCorner
 
   , radialGradient
 
@@ -24,8 +29,7 @@ module CSS.Gradient
   , vRepeatingGradient
   , repeatingRadialGradient
 
-  )
-where
+  ) where
 
 import Prelude
 
@@ -43,44 +47,42 @@ type Ramp = Array (Tuple Color (Size Rel))
 -------------------------------------------------------------------------------
 
 linearGradient :: Direction -> Ramp -> BackgroundImage
-linearGradient d xs = other $ Value $
+linearGradient d xs = other $ Value do
   let
-    lg =
+    (Value v) =
       fromString "linear-gradient("
         <> value d
         <> fromString ","
         <> ramp xs
         <> fromString ")"
-  in
-    case lg of
-      Value v -> browsers <> v
+
+  browsers <> v
 
 hGradient :: Color -> Color -> BackgroundImage
 hGradient = shortcut (linearGradient (straight sideLeft))
 
 vGradient :: Color -> Color -> BackgroundImage
-vGradient = shortcut (linearGradient (straight sideTop ))
+vGradient = shortcut (linearGradient (straight sideTop))
 
 -------------------------------------------------------------------------------
 
 repeatingLinearGradient :: Direction -> Ramp -> BackgroundImage
-repeatingLinearGradient d xs = other $ Value $
+repeatingLinearGradient d xs = other $ Value do
   let
-    rlg =
+    (Value v) =
       fromString "repeating-linear-gradient("
         <> value d
         <> fromString ","
         <> ramp xs
         <> fromString ")"
-  in
-    case rlg of
-      Value v -> browsers <> v
+
+  browsers <> v
 
 hRepeatingGradient :: Color -> Color -> BackgroundImage
 hRepeatingGradient = shortcut (repeatingLinearGradient (straight sideLeft))
 
 vRepeatingGradient :: Color -> Color -> BackgroundImage
-vRepeatingGradient = shortcut (repeatingLinearGradient (straight sideTop ))
+vRepeatingGradient = shortcut (repeatingLinearGradient (straight sideTop))
 
 -------------------------------------------------------------------------------
 
@@ -133,27 +135,24 @@ farthestCorner = Extend $ fromString "farthest-corner"
 -------------------------------------------------------------------------------
 
 radialGradient :: forall l. Loc l => l -> Radial -> Ramp -> BackgroundImage
-radialGradient d r xs = other $ Value $
+radialGradient d r xs = other $ Value do
   let
-    rg =
+    (Value v) =
       fromString "radial-gradient("
-        <> value [value d, value r, ramp xs]
+        <> value [ value d, value r, ramp xs ]
         <> fromString ")"
-  in
-    case rg of
-      Value v -> browsers <> v
 
-repeatingRadialGradient
-  :: forall l. Loc l => l -> Radial -> Ramp -> BackgroundImage
-repeatingRadialGradient d r xs = other $ Value $
+  browsers <> v
+
+repeatingRadialGradient :: forall l. Loc l => l -> Radial -> Ramp -> BackgroundImage
+repeatingRadialGradient d r xs = other $ Value do
   let
-    rrg =
+    (Value v) =
       fromString "repeating-radial-gradient("
-        <> value [value d, value r, ramp xs]
+        <> value [ value d, value r, ramp xs ]
         <> fromString ")"
-  in
-    case rrg of
-      Value v -> browsers <> v
+
+  browsers <> v
 
 -------------------------------------------------------------------------------
 
@@ -161,4 +160,4 @@ ramp :: Ramp -> Value
 ramp xs = value (map (\(Tuple a b) -> value (Tuple (value a) (value b))) xs)
 
 shortcut :: (Ramp -> BackgroundImage) -> Color -> Color -> BackgroundImage
-shortcut g f t = g [(Tuple f (pct 0.0)), (Tuple t (pct 100.0))]
+shortcut g f t = g [ (Tuple f (pct 0.0)), (Tuple t (pct 100.0)) ]
