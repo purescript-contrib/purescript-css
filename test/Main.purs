@@ -4,7 +4,7 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction, width, em, (@+@), (@-@), (@*), (*@), (@/))
 import CSS.Cursor as Cursor
 import CSS.Flexbox (flex)
 import CSS.FontStyle as FontStyle
@@ -160,6 +160,18 @@ transition2 :: Rendered
 transition2 = render do
   transition "background-color" (ms 1.0) (cubicBezier 0.3 0.3 0.7 1.4) (ms 0.0)
 
+calc1 :: Rendered
+calc1 = render do
+  width $ (em 2.0 @/ 3.0) @+@ px 1.0
+
+calc2 :: Rendered
+calc2 = render do
+  width $ ((pct 100.0) @/ 7.0) @* 4.0
+
+calc3 :: Rendered
+calc3 = render do
+  width $ 5.0 *@ (pct (-20.0) @-@ px 10.0)
+
 assertEqual :: forall a. Eq a => Show a => a -> a -> Effect Unit
 assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
 
@@ -216,3 +228,7 @@ main = do
 
   renderedInline transition1 `assertEqual` Just "-webkit-transition: background-color 1.0ms ease-in-out 0.0ms; -moz-transition: background-color 1.0ms ease-in-out 0.0ms; -ms-transition: background-color 1.0ms ease-in-out 0.0ms; -o-transition: background-color 1.0ms ease-in-out 0.0ms; transition: background-color 1.0ms ease-in-out 0.0ms"
   renderedInline transition2 `assertEqual` Just "-webkit-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -moz-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -ms-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -o-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms"
+
+  renderedInline calc1 `assertEqual` Just "width: -webkit-calc((2.0em / 3.0) + 1.0px); width: -moz-calc((2.0em / 3.0) + 1.0px); width: -ms-calc((2.0em / 3.0) + 1.0px); width: -o-calc((2.0em / 3.0) + 1.0px); width: calc((2.0em / 3.0) + 1.0px)"
+  renderedInline calc2 `assertEqual` Just "width: -webkit-calc(4.0 * (100.0% / 7.0)); width: -moz-calc(4.0 * (100.0% / 7.0)); width: -ms-calc(4.0 * (100.0% / 7.0)); width: -o-calc(4.0 * (100.0% / 7.0)); width: calc(4.0 * (100.0% / 7.0))"
+  renderedInline calc3 `assertEqual` Just "width: -webkit-calc(5.0 * (-20.0% - 10.0px)); width: -moz-calc(5.0 * (-20.0% - 10.0px)); width: -ms-calc(5.0 * (-20.0% - 10.0px)); width: -o-calc(5.0 * (-20.0% - 10.0px)); width: calc(5.0 * (-20.0% - 10.0px))"
