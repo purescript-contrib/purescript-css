@@ -237,8 +237,8 @@ textarea = fromString "textarea"
 tfoot :: Selector
 tfoot = fromString "tfoot"
 
-table_ :: Selector
-table_ = fromString "table"
+table :: Selector
+table = fromString "table"
 
 th :: Selector
 th = fromString "th"
