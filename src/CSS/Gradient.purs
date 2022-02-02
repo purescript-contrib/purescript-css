@@ -39,10 +39,10 @@ import CSS.Background (class Loc, BackgroundImage, Direction, sideTop, straight,
 import CSS.Color (Color)
 import CSS.Common (class Other, browsers, other)
 import CSS.Property (class Val, Value(..), value)
-import CSS.Size (Size, Abs, Rel, pct)
+import CSS.Size (Size, LengthUnit, Percentage, pct)
 import CSS.String (fromString)
 
-type Ramp = Array (Tuple Color (Size Rel))
+type Ramp = Array (Tuple Color (Size Percentage))
 
 -------------------------------------------------------------------------------
 
@@ -103,7 +103,7 @@ circle ext = Radial (fromString "circle " <> value ext)
 ellipse :: Extend -> Radial
 ellipse ext = Radial (fromString "ellipse " <> value ext)
 
-circular :: Size Abs -> Radial
+circular :: Size LengthUnit -> Radial
 circular radius = Radial (value (Tuple radius radius))
 
 elliptical :: forall a. Size a -> Size a -> Radial

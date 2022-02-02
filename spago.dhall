@@ -6,6 +6,7 @@
   , "effect"
   , "either"
   , "exceptions"
+  , "exists"
   , "foldable-traversable"
   , "maybe"
   , "nonempty"
