@@ -3,8 +3,6 @@
 [![CI](https://github.com/purescript-contrib/purescript-css/workflows/CI/badge.svg?branch=main)](https://github.com/purescript-contrib/purescript-css/actions?query=workflow%3ACI+branch%3Amain)
 [![Release](https://img.shields.io/github/release/purescript-contrib/purescript-css.svg)](https://github.com/purescript-contrib/purescript-css/releases)
 [![Pursuit](https://pursuit.purescript.org/packages/purescript-css/badge)](https://pursuit.purescript.org/packages/purescript-css)
-[![Maintainer: garyb](https://img.shields.io/badge/maintainer-garyb-teal.svg)](https://github.com/garyb)
-[![Maintainer: thomashoneyman](https://img.shields.io/badge/maintainer-thomashoneyman-teal.svg)](https://github.com/thomashoneyman)
 [![Maintainer: nsaunders](https://img.shields.io/badge/maintainer-nsaunders-teal.svg)](https://github.com/nsaunders)
 
 A type-safe library for describing, manipulating, and rendering CSS.
