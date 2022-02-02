@@ -53,8 +53,8 @@ runIn = Display $ fromString "runIn"
 inlineBlock :: Display
 inlineBlock = Display $ fromString "inline-block"
 
-table :: Display
-table = Display $ fromString "table"
+displayTable :: Display
+displayTable = Display $ fromString "table"
 
 inlineTable :: Display
 inlineTable = Display $ fromString "inline-table"
