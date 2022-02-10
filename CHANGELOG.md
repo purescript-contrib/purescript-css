@@ -6,6 +6,7 @@ Notable changes to this project are documented in this file. The format is based
 
 Breaking changes:
 - Add support for `calc` expressions (#140 by @nsaunders)
+- Add table selector (#141 by @plurip-software)
 
 New features:
 - Add smart constructors for generic font families (#68, #136 by @Unisay and @JordanMartinez)
