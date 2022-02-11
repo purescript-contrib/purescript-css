@@ -5,7 +5,6 @@
   , "console"
   , "effect"
   , "either"
-  , "exceptions"
   , "exists"
   , "foldable-traversable"
   , "maybe"
@@ -19,5 +18,5 @@
   , "tuples"
   ]
 , packages = ./packages.dhall
-, sources = [ "src/**/*.purs", "test/**/*.purs" ]
+, sources = [ "src/**/*.purs" ]
 }

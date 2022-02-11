@@ -2,9 +2,8 @@ module Test.Main where
 
 import Prelude
 
-import Effect (Effect)
-import Effect.Exception (error, throwException)
 import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, gold, teal, olive, black, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, rgba, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction, width, em, (@+@), (@-@), (@*), (*@), (@/))
+import CSS.BorderSpec as BorderSpec
 import CSS.Cursor as Cursor
 import CSS.Flexbox (flex)
 import CSS.FontStyle as FontStyle
@@ -13,8 +12,17 @@ import CSS.Text.Overflow as TextOverflow
 import CSS.Transform as Transform
 import CSS.Common (none)
 import CSS.Box (boxShadow, shadow, shadowWithBlur, shadowWithSpread, bsColor, bsInset)
+import Control.Monad.RWS (modify_)
+import Control.Monad.State (StateT, execStateT)
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty (singleton, (:|))
+import Effect (Effect)
+import Effect.Aff (launchAff_)
+import Effect.Class (liftEffect)
+import Effect.Class.Console (log)
+import Effect.Exception (error, throwException)
+import Test.Spec.Reporter (consoleReporter)
+import Test.Spec.Runner (runSpec)
 
 example1 :: Rendered
 example1 = render do
@@ -200,69 +208,87 @@ calc3 :: Rendered
 calc3 = render do
   width $ 5.0 *@ (pct (-20.0) @-@ px 10.0)
 
-assertEqual :: forall a. Eq a => Show a => a -> a -> Effect Unit
-assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
+assertEqual
+  :: forall a
+   . Eq a
+  => Show a
+  => a
+  -> a
+  -> StateT Int Effect Unit
+assertEqual x y = do
+  liftEffect $ unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
+  modify_ (_ + 1)
 
 main :: Effect Unit
 main = do
-  renderedInline example1 `assertEqual` Just "color: hsl(0.0, 100.0%, 50.0%); display: block"
-  renderedInline example2 `assertEqual` Just "display: inline-block"
-  renderedInline example3 `assertEqual` Just "border: dashed 2.0px hsl(240.0, 100.0%, 50.0%)"
+  count <- flip execStateT 0 do
+    renderedInline example1 `assertEqual` Just "color: hsl(0.0, 100.0%, 50.0%); display: block"
+    renderedInline example2 `assertEqual` Just "display: inline-block"
+    renderedInline example3 `assertEqual` Just "border: dashed 2.0px hsl(240.0, 100.0%, 50.0%)"
 
-  selector (Selector (Refinement [ Id "test" ]) Star) `assertEqual` "#test"
+    selector (Selector (Refinement [ Id "test" ]) Star) `assertEqual` "#test"
 
-  selector (fromString "#test") `assertEqual` "#test"
+    selector (fromString "#test") `assertEqual` "#test"
 
-  renderedSheet example4 `assertEqual` Just "body { color: hsl(240.0, 100.0%, 50.0%) }\n#world { display: block }\n"
+    renderedSheet example4 `assertEqual` Just "body { color: hsl(240.0, 100.0%, 50.0%) }\n#world { display: block }\n"
 
-  renderedInline example5 `assertEqual` Just "box-sizing: content-box; box-sizing: border-box"
+    renderedInline example5 `assertEqual` Just "box-sizing: content-box; box-sizing: border-box"
 
-  renderedSheet withSelector `assertEqual` Just "a { color: hsl(240.0, 100.0%, 50.0%) }\na:hover { color: hsl(0.0, 100.0%, 50.0%) }\n"
-  renderedSheet childSelector `assertEqual` Just "p > a { z-index: 9 }\n"
-  renderedSheet deepSelector `assertEqual` Just "p a { display: block }\n"
-  renderedSheet adjacentSelector `assertEqual` Just "a + a { display: inline-block }\n"
+    renderedSheet withSelector `assertEqual` Just "a { color: hsl(240.0, 100.0%, 50.0%) }\na:hover { color: hsl(0.0, 100.0%, 50.0%) }\n"
+    renderedSheet childSelector `assertEqual` Just "p > a { z-index: 9 }\n"
+    renderedSheet deepSelector `assertEqual` Just "p a { display: block }\n"
+    renderedSheet adjacentSelector `assertEqual` Just "a + a { display: inline-block }\n"
 
-  renderedSheet nestedNodes `assertEqual` Just "#parent { display: block }\n#parent #child { display: block }\n"
+    renderedSheet nestedNodes `assertEqual` Just "#parent { display: block }\n#parent #child { display: block }\n"
 
-  renderedSheet nestedNodesWithEmptyParent `assertEqual` Just "#parent #child { display: block }\n"
+    renderedSheet nestedNodesWithEmptyParent `assertEqual` Just "#parent #child { display: block }\n"
 
-  renderedInline example6 `assertEqual` Just "src: url(\"font.woff\") format(\"woff\")"
+    renderedInline example6 `assertEqual` Just "src: url(\"font.woff\") format(\"woff\")"
 
-  renderedInline example7 `assertEqual` Just "z-index: 11; opacity: 0.5"
+    renderedInline example7 `assertEqual` Just "z-index: 11; opacity: 0.5"
 
-  renderedInline example8 `assertEqual` Just "flex: 0.14 1.0 0.0%"
+    renderedInline example8 `assertEqual` Just "flex: 0.14 1.0 0.0%"
 
-  renderedInline exampleFontStyle1 `assertEqual` Just "font-style: italic"
-  renderedInline exampleFontStyle2 `assertEqual` Just "font-style: oblique"
-  renderedInline exampleFontStyle3 `assertEqual` Just "font-style: oblique 45.0deg"
+    renderedInline exampleFontStyle1 `assertEqual` Just "font-style: italic"
+    renderedInline exampleFontStyle2 `assertEqual` Just "font-style: oblique"
+    renderedInline exampleFontStyle3 `assertEqual` Just "font-style: oblique 45.0deg"
 
-  renderedInline exampleTextOverflow1 `assertEqual` Just "text-overflow: ellipsis"
-  renderedInline exampleTextOverflow2 `assertEqual` Just "text-overflow: \"foobar\""
+    renderedInline exampleTextOverflow1 `assertEqual` Just "text-overflow: ellipsis"
+    renderedInline exampleTextOverflow2 `assertEqual` Just "text-overflow: \"foobar\""
 
-  renderedSheet byClassById `assertEqual` Just "a.bar { color: hsl(0.0, 100.0%, 50.0%) }\np#foo { display: block }\n"
-  renderedSheet attrVal `assertEqual` Just "p[foo='bar'] { display: block }\n"
-  renderedSheet attrBegins `assertEqual` Just "p[foo^='bar'] { display: block }\n"
-  renderedSheet attrEnds `assertEqual` Just "p[foo$='bar'] { display: block }\n"
-  renderedSheet attrContains `assertEqual` Just "p[foo*='bar'] { display: block }\n"
-  renderedSheet attrSpace `assertEqual` Just "p[foo~='bar'] { display: block }\n"
-  renderedSheet attrHyph `assertEqual` Just "p[foo|='bar'] { display: block }\n"
+    renderedSheet byClassById `assertEqual` Just "a.bar { color: hsl(0.0, 100.0%, 50.0%) }\np#foo { display: block }\n"
+    renderedSheet attrVal `assertEqual` Just "p[foo='bar'] { display: block }\n"
+    renderedSheet attrBegins `assertEqual` Just "p[foo^='bar'] { display: block }\n"
+    renderedSheet attrEnds `assertEqual` Just "p[foo$='bar'] { display: block }\n"
+    renderedSheet attrContains `assertEqual` Just "p[foo*='bar'] { display: block }\n"
+    renderedSheet attrSpace `assertEqual` Just "p[foo~='bar'] { display: block }\n"
+    renderedSheet attrHyph `assertEqual` Just "p[foo|='bar'] { display: block }\n"
 
-  renderedInline exampleDirection `assertEqual` Just "direction: rtl"
+    renderedInline exampleDirection `assertEqual` Just "direction: rtl"
 
-  renderedInline exampleCursor `assertEqual` Just "cursor: not-allowed"
+    renderedInline exampleCursor `assertEqual` Just "cursor: not-allowed"
 
-  renderedInline scaleTransform1 `assertEqual` Just "transform: scaleX(1.0); transform: scaleY(0.5); transform: scaleZ(0.5)"
-  renderedInline scaleTransform2 `assertEqual` Just "transform: scale(0.2, 0.8)"
+    renderedInline scaleTransform1 `assertEqual` Just "transform: scaleX(1.0); transform: scaleY(0.5); transform: scaleZ(0.5)"
+    renderedInline scaleTransform2 `assertEqual` Just "transform: scale(0.2, 0.8)"
 
-  renderedInline transition1 `assertEqual` Just "-webkit-transition: background-color 1.0ms ease-in-out 0.0ms; -moz-transition: background-color 1.0ms ease-in-out 0.0ms; -ms-transition: background-color 1.0ms ease-in-out 0.0ms; -o-transition: background-color 1.0ms ease-in-out 0.0ms; transition: background-color 1.0ms ease-in-out 0.0ms"
-  renderedInline transition2 `assertEqual` Just "-webkit-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -moz-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -ms-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -o-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms"
+    renderedInline transition1 `assertEqual` Just "-webkit-transition: background-color 1.0ms ease-in-out 0.0ms; -moz-transition: background-color 1.0ms ease-in-out 0.0ms; -ms-transition: background-color 1.0ms ease-in-out 0.0ms; -o-transition: background-color 1.0ms ease-in-out 0.0ms; transition: background-color 1.0ms ease-in-out 0.0ms"
+    renderedInline transition2 `assertEqual` Just "-webkit-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -moz-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -ms-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -o-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms"
 
-  renderedInline calc1 `assertEqual` Just "width: -webkit-calc((2.0em / 3.0) + 1.0px); width: -moz-calc((2.0em / 3.0) + 1.0px); width: -ms-calc((2.0em / 3.0) + 1.0px); width: -o-calc((2.0em / 3.0) + 1.0px); width: calc((2.0em / 3.0) + 1.0px)"
-  renderedInline calc2 `assertEqual` Just "width: -webkit-calc(4.0 * (100.0% / 7.0)); width: -moz-calc(4.0 * (100.0% / 7.0)); width: -ms-calc(4.0 * (100.0% / 7.0)); width: -o-calc(4.0 * (100.0% / 7.0)); width: calc(4.0 * (100.0% / 7.0))"
-  renderedInline calc3 `assertEqual` Just "width: -webkit-calc(5.0 * (-20.0% - 10.0px)); width: -moz-calc(5.0 * (-20.0% - 10.0px)); width: -ms-calc(5.0 * (-20.0% - 10.0px)); width: -o-calc(5.0 * (-20.0% - 10.0px)); width: calc(5.0 * (-20.0% - 10.0px))"
+    renderedInline calc1 `assertEqual` Just "width: -webkit-calc((2.0em / 3.0) + 1.0px); width: -moz-calc((2.0em / 3.0) + 1.0px); width: -ms-calc((2.0em / 3.0) + 1.0px); width: -o-calc((2.0em / 3.0) + 1.0px); width: calc((2.0em / 3.0) + 1.0px)"
+    renderedInline calc2 `assertEqual` Just "width: -webkit-calc(4.0 * (100.0% / 7.0)); width: -moz-calc(4.0 * (100.0% / 7.0)); width: -ms-calc(4.0 * (100.0% / 7.0)); width: -o-calc(4.0 * (100.0% / 7.0)); width: calc(4.0 * (100.0% / 7.0))"
+    renderedInline calc3 `assertEqual` Just "width: -webkit-calc(5.0 * (-20.0% - 10.0px)); width: -moz-calc(5.0 * (-20.0% - 10.0px)); width: -ms-calc(5.0 * (-20.0% - 10.0px)); width: -o-calc(5.0 * (-20.0% - 10.0px)); width: calc(5.0 * (-20.0% - 10.0px))"
 
-  renderedInline noneShadow `assertEqual` Just "-webkit-box-shadow: none; -moz-box-shadow: none; -ms-box-shadow: none; -o-box-shadow: none; box-shadow: none"
-  renderedInline singleShadow `assertEqual` Just "-webkit-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -moz-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -ms-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -o-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%)"
-  renderedInline singleShadowWithBlur `assertEqual` Just "-webkit-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -moz-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -ms-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -o-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%)"
-  renderedInline singleShadowWithSpread `assertEqual` Just "-webkit-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -moz-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -ms-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -o-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2)"
-  renderedInline multipleShadows `assertEqual` Just "-webkit-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -moz-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -ms-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -o-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%)"
+    renderedInline calc1 `assertEqual` Just "width: -webkit-calc((2.0em / 3.0) + 1.0px); width: -moz-calc((2.0em / 3.0) + 1.0px); width: -ms-calc((2.0em / 3.0) + 1.0px); width: -o-calc((2.0em / 3.0) + 1.0px); width: calc((2.0em / 3.0) + 1.0px)"
+    renderedInline calc2 `assertEqual` Just "width: -webkit-calc(4.0 * (100.0% / 7.0)); width: -moz-calc(4.0 * (100.0% / 7.0)); width: -ms-calc(4.0 * (100.0% / 7.0)); width: -o-calc(4.0 * (100.0% / 7.0)); width: calc(4.0 * (100.0% / 7.0))"
+    renderedInline calc3 `assertEqual` Just "width: -webkit-calc(5.0 * (-20.0% - 10.0px)); width: -moz-calc(5.0 * (-20.0% - 10.0px)); width: -ms-calc(5.0 * (-20.0% - 10.0px)); width: -o-calc(5.0 * (-20.0% - 10.0px)); width: calc(5.0 * (-20.0% - 10.0px))"
+
+    renderedInline noneShadow `assertEqual` Just "-webkit-box-shadow: none; -moz-box-shadow: none; -ms-box-shadow: none; -o-box-shadow: none; box-shadow: none"
+    renderedInline singleShadow `assertEqual` Just "-webkit-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -moz-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -ms-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -o-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%)"
+    renderedInline singleShadowWithBlur `assertEqual` Just "-webkit-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -moz-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -ms-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -o-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%)"
+    renderedInline singleShadowWithSpread `assertEqual` Just "-webkit-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -moz-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -ms-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -o-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2)"
+    renderedInline multipleShadows `assertEqual` Just "-webkit-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -moz-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -ms-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -o-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%)"
+
+  log $ "\x1b[32m" <> show count <> " test" <> if count == 1 then "" else "s" <> " passed. These will be migrated to the new format in the future.\x1b[0m\n"
+
+  launchAff_ $
+    runSpec [ consoleReporter ] BorderSpec.spec
