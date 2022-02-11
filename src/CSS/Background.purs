@@ -1,6 +1,6 @@
 module CSS.Background
   (
-  -- * Generic background property.
+    -- * Generic background property.
     class Background
   , background
 
@@ -18,16 +18,21 @@ module CSS.Background
   , BackgroundSize
   , backgroundSize
   , backgroundSizes
-  , contain, cover
+  , contain
+  , cover
   , by
 
   -- * The background-repeat.
   , BackgroundRepeat
   , backgroundRepeat
   , backgroundRepeats
-  , repeat, space, round, noRepeat
+  , repeat
+  , space
+  , round
+  , noRepeat
   , xyRepeat
-  , repeatX, repeatY
+  , repeatX
+  , repeatY
 
   -- * The background-origin.
   , BackgroundOrigin
@@ -45,7 +50,8 @@ module CSS.Background
   , BackgroundAttachment
   , backgroundAttachment
   , backgroundAttachments
-  , attachFixed, attachScroll
+  , attachFixed
+  , attachScroll
 
   -- * The background-image.
   , BackgroundImage
@@ -70,8 +76,7 @@ module CSS.Background
   , Location
   , class Loc
   , location
-  )
-where
+  ) where
 
 import Prelude
 
@@ -95,8 +100,7 @@ class Val a <= Background a where
 instance backgroundArray :: (Background a) => Background (Array a) where
   background = key $ fromString "background"
 
-instance backgroundTuple
-  :: (Background a, Background b) => Background (Tuple a b) where
+instance backgroundTuple :: (Background a, Background b) => Background (Tuple a b) where
   background = key $ fromString "background"
 
 instance backgroundColor' :: Background Color where
@@ -118,7 +122,8 @@ instance backgroundBackgroundClip :: Background BackgroundClip where
   background = key $ fromString "background"
 
 instance backgroundBackgroundAttachment :: Background BackgroundAttachment
-  where background = key $ fromString "background"
+  where
+  background = key $ fromString "background"
 
 instance backgroundBackgroundImage :: Background BackgroundImage where
   background = key $ fromString "background"

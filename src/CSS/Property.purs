@@ -4,11 +4,11 @@ import Prelude
 
 import CSS.String (class IsString, fromString)
 import Color (Color, cssStringHSLA)
-import Data.Foldable (intercalate)
+import Data.Foldable (intercalate, lookup)
 import Data.Maybe (fromMaybe)
 import Data.NonEmpty (NonEmpty, oneOf)
 import Data.Profunctor.Strong (second)
-import Data.Tuple (Tuple(..), lookup)
+import Data.Tuple (Tuple(..))
 
 data Prefixed
   = Prefixed (Array (Tuple String String))
@@ -37,7 +37,10 @@ plain (Plain p) = p
 quote :: String -> String
 quote s = "\"" <> s <> "\""
 
+newtype Key :: Type -> Type
 newtype Key a = Key Prefixed
+
+type role Key representational
 
 derive instance eqKey :: (Eq a) => Eq (Key a)
 derive instance ordKey :: (Ord a) => Ord (Key a)
@@ -80,10 +83,8 @@ instance valString :: Val String where
   value = fromString
 
 instance valUnit :: Val Unit where
-  value u = fromString ""
+  value _ = fromString ""
 
--- When `b` is Unit, the rendered value will have an extra
---   space appended to end. Shouldn't hurt. I'd fix if I knew how.
 instance valTuple :: (Val a, Val b) => Val (Tuple a b) where
   value (Tuple a b) = value a <> fromString " " <> value b
 

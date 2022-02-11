@@ -1,7 +1,9 @@
 module CSS.Box
   ( BoxType
   , BoxShadow
-  , paddingBox, borderBox, contentBox
+  , paddingBox
+  , borderBox
+  , contentBox
   , boxSizing
   , boxShadow
   , shadow

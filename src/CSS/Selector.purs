@@ -35,7 +35,7 @@ instance isStringRefinement :: IsString Refinement where
           "." -> Class $ drop 1 s
           ":" -> Pseudo $ drop 1 s
           "@" -> Attr $ drop 1 s
-          _   -> Attr s
+          _ -> Attr s
       ]
 
 data Path f
@@ -59,7 +59,7 @@ instance isStringSelector :: IsString Selector where
     case take 1 s of
       "#" -> Selector (byId $ drop 1 s) Star
       "." -> Selector (byClass $ drop 1 s) Star
-      _   -> Selector (Refinement []) (Elem s)
+      _ -> Selector (Refinement []) (Elem s)
 
 -- | The star selector applies to all elements.
 -- | Maps to `*` in CSS.
@@ -74,18 +74,21 @@ element e = Selector (Refinement []) (Elem e)
 -- | Maps to `sel1 sel2` in CSS.
 deep :: Selector -> Selector -> Selector
 deep a b = Selector (Refinement []) (Deep a b)
+
 infix 6 deep as |*
 
 -- | The child selector composer.
 -- | Maps to `sel1 > sel2` in CSS.
 child :: Selector -> Selector -> Selector
 child a b = Selector (Refinement []) (PathChild a b)
+
 infix 6 child as |>
 
 -- | The adjacent selector composer.
 -- | Maps to `sel1 + sel2` in CSS.
 adjacent :: Selector -> Selector -> Selector
 adjacent a b = Selector (Refinement []) (Adjacent a b)
+
 infix 6 adjacent as |+
 
 -- | The filter selector composer, adds a filter to a selector.
@@ -93,6 +96,7 @@ infix 6 adjacent as |+
 -- | depending on the filter.
 with :: Selector -> Refinement -> Selector
 with (Selector (Refinement fs) e) (Refinement ps) = Selector (Refinement (fs <> ps)) e
+
 infix 6 with as &
 
 -- | Filter elements by id.
@@ -122,34 +126,40 @@ attr = Refinement <<< pure <<< Attr
 -- | certain attribute with the specified value.
 attrVal :: String -> String -> Refinement
 attrVal a = Refinement <<< pure <<< AttrVal a
+
 infix 6 attrVal as @=
 
 -- | Filter elements based on the presence of a certain attribute that
 -- | begins with the selected value.
 attrBegins :: String -> String -> Refinement
 attrBegins a = Refinement <<< pure <<< AttrBegins a
+
 infix 6 attrBegins as ^=
 
 -- | Filter elements based on the presence of a certain attribute that
 -- | ends with the specified value.
 attrEnds :: String -> String -> Refinement
 attrEnds a = Refinement <<< pure <<< AttrEnds a
+
 infix 6 attrEnds as $=
 
 -- | Filter elements based on the presence of a certain attribute that contains
 -- | the specified value as a substring.
 attrContains :: String -> String -> Refinement
 attrContains a = Refinement <<< pure <<< AttrContains a
+
 infix 6 attrContains as *=
 
 -- | Filter elements based on the presence of a certain attribute that
 -- | have the specified value contained in a space separated list.
 attrSpace :: String -> String -> Refinement
 attrSpace a = Refinement <<< pure <<< AttrSpace a
+
 infix 6 attrSpace as ~=
 
 -- | Filter elements based on the presence of a certain attribute that
 -- | have the specified value contained in a hyphen separated list.
 attrHyph :: String -> String -> Refinement
 attrHyph a = Refinement <<< pure <<< AttrHyph a
+
 infix 6 attrHyph as |=

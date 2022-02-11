@@ -6,7 +6,7 @@ import CSS.Property (class Val, value)
 import CSS.Size (Size)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
-import Data.Tuple.Nested (tuple4)
+import Data.Tuple (Tuple(..))
 
 data TextShadow a
   = TextShadow (Size a) (Size a) (Size a) (Color)
@@ -15,7 +15,7 @@ data TextShadow a
   | Inherit
 
 instance valTextShadow :: Val (TextShadow a) where
-  value (TextShadow h v b c) = value (tuple4 h v b c)
+  value (TextShadow h v b c) = value (Tuple (Tuple h v) (Tuple b c))
   value (None) = fromString "none"
   value (Initial) = fromString "initial"
   value (Inherit) = fromString "inherit"

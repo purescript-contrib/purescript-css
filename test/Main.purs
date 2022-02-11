@@ -4,8 +4,11 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, gold, teal, olive, black, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, rgba, em, zIndex, textOverflow, opacity, transform)
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, gold, teal, olive, black, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, rgba, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction, width, em, (@+@), (@-@), (@*), (*@), (@/))
+import CSS.Cursor as Cursor
+import CSS.Flexbox (flex)
 import CSS.FontStyle as FontStyle
+import CSS.Text.Direction as TextDirection
 import CSS.Text.Overflow as TextOverflow
 import CSS.Transform as Transform
 import CSS.Common (none)
@@ -46,6 +49,10 @@ example7 :: Rendered
 example7 = render do
   zIndex 11
   opacity 0.5
+
+example8 :: Rendered
+example8 = render do
+  flex 0.14 1.0 (pct 0.0)
 
 withSelector :: Rendered
 withSelector = render do
@@ -128,6 +135,14 @@ exampleTextOverflow2 :: Rendered
 exampleTextOverflow2 = render do
   textOverflow $ TextOverflow.custom "foobar"
 
+exampleDirection :: Rendered
+exampleDirection = render do
+  direction TextDirection.rtl
+
+exampleCursor :: Rendered
+exampleCursor = render do
+  cursor Cursor.notAllowed
+
 noneShadow :: Rendered
 noneShadow = render do
   boxShadow $ singleton $ none
@@ -165,6 +180,26 @@ nestedNodesWithEmptyParent = render do
   fromString "#parent" ? do
     fromString "#child" ? display block
 
+transition1 :: Rendered
+transition1 = render do
+  transition "background-color" (ms 1.0) easeInOut (ms 0.0)
+
+transition2 :: Rendered
+transition2 = render do
+  transition "background-color" (ms 1.0) (cubicBezier 0.3 0.3 0.7 1.4) (ms 0.0)
+
+calc1 :: Rendered
+calc1 = render do
+  width $ (em 2.0 @/ 3.0) @+@ px 1.0
+
+calc2 :: Rendered
+calc2 = render do
+  width $ ((pct 100.0) @/ 7.0) @* 4.0
+
+calc3 :: Rendered
+calc3 = render do
+  width $ 5.0 *@ (pct (-20.0) @-@ px 10.0)
+
 assertEqual :: forall a. Eq a => Show a => a -> a -> Effect Unit
 assertEqual x y = unless (x == y) <<< throwException <<< error $ "Assertion failed: " <> show x <> " /= " <> show y
 
@@ -172,9 +207,9 @@ main :: Effect Unit
 main = do
   renderedInline example1 `assertEqual` Just "color: hsl(0.0, 100.0%, 50.0%); display: block"
   renderedInline example2 `assertEqual` Just "display: inline-block"
-  renderedInline example3 `assertEqual` Just "border: dashed 2.0px hsl(240.0, 100.0%, 50.0%) "
+  renderedInline example3 `assertEqual` Just "border: dashed 2.0px hsl(240.0, 100.0%, 50.0%)"
 
-  selector (Selector (Refinement [Id "test"]) Star) `assertEqual` "#test"
+  selector (Selector (Refinement [ Id "test" ]) Star) `assertEqual` "#test"
 
   selector (fromString "#test") `assertEqual` "#test"
 
@@ -195,6 +230,8 @@ main = do
 
   renderedInline example7 `assertEqual` Just "z-index: 11; opacity: 0.5"
 
+  renderedInline example8 `assertEqual` Just "flex: 0.14 1.0 0.0%"
+
   renderedInline exampleFontStyle1 `assertEqual` Just "font-style: italic"
   renderedInline exampleFontStyle2 `assertEqual` Just "font-style: oblique"
   renderedInline exampleFontStyle3 `assertEqual` Just "font-style: oblique 45.0deg"
@@ -210,8 +247,19 @@ main = do
   renderedSheet attrSpace `assertEqual` Just "p[foo~='bar'] { display: block }\n"
   renderedSheet attrHyph `assertEqual` Just "p[foo|='bar'] { display: block }\n"
 
+  renderedInline exampleDirection `assertEqual` Just "direction: rtl"
+
+  renderedInline exampleCursor `assertEqual` Just "cursor: not-allowed"
+
   renderedInline scaleTransform1 `assertEqual` Just "transform: scaleX(1.0); transform: scaleY(0.5); transform: scaleZ(0.5)"
   renderedInline scaleTransform2 `assertEqual` Just "transform: scale(0.2, 0.8)"
+
+  renderedInline transition1 `assertEqual` Just "-webkit-transition: background-color 1.0ms ease-in-out 0.0ms; -moz-transition: background-color 1.0ms ease-in-out 0.0ms; -ms-transition: background-color 1.0ms ease-in-out 0.0ms; -o-transition: background-color 1.0ms ease-in-out 0.0ms; transition: background-color 1.0ms ease-in-out 0.0ms"
+  renderedInline transition2 `assertEqual` Just "-webkit-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -moz-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -ms-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; -o-transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms; transition: background-color 1.0ms cubic-bezier(0.3, 0.3, 0.7, 1.4) 0.0ms"
+
+  renderedInline calc1 `assertEqual` Just "width: -webkit-calc((2.0em / 3.0) + 1.0px); width: -moz-calc((2.0em / 3.0) + 1.0px); width: -ms-calc((2.0em / 3.0) + 1.0px); width: -o-calc((2.0em / 3.0) + 1.0px); width: calc((2.0em / 3.0) + 1.0px)"
+  renderedInline calc2 `assertEqual` Just "width: -webkit-calc(4.0 * (100.0% / 7.0)); width: -moz-calc(4.0 * (100.0% / 7.0)); width: -ms-calc(4.0 * (100.0% / 7.0)); width: -o-calc(4.0 * (100.0% / 7.0)); width: calc(4.0 * (100.0% / 7.0))"
+  renderedInline calc3 `assertEqual` Just "width: -webkit-calc(5.0 * (-20.0% - 10.0px)); width: -moz-calc(5.0 * (-20.0% - 10.0px)); width: -ms-calc(5.0 * (-20.0% - 10.0px)); width: -o-calc(5.0 * (-20.0% - 10.0px)); width: calc(5.0 * (-20.0% - 10.0px))"
 
   renderedInline noneShadow `assertEqual` Just "-webkit-box-shadow: none; -moz-box-shadow: none; -ms-box-shadow: none; -o-box-shadow: none; box-shadow: none"
   renderedInline singleShadow `assertEqual` Just "-webkit-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -moz-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -ms-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -o-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%)"
