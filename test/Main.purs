@@ -167,7 +167,7 @@ multipleShadows :: Rendered
 multipleShadows = render do
   boxShadow $
     red `bsColor` shadow (px 3.0) (px 3.0) :|
-    [olive `bsColor` shadowWithBlur (em (-1.0)) (em 0.0) (em 0.4)]
+      [ olive `bsColor` shadowWithBlur (em (-1.0)) (em 0.0) (em 0.4) ]
 
 nestedNodes :: Rendered
 nestedNodes = render do
