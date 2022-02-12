@@ -4,15 +4,17 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Exception (error, throwException)
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction, width, em, (@+@), (@-@), (@*), (*@), (@/))
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, gold, teal, olive, black, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, rgba, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction, width, em, (@+@), (@-@), (@*), (*@), (@/))
 import CSS.Cursor as Cursor
 import CSS.Flexbox (flex)
 import CSS.FontStyle as FontStyle
 import CSS.Text.Direction as TextDirection
 import CSS.Text.Overflow as TextOverflow
 import CSS.Transform as Transform
+import CSS.Common (none)
+import CSS.Box (boxShadow, shadow, shadowWithBlur, shadowWithSpread, bsColor, bsInset)
 import Data.Maybe (Maybe(..))
-import Data.NonEmpty (singleton)
+import Data.NonEmpty (singleton, (:|))
 
 example1 :: Rendered
 example1 = render do
@@ -141,6 +143,32 @@ exampleCursor :: Rendered
 exampleCursor = render do
   cursor Cursor.notAllowed
 
+noneShadow :: Rendered
+noneShadow = render do
+  boxShadow $ singleton $ none
+
+singleShadow :: Rendered
+singleShadow = render do
+  boxShadow $ singleton $ bsColor teal $ shadow (px 60.0) (px (-16.0))
+
+singleShadowWithBlur :: Rendered
+singleShadowWithBlur = render do
+  boxShadow $ singleton $ bsColor black $ shadowWithBlur (px 10.0) (px 5.0) (px 5.0)
+
+singleShadowWithSpread :: Rendered
+singleShadowWithSpread = render do
+  boxShadow $ singleton $ rgba 0 0 0 0.2 `bsColor` shadowWithSpread (px 2.0) (px 2.0) (px 2.0) (px 1.0)
+
+singleInsetShadow :: Rendered
+singleInsetShadow = render do
+  boxShadow $ singleton $ bsInset $ gold `bsColor` shadow (em 5.0) (em 1.0)
+
+multipleShadows :: Rendered
+multipleShadows = render do
+  boxShadow $
+    red `bsColor` shadow (px 3.0) (px 3.0) :|
+      [ olive `bsColor` shadowWithBlur (em (-1.0)) (em 0.0) (em 0.4) ]
+
 nestedNodes :: Rendered
 nestedNodes = render do
   fromString "#parent" ? do
@@ -232,3 +260,9 @@ main = do
   renderedInline calc1 `assertEqual` Just "width: -webkit-calc((2.0em / 3.0) + 1.0px); width: -moz-calc((2.0em / 3.0) + 1.0px); width: -ms-calc((2.0em / 3.0) + 1.0px); width: -o-calc((2.0em / 3.0) + 1.0px); width: calc((2.0em / 3.0) + 1.0px)"
   renderedInline calc2 `assertEqual` Just "width: -webkit-calc(4.0 * (100.0% / 7.0)); width: -moz-calc(4.0 * (100.0% / 7.0)); width: -ms-calc(4.0 * (100.0% / 7.0)); width: -o-calc(4.0 * (100.0% / 7.0)); width: calc(4.0 * (100.0% / 7.0))"
   renderedInline calc3 `assertEqual` Just "width: -webkit-calc(5.0 * (-20.0% - 10.0px)); width: -moz-calc(5.0 * (-20.0% - 10.0px)); width: -ms-calc(5.0 * (-20.0% - 10.0px)); width: -o-calc(5.0 * (-20.0% - 10.0px)); width: calc(5.0 * (-20.0% - 10.0px))"
+
+  renderedInline noneShadow `assertEqual` Just "-webkit-box-shadow: none; -moz-box-shadow: none; -ms-box-shadow: none; -o-box-shadow: none; box-shadow: none"
+  renderedInline singleShadow `assertEqual` Just "-webkit-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -moz-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -ms-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); -o-box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%); box-shadow: 60.0px -16.0px hsl(180.0, 100.0%, 25.1%)"
+  renderedInline singleShadowWithBlur `assertEqual` Just "-webkit-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -moz-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -ms-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); -o-box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%); box-shadow: 10.0px 5.0px 5.0px hsl(0.0, 0.0%, 0.0%)"
+  renderedInline singleShadowWithSpread `assertEqual` Just "-webkit-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -moz-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -ms-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); -o-box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2); box-shadow: 2.0px 2.0px 2.0px 1.0px hsla(0.0, 0.0%, 0.0%, 0.2)"
+  renderedInline multipleShadows `assertEqual` Just "-webkit-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -moz-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -ms-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); -o-box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%); box-shadow: 3.0px 3.0px hsl(0.0, 100.0%, 50.0%), -1.0em 0.0em 0.4em hsl(60.0, 100.0%, 25.1%)"
