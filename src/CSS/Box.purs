@@ -11,8 +11,7 @@ module CSS.Box
   , shadowWithSpread
   , bsInset
   , bsColor
-  )
-where
+  ) where
 
 import Prelude
 
