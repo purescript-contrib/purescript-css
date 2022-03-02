@@ -2,7 +2,7 @@ module CSS.Display where
 
 import Prelude
 
-import CSS.Common (class Inherit, class None)
+import CSS.Common (class Auto, class Hidden, class Inherit, class Initial, class None, class Other, class Unset, class Visible)
 import CSS.Property (class Val, Value)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
@@ -185,6 +185,26 @@ clear = key (fromString "clear")
 
 opacity :: Number -> CSS
 opacity = key $ fromString "opacity"
+
+-------------------------------------------------------------------------------
+
+newtype Visibility = Visibility Value
+
+derive newtype instance Val Visibility
+derive newtype instance Other Visibility
+derive newtype instance Inherit Visibility
+derive newtype instance Initial Visibility
+derive newtype instance Unset Visibility
+derive newtype instance Hidden Visibility
+derive newtype instance Visible Visibility
+
+collapse :: Visibility
+collapse = Visibility $ fromString "collapse"
+
+visibility :: Visibility -> CSS
+visibility = key $ fromString "visibility"
+
+-------------------------------------------------------------------------------
 
 zIndex :: Int -> CSS
 zIndex = key (fromString "z-index") <<< show
