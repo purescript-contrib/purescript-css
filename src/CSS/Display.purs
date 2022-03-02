@@ -2,7 +2,7 @@ module CSS.Display where
 
 import Prelude
 
-import CSS.Common (class Auto, class Hidden, class Inherit, class Initial, class None, class Other, class Unset, class Visible)
+import CSS.Common (class Hidden, class Inherit, class Initial, class None, class Other, class Unset, class Visible)
 import CSS.Property (class Val, Value)
 import CSS.String (fromString)
 import CSS.Stylesheet (CSS, key)
