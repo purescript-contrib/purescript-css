@@ -1,7 +1,8 @@
 module CSS.Size where
 
 import Prelude
-import CSS.Common (class Auto, browsers)
+
+import CSS.Common (class Auto, class Inherit, class Initial, class Unset, browsers)
 import CSS.Property (class Val, Prefixed(Plain), Value(..), plain, value)
 import CSS.String (class IsString, fromString)
 import Data.Exists (Exists, mkExists, runExists)
@@ -38,6 +39,15 @@ instance valSize :: Val (Size a) where
 
 instance autoSize :: Auto (Size a) where
   auto = fromString "auto"
+
+instance inheritSize :: Inherit (Size a) where
+  inherit = fromString "inherit"
+
+instance initialSize :: Initial (Size a) where
+  initial = fromString "initial"
+
+instance unsetSize :: Unset (Size a) where
+  unset = fromString "unset"
 
 -- | Zero size.
 nil :: forall a. Size a

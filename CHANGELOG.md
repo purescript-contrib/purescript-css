@@ -8,6 +8,7 @@ Breaking changes:
 - Add support for `calc` expressions (#140 by @nsaunders)
 - Add table selector (#141 by @plurip-software)
 - Update the box-shadow implementation (#88 by @vyorkin)
+- Add outline and constituent properties (#145 by @nsaunders)
 
 New features:
 - Add smart constructors for generic font families (#68, #136 by @Unisay and @JordanMartinez)

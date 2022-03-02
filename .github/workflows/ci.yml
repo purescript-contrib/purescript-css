@@ -33,7 +33,7 @@ jobs:
         run: spago build --no-install --purs-args '--censor-lib --strict'
 
       - name: Run tests
-        run: spago test --no-install
+        run: spago -x test.dhall test
 
       - name: Check formatting
         run: purs-tidy check src test
