@@ -4,6 +4,7 @@ import Prelude
 
 import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, gold, teal, olive, black, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, rgba, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction, width, em, (@+@), (@-@), (@*), (*@), (@/))
 import CSS.BorderSpec as BorderSpec
+import CSS.DisplaySpec as DisplaySpec
 import CSS.Cursor as Cursor
 import CSS.Flexbox (flex)
 import CSS.FontStyle as FontStyle
@@ -291,4 +292,6 @@ main = do
   log $ "\x1b[32m" <> show count <> " test" <> if count == 1 then "" else "s" <> " passed. These will be migrated to the new format in the future.\x1b[0m\n"
 
   launchAff_ $
-    runSpec [ consoleReporter ] BorderSpec.spec
+    runSpec [ consoleReporter ] do
+      BorderSpec.spec
+      DisplaySpec.spec
