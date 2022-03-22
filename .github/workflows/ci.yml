@@ -33,7 +33,7 @@ jobs:
       - name: Build source
         run: spago build --no-install --purs-args '--censor-lib --strict'
 
-      - name: Run tests
+#      - name: Run tests
         run: spago -x test.dhall test
 
       - name: Check formatting
