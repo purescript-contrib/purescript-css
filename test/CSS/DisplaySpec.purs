@@ -2,21 +2,17 @@ module CSS.DisplaySpec where
 
 import Prelude
 
-import CSS.Color (green)
-import CSS.Color as Color
 import CSS.Common (hidden, inherit, initial, unset, visible)
 import CSS.Display (collapse, visibility)
-import CSS.Size (em, px)
 import Common (shouldRenderFrom)
-import Data.Maybe (fromJust)
+import Control.Monad.Reader.Class (class MonadReader)
 import Data.Traversable (traverse_)
 import Data.Tuple.Nested ((/\))
-import Partial.Unsafe (unsafePartial)
-import Test.Spec (Spec, describe)
+import Effect.Aff.Class (class MonadAff)
+import Test.Utils (describe)
 
-spec :: Spec Unit
+spec :: forall m. MonadReader Int m => MonadAff m => m Unit
 spec = do
-
   describe "visibility (Mozilla examples)" do
     let testVisibility (s /\ v) = ("visibility: " <> s) `shouldRenderFrom` visibility v
     describe "Keyword values" $

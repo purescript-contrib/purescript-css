@@ -8,6 +8,12 @@ Breaking changes:
 - Add support for `calc` expressions (#140 by @nsaunders)
 - Add table selector (#141 by @plurip-software)
 - Update the box-shadow implementation (#88 by @vyorkin)
+- Update project and deps to PureScript v0.15.0 (#156 by @JordanMartinez)
+- Dropped almost all named colors (#156 by @JordanMartinez)
+
+  These colors were originally defined in `purescript-colors` (i.e.
+  one module per schema) because each schema should be defined as its
+  own library. This change was propagated to this release.
 
 New features:
 - Add smart constructors for generic font families (#68, #136 by @Unisay and @JordanMartinez)

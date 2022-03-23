@@ -11,7 +11,6 @@
   , "nonempty"
   , "prelude"
   , "profunctor"
-  , "psci-support"
   , "strings"
   , "these"
   , "transformers"
