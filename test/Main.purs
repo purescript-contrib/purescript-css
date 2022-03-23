@@ -2,7 +2,7 @@ module Test.Main where
 
 import Prelude
 
-import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, blue, color, body, a, p, px, dashed, border, inlineBlock, red, gold, teal, olive, black, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, rgba, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction, width, em, (@+@), (@-@), (@*), (*@), (@/))
+import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, color, body, a, p, px, dashed, border, inlineBlock, black, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, rgba, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction, width, em, (@+@), (@-@), (@*), (*@), (@/))
 import CSS.BorderSpec as BorderSpec
 import CSS.DisplaySpec as DisplaySpec
 import CSS.Cursor as Cursor
@@ -13,6 +13,8 @@ import CSS.Text.Overflow as TextOverflow
 import CSS.Transform as Transform
 import CSS.Common (none)
 import CSS.Box (boxShadow, shadow, shadowWithBlur, shadowWithSpread, bsColor, bsInset)
+import Common (blue, gold, red, teal, olive)
+import Control.Monad.Reader (runReaderT)
 import Control.Monad.RWS (modify_)
 import Control.Monad.State (StateT, execStateT)
 import Data.Maybe (Maybe(..))
@@ -20,10 +22,8 @@ import Data.NonEmpty (singleton, (:|))
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Effect.Class.Console (log)
+import Effect.Console (log)
 import Effect.Exception (error, throwException)
-import Test.Spec.Reporter (consoleReporter)
-import Test.Spec.Runner (runSpec)
 
 example1 :: Rendered
 example1 = render do
@@ -292,6 +292,6 @@ main = do
   log $ "\x1b[32m" <> show count <> " test" <> if count == 1 then "" else "s" <> " passed. These will be migrated to the new format in the future.\x1b[0m\n"
 
   launchAff_ $
-    runSpec [ consoleReporter ] do
+    flip runReaderT 0 do
       BorderSpec.spec
       DisplaySpec.spec

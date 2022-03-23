@@ -3,18 +3,19 @@ module CSS.BorderSpec where
 import Prelude
 
 import CSS.Border (dashed, dotted, double, groove, inset, outline, outlineColor, outlineOffset, outlineStyle, outlineWidth, ridge, solid)
-import CSS.Color (green)
 import CSS.Color as Color
 import CSS.Common (inherit, initial, unset)
 import CSS.Size (em, px)
-import Common (shouldRenderFrom)
+import Common (shouldRenderFrom, green, blue)
+import Control.Monad.Reader.Class (class MonadReader)
 import Data.Maybe (fromJust)
 import Data.Traversable (traverse_)
 import Data.Tuple.Nested ((/\))
+import Effect.Aff.Class (class MonadAff)
 import Partial.Unsafe (unsafePartial)
-import Test.Spec (Spec, describe)
+import Test.Utils (describe)
 
-spec :: Spec Unit
+spec :: forall m. MonadReader Int m => MonadAff m => m Unit
 spec = do
 
   describe "outline (Mozilla examples)" $
@@ -50,7 +51,7 @@ spec = do
           testOutlineColor
           [ "hsl(0.0, 94.64%, 56.08%)" /\ (unsafePartial $ fromJust $ Color.fromHexString "#f92525")
           , "hsl(148.44, 76.19%, 49.41%)" /\ Color.rgb 30 222 121
-          , "hsl(240.0, 100.0%, 50.0%)" /\ Color.blue
+          , "hsl(240.0, 100.0%, 50.0%)" /\ blue
           ]
 
   describe "outline-width (Mozilla examples)" do
