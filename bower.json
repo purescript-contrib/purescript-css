@@ -31,6 +31,10 @@
     "purescript-transformers": "master"
   },
   "devDependencies": {
-    "purescript-exceptions": "master"
+    "purescript-aff": "main",
+    "purescript-assert": "master",
+    "purescript-control": "master",
+    "purescript-exceptions": "master",
+    "purescript-partial": "master"
   }
 }
