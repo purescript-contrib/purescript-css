@@ -5,6 +5,16 @@ Notable changes to this project are documented in this file. The format is based
 ## [Unreleased]
 
 Breaking changes:
+
+New features:
+
+Bugfixes:
+
+Other improvements:
+
+## [v6.0.0](https://github.com/purescript-contrib/purescript-css/releases/tag/v6.0.0) - 2022-04-27
+
+Breaking changes:
 - Add support for `calc` expressions (#140 by @nsaunders)
 - Add table selector (#141 by @plurip-software)
 - Update the box-shadow implementation (#88 by @vyorkin)
