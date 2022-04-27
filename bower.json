@@ -21,20 +21,20 @@
     "tests"
   ],
   "dependencies": {
-    "purescript-colors": "main",
-    "purescript-console": "master",
-    "purescript-effect": "master",
-    "purescript-nonempty": "master",
-    "purescript-profunctor": "master",
-    "purescript-strings": "master",
-    "purescript-these": "main",
-    "purescript-transformers": "master"
+    "purescript-colors": "^7.0.1",
+    "purescript-console": "^6.0.0",
+    "purescript-effect": "^4.0.0",
+    "purescript-nonempty": "^7.0.0",
+    "purescript-profunctor": "^6.0.0",
+    "purescript-strings": "^6.0.0",
+    "purescript-these": "^6.0.0",
+    "purescript-transformers": "^6.0.0"
   },
   "devDependencies": {
-    "purescript-aff": "main",
-    "purescript-assert": "master",
-    "purescript-control": "master",
-    "purescript-exceptions": "master",
-    "purescript-partial": "master"
+    "purescript-aff": "^7.0.0",
+    "purescript-assert": "^6.0.0",
+    "purescript-control": "^6.0.0",
+    "purescript-exceptions": "^6.0.0",
+    "purescript-partial": "^4.0.0"
   }
 }
