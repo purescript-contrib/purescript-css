@@ -30,6 +30,9 @@ fixed = Position $ fromString "fixed"
 relative :: Position
 relative = Position $ fromString "relative"
 
+sticky :: Position
+sticky = Position $ fromString "position"
+
 newtype Display = Display Value
 
 derive instance eqDisplay :: Eq Display
