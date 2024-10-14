@@ -1,4 +1,4 @@
-module CSS.BorderSpec where
+module Test.CSS.BorderSpec where
 
 import Prelude
 
@@ -6,7 +6,7 @@ import CSS.Border (dashed, dotted, double, groove, inset, outline, outlineColor,
 import CSS.Color as Color
 import CSS.Common (inherit, initial, unset)
 import CSS.Size (em, px)
-import Common (shouldRenderFrom, green, blue)
+import Test.Common (shouldRenderFrom, green, blue)
 import Control.Monad.Reader.Class (class MonadReader)
 import Data.Maybe (fromJust)
 import Data.Traversable (traverse_)

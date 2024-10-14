@@ -3,8 +3,8 @@ module Test.Main where
 import Prelude
 
 import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, color, body, a, p, px, dashed, border, inlineBlock, black, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, rgba, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction, width, em, (@+@), (@-@), (@*), (*@), (@/))
-import CSS.BorderSpec as BorderSpec
-import CSS.DisplaySpec as DisplaySpec
+import Test.CSS.BorderSpec as BorderSpec
+import Test.CSS.DisplaySpec as DisplaySpec
 import CSS.Cursor as Cursor
 import CSS.Flexbox (flex)
 import CSS.FontStyle as FontStyle
@@ -13,7 +13,7 @@ import CSS.Text.Overflow as TextOverflow
 import CSS.Transform as Transform
 import CSS.Common (none)
 import CSS.Box (boxShadow, shadow, shadowWithBlur, shadowWithSpread, bsColor, bsInset)
-import Common (blue, gold, red, teal, olive)
+import Test.Common (blue, gold, red, teal, olive)
 import Control.Monad.Reader (runReaderT)
 import Control.Monad.RWS (modify_)
 import Control.Monad.State (StateT, execStateT)
