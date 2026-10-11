@@ -11,6 +11,7 @@ New features:
 Bugfixes:
 
 Other improvements:
+- Migrate to registry-backed Spago and update CI tooling.
 
 ## [v6.0.0](https://github.com/purescript-contrib/purescript-css/releases/tag/v6.0.0) - 2022-04-27
 
