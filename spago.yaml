@@ -1,5 +1,11 @@
 package:
   name: css
+  publish:
+    version: 6.0.1
+    license: Apache-2.0
+    location:
+      githubOwner: purescript-contrib
+      githubRepo: purescript-css
   description: PureScript CSS preprocessor
   dependencies:
     - arrays: ">=7.0.0 <8.0.0"
@@ -25,12 +31,6 @@ package:
       - control
       - exceptions
       - partial
-  publish:
-    version: 6.0.1
-    license: Apache-2.0
-    location:
-      githubOwner: purescript-contrib
-      githubRepo: purescript-css
 workspace:
   packageSet:
     registry: 81.4.0
