@@ -7,6 +7,7 @@ Notable changes to this project are documented in this file. The format is based
 Breaking changes:
 
 New features:
+- Add `None`, `Inherit`, `Initial`, and `Unset` instances for `Transformation` (#150, #169 by @jibranshaikh0)
 
 Bugfixes:
 

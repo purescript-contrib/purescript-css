@@ -5,6 +5,7 @@ import Prelude
 import CSS (Rendered, Path(..), Predicate(..), Refinement(..), Selector(..), FontFaceSrc(..), FontFaceFormat(..), pct, renderedSheet, renderedInline, fromString, selector, block, display, render, borderBox, boxSizing, contentBox, color, body, a, p, px, dashed, border, inlineBlock, black, (?), (&), (|>), (|*), (|+), byId, byClass, (@=), (^=), ($=), (*=), (~=), (|=), hover, fontFaceSrc, fontStyle, deg, rgba, zIndex, textOverflow, opacity, cursor, transform, transition, easeInOut, cubicBezier, ms, direction, width, em, (@+@), (@-@), (@*), (*@), (@/))
 import CSS.BorderSpec as BorderSpec
 import CSS.DisplaySpec as DisplaySpec
+import CSS.TransformSpec as TransformSpec
 import CSS.Cursor as Cursor
 import CSS.Flexbox (flex)
 import CSS.FontStyle as FontStyle
@@ -295,3 +296,4 @@ main = do
     flip runReaderT 0 do
       BorderSpec.spec
       DisplaySpec.spec
+      TransformSpec.spec
