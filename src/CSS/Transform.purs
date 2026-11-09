@@ -1,7 +1,7 @@
 module CSS.Transform where
 
 import Prelude
-import CSS.Common (class Inherit, class Initial, class Unset)
+import CSS.Common (class Inherit, class Initial, class None, class Unset)
 import CSS.Property (class Val, Value, noCommas, value)
 import CSS.Size (Angle, Size)
 import CSS.String (fromString)
@@ -15,6 +15,18 @@ derive instance ordTransformation :: Ord Transformation
 
 instance valTransformation :: Val Transformation where
   value (Transformation v) = v
+
+instance noneTransformation :: None Transformation where
+  none = Transformation $ fromString "none"
+
+instance inheritTransformation :: Inherit Transformation where
+  inherit = Transformation $ fromString "inherit"
+
+instance initialTransformation :: Initial Transformation where
+  initial = Transformation $ fromString "initial"
+
+instance unsetTransformation :: Unset Transformation where
+  unset = Transformation $ fromString "unset"
 
 transform :: Transformation -> CSS
 transform = key $ fromString "transform"
