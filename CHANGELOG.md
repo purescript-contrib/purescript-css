@@ -7,11 +7,16 @@ Notable changes to this project are documented in this file. The format is based
 Breaking changes:
 
 New features:
-- Add `None`, `Inherit`, `Initial`, and `Unset` instances for `Transformation` (#150, #169 by @jibranshaikh0)
+- Add `None`, `Inherit`, `Initial`, and `Unset` instances for `Transformation` (#169 by @jibranshaikh0)
 
 Bugfixes:
 
 Other improvements:
+
+## [v6.1.0](https://github.com/purescript-contrib/purescript-css/releases/tag/v6.0.1) - 2026-11-09
+
+New features:
+- Add `None`, `Inherit`, `Initial`, and `Unset` instances for `Transformation` (#169 by @jibranshaikh0)
 
 ## [v6.0.1](https://github.com/purescript-contrib/purescript-css/releases/tag/v6.0.1) - 2026-10-11
 
