@@ -13,6 +13,11 @@ Bugfixes:
 
 Other improvements:
 
+## [v6.1.1](https://github.com/purescript-contrib/purescript-css/releases/tag/v6.1.1) - 2026-11-10
+
+Bugfixes:
+- Correct the package manifest version so the 6.1 release can be published to the registry.
+
 ## [v6.1.0](https://github.com/purescript-contrib/purescript-css/releases/tag/v6.0.1) - 2026-11-09
 
 New features:
